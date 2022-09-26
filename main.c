@@ -151,73 +151,48 @@ int main(int argc, char **argv)
     c = getchar();
   }
    
-    eSystemState eNextState = c;
-    eSystemEvent eNewEvent;
+    eNextState = c;
   
     switch(eNextState)
         {
         case 0:
         {
-            if(Reverse_Event == eNewEvent)
-            {
-                eNextState = ReverseHandler();
-            }
+            ReverseHandler();
         }
         break;
         case 1:
         {
-            if(Neutral_Event == eNewEvent)
-            {
-                eNextState = NeutralHandler();
-            }
+            NeutralHandler();
         }
         break;
         case 2:
         {
-            if(First_Event == eNewEvent)
-            {
-                eNextState = FirstHandler();
-            }
+            FirstHandler();
         }
         break;
         case 3:
         {
-            if(Second_Event == eNewEvent)
-            {
-                eNextState = SecondHandler();
-            }
+            eNextState = SecondHandler();
         }
         break;
         case 4:
         {
-            if(Third_Event == eNewEvent)
-            {
-                eNextState = ThirdHandler();
-            }
+            eNextState = ThirdHandler();
         }
         break;
         case 5:
         {
-            if(Fourth_Event == eNewEvent)
-            {
-                eNextState = FourthHandler();
-            }
+            eNextState = FourthHandler();
         }
         break;
         case 6:
         {
-            if(Fifth_Event == eNewEvent)
-            {
-                eNextState = FifthHandler();
-            }
+            eNextState = FifthHandler();
         }
         break;
         case 7:
         {
-            if(Sixth_Event == eNewEvent)
-            {
-                eNextState = SixthHandler();
-            }
+            eNextState = SixthHandler();
         }
         break;
         default:
