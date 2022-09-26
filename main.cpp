@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
   printf("7 segment matrix test \n");
   printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
   
-  socket sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
   if (sockfd == -1) {
     printf("socket err \n");
   }
