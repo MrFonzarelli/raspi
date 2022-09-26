@@ -1,4 +1,3 @@
-
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,7 +15,7 @@ int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
 
-typedef enum {
+struct outGauge {
     unsigned time;
     char car[4];
     unsigned short flags;
@@ -37,10 +36,9 @@ typedef enum {
     char display1[16];
     char display2[16];
     int id;
-} outGauge;
+};
 
-int ReverseHandler(void)
-{
+int ReverseHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, LOW);
@@ -51,8 +49,7 @@ int ReverseHandler(void)
     return 0;
 }
 
-int NeutralHandler(void)
-{
+int NeutralHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, LOW);
@@ -63,8 +60,7 @@ int NeutralHandler(void)
     return 1;
 }
 
-int FirstHandler(void)
-{
+int FirstHandler(void) {
     digitalWrite (pin1, LOW);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, LOW);
@@ -75,8 +71,7 @@ int FirstHandler(void)
     return 2;
 }
 
-int SecondHandler(void)
-{
+int SecondHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, HIGH);
@@ -87,8 +82,7 @@ int SecondHandler(void)
     return 3;
 }
 
-int ThirdHandler(void)
-{
+int ThirdHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, HIGH);
@@ -99,8 +93,7 @@ int ThirdHandler(void)
     return 4;
 }
 
-int FourthHandler(void)
-{ 
+int FourthHandler(void) { 
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, LOW);
@@ -111,8 +104,7 @@ int FourthHandler(void)
     return 5;
 }
 
-int FifthHandler(void)
-{
+int FifthHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
@@ -123,8 +115,7 @@ int FifthHandler(void)
     return 6;
 }
 
-int SixthHandler(void)
-{
+int SixthHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
@@ -135,8 +126,7 @@ int SixthHandler(void)
     return 7;
 }
 
-int SeventhHandler(void)
-{
+int SeventhHandler(void) {
     digitalWrite (pin1, LOW);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, HIGH);
@@ -147,8 +137,7 @@ int SeventhHandler(void)
     return 8;
 }
 
-int EighthHandler(void)
-{
+int EighthHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
@@ -159,8 +148,7 @@ int EighthHandler(void)
     return 9;
 }
 
-int NinethHandler(void)
-{
+int NinethHandler(void) {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
@@ -171,8 +159,7 @@ int NinethHandler(void)
     return 10;
 }
 
-int ZeroHandler(void)
-{
+int ZeroHandler(void) {
     digitalWrite (pin1, LOW);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
@@ -183,8 +170,7 @@ int ZeroHandler(void)
     return 11;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
   pinMode(pin2, OUTPUT);
@@ -204,25 +190,23 @@ int main(int argc, char **argv)
   printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
   
   sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-  if (sockfd == -1)
-  {
+  if (sockfd == -1) {
     printf("socket err \n");
   }
   int res = bind(sockfd, (struct sockaddr *)&target_addr, sizeof(target_addr));
-  if (res == -1)
-  {
+  if (res == -1) {
     printf("bind err \n");
     close(sockfd);
   }
     
   do {
     int res = recvfrom(sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
-    if (res == -1){
+    if (res == -1) {
         printf("recvfrom err \n");
     } else {
         outGauge *s = (outGauge *)message;
-        des_state = (int)s.gear;
-        if (des_state != cur_state){
+        des_state = (int)s->gear;
+        if (des_state != cur_state) {
             switch(des_state)
                 {
                 case 0:
