@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include <wiringPi.h>
 
 int pin1 = 15;
@@ -14,6 +15,29 @@ int pin5 = 5;
 int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
+
+struct outGauge{
+    unsigned time;
+    char car[4];
+    unsigned short flags;
+    char gear;
+    char plid;
+    float speed;
+    float rpm;
+    float turbo;
+    float engTemp;
+    float fuel;
+    float oilPressure;
+    float oilTemp;
+    unsigned dashLights;
+    unsigned showLights;
+    float throttle;
+    float brake;
+    float clutch;
+    char display1[16];
+    char display2[16];
+    int id;
+};
 
 int ReverseHandler(void)
 {
@@ -171,75 +195,97 @@ int main(int argc, char **argv)
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  int state = 0;
+  int des_state = 1;
+  int cur_state = 0;
+  char message[96];
+  char target_addr = inet_addr("169.254.105.216");
     
   printf("7 segment matrix test \n");
   printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
   
+  sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  if (sockfd == -1)
+  {
+    printf("socket err \n");
+  }
+  int res = bind(sockfd, (struct sockaddr *)&target_addr, sizeof(target_addr));
+  if (res == -1)
+  {
+    printf("bind err \n");
+    close(sockfd);
+  }
+    
   do {
-    switch(state)
-        {
-        case 0:
-        {
-            state = ReverseHandler();
-        }
-        break;
-        case 1:
-        {
-            state = NeutralHandler();
-        }
-        break;
-        case 2:
-        {
-            state = FirstHandler();
-        }
-        break;
-        case 3:
-        {
-            state = SecondHandler();
-        }
-        break;
-        case 4:
-        {
-            state = ThirdHandler();
-        }
-        break;
-        case 5:
-        {
-            state = FourthHandler();
-        }
-        break;
-        case 6:
-        {
-            state = FifthHandler();
-        }
-        break;
-        case 7:
-        {
-            state = SixthHandler();
-        }
-        break;
-        case 8:
-        {
-            state = SeventhHandler();
-        }
-        break;
-        case 9:
-        {
-            state = EighthHandler();
-        }
-        break;
-        case 10:
-        {
-            state = NinethHandler();
-        }
-        break;
-        default:
-            {
-            ZeroHandler();
-            }
-            break;
-        }
+    int res = recvfrom(sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
+    if (res == -1){
+        printf("recvfrom err \n");
+    } else {
+        outGauge *s = (outGauge *)message;
+        des_state = (int)s->gear
+        if (des_state != cur_state){
+            switch(des_state)
+                {
+                case 0:
+                {
+                    state = ReverseHandler();
+                }
+                break;
+                case 1:
+                {
+                    state = NeutralHandler();
+                }
+                break;
+                case 2:
+                {
+                    state = FirstHandler();
+                }
+                break;
+                case 3:
+                {
+                    state = SecondHandler();
+                }
+                break;
+                case 4:
+                {
+                    state = ThirdHandler();
+                }
+                break;
+                case 5:
+                {
+                    state = FourthHandler();
+                }
+                break;
+                case 6:
+                {
+                    state = FifthHandler();
+                }
+                break;
+                case 7:
+                {
+                    state = SixthHandler();
+                }
+                break;
+                case 8:
+                {
+                    state = SeventhHandler();
+                }
+                break;
+                case 9:
+                {
+                    state = EighthHandler();
+                }
+                break;
+                case 10:
+                {
+                    state = NinethHandler();
+                }
+                break;
+                default:
+                    {
+                    ZeroHandler();
+                    }
+                    break;
+                }
     printf("State changed to %d", state);
     printf("\n");
     if(state == 16) {
@@ -249,6 +295,8 @@ int main(int argc, char **argv)
     }
     sleep(1);
   } while(state !=17);
+    
+  close(sockfd);
   return 0;
   
 }
