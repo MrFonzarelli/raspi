@@ -183,7 +183,7 @@ int main(int argc, char **argv)
     } else {
         state = state + 1;
     }
-    delay(100);
+    sleep(1);
   } while(state !=8);
   return 0;
   
