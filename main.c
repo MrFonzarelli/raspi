@@ -29,7 +29,7 @@ enum eSystemEvent
     Sixth_Event
 };
 
-eSystemState ReverseHandler(void)
+ReverseHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -41,7 +41,7 @@ eSystemState ReverseHandler(void)
     return 0;
 }
 
-eSystemState NeutralHandler(void)
+NeutralHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -53,7 +53,7 @@ eSystemState NeutralHandler(void)
     return 1;
 }
 
-eSystemState FirstHandler(void)
+FirstHandler(void)
 {
     digitalWrite (pin1, LOW);
     digitalWrite (pin2, LOW);
@@ -65,7 +65,7 @@ eSystemState FirstHandler(void)
     return 2;
 }
 
-eSystemState SecondHandler(void)
+SecondHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -77,7 +77,7 @@ eSystemState SecondHandler(void)
     return 3;
 }
 
-eSystemState ThirdHandler(void)
+ThirdHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -89,7 +89,7 @@ eSystemState ThirdHandler(void)
     return 4;
 }
 
-eSystemState FourthHandler(void)
+FourthHandler(void)
 { 
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
@@ -101,7 +101,7 @@ eSystemState FourthHandler(void)
     return 5;
 }
 
-eSystemState FifthHandler(void)
+FifthHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
@@ -113,7 +113,7 @@ eSystemState FifthHandler(void)
     return 6;
 }
 
-eSystemState SixthHandler(void)
+SixthHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
