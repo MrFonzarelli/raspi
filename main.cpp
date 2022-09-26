@@ -187,7 +187,7 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char message[96];
-  in_addr.s_addr = inet_aton(169.254.105.216);
+  in_addr.s_addr = inet_aton("169.254.105.216");
   sockaddr_in.sin_family = AF_INET;
   sockaddr_in.sin_port = htons(4444);
     
