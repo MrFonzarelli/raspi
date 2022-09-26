@@ -6,8 +6,6 @@
 #include <unistd.h>
 #include <wiringPi.h>
 
-#define BUFSIZE 96
-
 int pin1 = 15;
 int pin2 = 16;
 int pin3 = 1;
