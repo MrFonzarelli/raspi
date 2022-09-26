@@ -16,7 +16,7 @@ int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
 
-struct outGauge{
+typedef struct outGauge{
     unsigned time;
     char car[4];
     unsigned short flags;
