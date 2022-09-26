@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  int ctx->sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  ctx->sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
   if (ctx->sockfd == -1) {
     printf("socket err \n");
   }
