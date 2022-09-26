@@ -140,14 +140,14 @@ eSystemState SixthHandler(void)
 int main(int argc, char **argv)
 {
   wiringPiSetup();
-  pinmode(pin1, OUTPUT);
-  pinmode(pin2, OUTPUT);
-  pinmode(pin3, OUTPUT);
-  pinmode(pin4, OUTPUT);
-  pinmode(pin5, OUTPUT);
-  pinmode(pin6, OUTPUT);
-  pinmode(pin7, OUTPUT);
-  pinmode(pin8, OUTPUT);
+  pinMode(pin1, OUTPUT);
+  pinMode(pin2, OUTPUT);
+  pinMode(pin3, OUTPUT);
+  pinMode(pin4, OUTPUT);
+  pinMode(pin5, OUTPUT);
+  pinMode(pin6, OUTPUT);
+  pinMode(pin7, OUTPUT);
+  pinMode(pin8, OUTPUT);
     
   int c;
   
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
         {
         case 0:
         {
-            if(Reverse_event == eNewEvent)
+            if(Reverse_Event == eNewEvent)
             {
                 eNextState = ReverseHandler();
             }
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
         break;
         case 1:
         {
-            if(Neutral_event == eNewEvent)
+            if(Neutral_Event == eNewEvent)
             {
                 eNextState = NeutralHandler();
             }
