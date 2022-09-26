@@ -289,6 +289,7 @@ int main(int argc, char **argv)
                 }
         printf("State changed to %d", state);
         printf("\n");
+        }
     }
   } while(state !=-1);
   
