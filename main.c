@@ -234,12 +234,10 @@ int main(int argc, char **argv)
             state = NinethHandler();
         }
         break;
-        case 11:
-        {
-            state = ZeroHandler();
-        }
-        break;
         default:
+            {
+            state = ZeroHandler();
+            }
             break;
         }
     printf("State changed to %d", state);
