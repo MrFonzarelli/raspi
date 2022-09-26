@@ -16,7 +16,7 @@ int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
 
-typedef struct outGauge{
+typedef enum {
     unsigned time;
     char car[4];
     unsigned short flags;
@@ -37,7 +37,7 @@ typedef struct outGauge{
     char display1[16];
     char display2[16];
     int id;
-};
+} outGauge;
 
 int ReverseHandler(void)
 {
