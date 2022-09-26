@@ -31,14 +31,14 @@ typedef enum
 
 typedef enum
 {
-    Reverse_event,
-    Neutral_event,
-    First_event,
-    Second_event,
-    Third_event,
-    Fourth_event,
-    Fifth_event,
-    Sixth_event
+    Reverse_Event,
+    Neutral_Event,
+    First_Event,
+    Second_Event,
+    Third_Event,
+    Fourth_Event,
+    Fifth_Event,
+    Sixth_Event
 } eSystemEvent;
 
 eSystemState ReverseHandler(void)
