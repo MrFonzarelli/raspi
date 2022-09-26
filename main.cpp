@@ -197,17 +197,17 @@ int main(int argc, char **argv) {
   pinMode(pin8, OUTPUT);
     
   int ctx->sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-  if (sockfd == -1) {
+  if (ctx->sockfd == -1) {
     printf("socket err \n");
   }
-  int res = bind(sockfd, (struct sockaddr *)&ctx->target_addr, sizeof(ctx->target_addr));
+  int res = bind(ctx->sockfd, (struct sockaddr *)&ctx->target_addr, sizeof(ctx->target_addr));
   if (res == -1) {
     printf("bind err \n");
     close(ctx->sockfd);
   }
     
   do {
-    int res = recvfrom(sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
+    int res = recvfrom(ctx->sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
