@@ -187,15 +187,15 @@ void socket_init(void){
     in_addr.s_addr = inet_aton("169.254.105.216");
     sockaddr_in.sin_family = AF_INET;
     sockaddr_in.sin_port = htons(4444);
-    sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-    if (sockfd == -1) {
+    socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+    if (socket == -1) {
         printf("socket err \n");
         return -1;
     }
-    int res = bind(sockfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+    int res = bind(socket, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
     if (res == -1) {
         printf("bind err \n");
-        close(sockfd);
+        close(socket);
         return -1;
     }
     return 0
@@ -224,7 +224,7 @@ int main(int argc, char **argv) {
   
     
   do {
-    int res = recvfrom(sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
+    int res = recvfrom(socket, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
