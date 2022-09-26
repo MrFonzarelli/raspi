@@ -240,8 +240,8 @@ int main(int argc, char **argv)
             }
             break;
         }
-    printf("State changed to %d", state);
-    printf("\n");
+    //printf("State changed to %d", state);
+    //printf("\n");
     if(state == 11) {
         state = 0;
     } else {
