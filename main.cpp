@@ -171,11 +171,20 @@ int ZeroHandler(void) {
 }
 
 int main(int argc, char **argv) {
+  int des_state = 1;
+  int cur_state = 0;
+  char message[96];
+  char addr = "169.254.105.216";
+  int port = 4444
+    
   struct conn_ctx *ctx = malloc(sizeof(struct conn_ctx));
   ctx->sockfd = -1;
   ctx->sockfd_listen = -1;
   memset(&ctx->target_addr, 0, sizeof(struct sockaddr_in));
   memset(&ctx->local_addr, 0, sizeof(struct sockaddr_in));
+  ctx->target_addr.sin_family = AF_INET;
+  ctx->target_addr.sin_addr.s_addr = inet_addr(addr);
+  ctx->target_addr.sin_port = htons(port);
     
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
@@ -187,25 +196,14 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  int des_state = 1;
-  int cur_state = 0;
-  char message[96];
-  char addr = 169.254.105.216";
-  int port = 4444
-  
-  target_addr.sin_family = AF_INET;
-  target_addr.sin_addr.s_addr = inet_addr(addr);
-  target_addr.sin_port = htons(port);
-
-    
-  int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  int ctx->sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
   if (sockfd == -1) {
     printf("socket err \n");
   }
-  int res = bind(sockfd, (struct sockaddr *)&target_addr, sizeof(target_addr));
+  int res = bind(sockfd, (struct sockaddr *)&ctx->target_addr, sizeof(ctx->target_addr));
   if (res == -1) {
     printf("bind err \n");
-    close(sockfd);
+    close(ctx->sockfd);
   }
     
   do {
