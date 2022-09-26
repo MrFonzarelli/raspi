@@ -183,13 +183,33 @@ int ZeroHandler(void) {
     return 11;
 }
 
+void socket_init(void){
+    in_addr.s_addr = inet_aton("169.254.105.216");
+    sockaddr_in.sin_family = AF_INET;
+    sockaddr_in.sin_port = htons(4444);
+    sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+    if (sockfd == -1) {
+        printf("socket err \n");
+        return -1;
+    }
+    int res = bind(sockfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+    if (res == -1) {
+        printf("bind err \n");
+        close(sockfd);
+        return -1;
+    }
+    return 0
+}
+
 int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char message[96];
-  in_addr.s_addr = inet_aton("169.254.105.216");
-  sockaddr_in.sin_family = AF_INET;
-  sockaddr_in.sin_port = htons(4444);
+    
+  if (socket_init() == -1){
+      printf("socket err");
+      return 0;
+  }
     
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
@@ -201,15 +221,7 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-  if (sockfd == -1) {
-    printf("socket err \n");
-  }
-  int res = bind(sockfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
-  if (res == -1) {
-    printf("bind err \n");
-    close(sockfd);
-  }
+  
     
   do {
     int res = recvfrom(sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
