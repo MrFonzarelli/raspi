@@ -171,6 +171,12 @@ int ZeroHandler(void) {
 }
 
 int main(int argc, char **argv) {
+  struct conn_ctx *ctx = malloc(sizeof(struct conn_ctx));
+  ctx->sockfd = -1;
+  ctx->sockfd_listen = -1;
+  memset(&ctx->target_addr, 0, sizeof(struct sockaddr_in));
+  memset(&ctx->local_addr, 0, sizeof(struct sockaddr_in));
+    
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
   pinMode(pin2, OUTPUT);
@@ -184,11 +190,14 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char message[96];
-  char target_addr = inet_addr("169.254.105.216");
-    
-  printf("7 segment matrix test \n");
-  printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
+  char addr = 169.254.105.216";
+  int port = 4444
   
+  target_addr.sin_family = AF_INET;
+  target_addr.sin_addr.s_addr = inet_addr(addr);
+  target_addr.sin_port = htons(port);
+
+    
   int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
   if (sockfd == -1) {
     printf("socket err \n");
