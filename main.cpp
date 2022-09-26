@@ -174,8 +174,8 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char message[96];
-  char addr = "169.254.105.216";
-  int port = 4444
+  const char addr = "169.254.105.216";
+  int port = 4444;
     
   struct conn_ctx *ctx = malloc(sizeof(struct conn_ctx));
   ctx->sockfd = -1;
