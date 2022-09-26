@@ -250,7 +250,7 @@ int main(int argc, char **argv)
         state = state + 1;
     }
     sleep(1);
-  } while(state !=8);
+  } while(state !=12);
   return 0;
   
 }
