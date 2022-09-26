@@ -22,7 +22,7 @@ int ReverseHandler(void)
     digitalWrite (pin3, LOW);
     digitalWrite (pin4, LOW);
     digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
+    digitalWrite (pin6, LOW);
     digitalWrite (pin7, LOW);
     return 0;
 }
@@ -80,7 +80,7 @@ int FourthHandler(void)
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, LOW);
-    digitalWrite (pin4, LOW);
+    digitalWrite (pin4, HIGH);
     digitalWrite (pin5, LOW);
     digitalWrite (pin6, LOW);
     digitalWrite (pin7, HIGH);
