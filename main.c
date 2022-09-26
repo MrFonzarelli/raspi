@@ -128,15 +128,15 @@ int main(int argc, char **argv)
   int c;
   
   while(TRUE){
-  printf("7 segment matrix test");
-  printf("Gears indexed from reverse upwards (Index 0 - 7)");
+  printf("7 segment matrix test"\n);
+  printf("Gears indexed from reverse upwards (Index 0 - 7)"\n);
   printf("Gear to display: ");
   
   c = getchar();
   while(c < 0 || c > 7) {
-    printf("Index out of range! Use index 0 - 7");
+    printf("Index out of range! Use index 0 - 7"\n);
     printf("Gear to display: ");
-    c = getint();
+    c = getchar();
   }
      
     switch(c)
