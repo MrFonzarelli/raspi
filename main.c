@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 #include <wiringPi.h>
 
 #define BUFSIZE 96
@@ -183,7 +182,7 @@ int main(int argc, char **argv)
     } else {
         state = state + 1;
     }
-    sleep(1);
+    sleep(0.5);
   } while(state !=8);
   return 0;
   
