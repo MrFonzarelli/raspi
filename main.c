@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 #include <wiringPi.h>
 
 #define BUFSIZE 96
@@ -125,67 +126,64 @@ int main(int argc, char **argv)
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  int c;
+  int state = 0;
   
-  while(TRUE){
-  printf("7 segment matrix test \n");
-  printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
-  printf("Gear to display: ");
-  
-  c = getchar();
-  while(c < 0 || c > 7) {
-    printf("Index out of range! Use index 0 - 7 \n");
-    printf("Gear to display: ");
-    c = getchar();
-  }
-     
-    switch(c)
+  do {
+    printf("7 segment matrix test \n");
+    printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
+    switch(state)
         {
         case 0:
         {
-            ReverseHandler();
+            state = ReverseHandler();
         }
         break;
         case 1:
         {
-            NeutralHandler();
+            state = NeutralHandler();
         }
         break;
         case 2:
         {
-            FirstHandler();
+            state = FirstHandler();
         }
         break;
         case 3:
         {
-            SecondHandler();
+            state = SecondHandler();
         }
         break;
         case 4:
         {
-            ThirdHandler();
+            state = ThirdHandler();
         }
         break;
         case 5:
         {
-            FourthHandler();
+            state = FourthHandler();
         }
         break;
         case 6:
         {
-            FifthHandler();
+            state = FifthHandler();
         }
         break;
         case 7:
         {
-            SixthHandler();
+            state = SixthHandler();
         }
         break;
         default:
             break;
         }
-  
-  }
+    printf("State changed to %d", state)
+    delay(1);
+    if(state == 7) {
+        state = 0;
+    } else {
+        state = state + 1;
+    }
+  } while(state !=8);
   return 0;
   
 }
