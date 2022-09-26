@@ -182,7 +182,7 @@ int main(int argc, char **argv)
     } else {
         state = state + 1;
     }
-    sleep(0.5);
+    sleep(1000);
   } while(state !=8);
   return 0;
   
