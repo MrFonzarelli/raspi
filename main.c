@@ -221,7 +221,7 @@ int main(int argc, char **argv)
         printf("recvfrom err \n");
     } else {
         outGauge *s = (outGauge *)message;
-        des_state = (int)s->gear
+        des_state = (int)s->gear;
         if (des_state != cur_state){
             switch(des_state)
                 {
@@ -286,16 +286,11 @@ int main(int argc, char **argv)
                     }
                     break;
                 }
-    printf("State changed to %d", state);
-    printf("\n");
-    if(state == 16) {
-        state = 0;
-    } else {
-        state = state + 1;
+        printf("State changed to %d", state);
+        printf("\n");
     }
-    sleep(1);
   } while(state !=17);
-    
+  
   close(sockfd);
   return 0;
   
