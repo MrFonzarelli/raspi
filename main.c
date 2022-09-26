@@ -17,18 +17,6 @@ int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
 
-enum eSystemEvent
-{
-    Reverse_Event,
-    Neutral_Event,
-    First_Event,
-    Second_Event,
-    Third_Event,
-    Fourth_Event,
-    Fifth_Event,
-    Sixth_Event
-};
-
 ReverseHandler(void)
 {
     digitalWrite (pin1, HIGH);
