@@ -221,7 +221,7 @@ int main(int argc, char **argv)
         printf("recvfrom err \n");
     } else {
         outGauge *s = (outGauge *)message;
-        des_state = (int)s->gear;
+        des_state = (int)s.gear;
         if (des_state != cur_state){
             switch(des_state)
                 {
