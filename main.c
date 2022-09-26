@@ -17,7 +17,7 @@ int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
 
-ReverseHandler(void)
+int ReverseHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -29,7 +29,7 @@ ReverseHandler(void)
     return 0;
 }
 
-NeutralHandler(void)
+int NeutralHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -41,7 +41,7 @@ NeutralHandler(void)
     return 1;
 }
 
-FirstHandler(void)
+int FirstHandler(void)
 {
     digitalWrite (pin1, LOW);
     digitalWrite (pin2, LOW);
@@ -53,7 +53,7 @@ FirstHandler(void)
     return 2;
 }
 
-SecondHandler(void)
+int SecondHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -65,7 +65,7 @@ SecondHandler(void)
     return 3;
 }
 
-ThirdHandler(void)
+int ThirdHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, LOW);
@@ -77,7 +77,7 @@ ThirdHandler(void)
     return 4;
 }
 
-FourthHandler(void)
+int FourthHandler(void)
 { 
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
@@ -89,7 +89,7 @@ FourthHandler(void)
     return 5;
 }
 
-FifthHandler(void)
+int FifthHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
@@ -101,7 +101,7 @@ FifthHandler(void)
     return 6;
 }
 
-SixthHandler(void)
+int SixthHandler(void)
 {
     digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
@@ -186,6 +186,6 @@ int main(int argc, char **argv)
         }
   
   }
-  return EXIT_SUCCESS;
+  return 0;
   
 }
