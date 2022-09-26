@@ -262,7 +262,7 @@ int main(int argc, char **argv)
                 break;
                 case 7:
                 {
-                    state = SixthHandler();
+                    cur_state = SixthHandler();
                 }
                 break;
                 case 8:
