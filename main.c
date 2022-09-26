@@ -150,10 +150,8 @@ int main(int argc, char **argv)
     printf("Gear to display: ");
     c = getchar();
   }
-   
-    eNextState = c;
-  
-    switch(eNextState)
+     
+    switch(c)
         {
         case 0:
         {
