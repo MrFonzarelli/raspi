@@ -242,13 +242,13 @@ int main(int argc, char **argv)
         }
     printf("State changed to %d", state);
     printf("\n");
-    if(state == 11) {
+    if(state == 16) {
         state = 0;
     } else {
         state = state + 1;
     }
     sleep(1);
-  } while(state !=12);
+  } while(state !=17);
   return 0;
   
 }
