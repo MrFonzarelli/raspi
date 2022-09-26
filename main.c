@@ -127,10 +127,11 @@ int main(int argc, char **argv)
   pinMode(pin8, OUTPUT);
     
   int state = 0;
+    
+  printf("7 segment matrix test \n");
+  printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
   
   do {
-    printf("7 segment matrix test \n");
-    printf("Gears indexed from reverse upwards (Index 0 - 7) \n");
     switch(state)
         {
         case 0:
@@ -177,7 +178,7 @@ int main(int argc, char **argv)
             break;
         }
     printf("State changed to %d", state);
-    delay(1);
+    delay(1000);
     if(state == 7) {
         state = 0;
     } else {
