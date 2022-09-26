@@ -176,7 +176,7 @@ int main(int argc, char **argv)
         default:
             break;
         }
-    printf("State changed to %d", state)
+    printf("State changed to %d", state);
     delay(1);
     if(state == 7) {
         state = 0;
