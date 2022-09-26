@@ -291,7 +291,7 @@ int main(int argc, char **argv)
         printf("\n");
         }
     }
-  } while(state !=-1);
+  } while(curr_state !=-1);
   
   close(sockfd);
   return 0;
