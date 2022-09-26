@@ -236,7 +236,7 @@ int main(int argc, char **argv)
         break;
         default:
             {
-            state = ZeroHandler();
+            ZeroHandler();
             }
             break;
         }
