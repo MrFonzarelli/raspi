@@ -178,12 +178,12 @@ int main(int argc, char **argv)
             break;
         }
     printf("State changed to %d", state);
-    delay(1000);
     if(state == 7) {
         state = 0;
     } else {
         state = state + 1;
     }
+    delay(10);
   } while(state !=8);
   return 0;
   
