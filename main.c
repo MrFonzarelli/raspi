@@ -111,6 +111,54 @@ int SixthHandler(void)
     return 7;
 }
 
+int SeventhHandler(void)
+{
+    digitalWrite (pin1, LOW);
+    digitalWrite (pin2, LOW);
+    digitalWrite (pin3, HIGH);
+    digitalWrite (pin4, HIGH);
+    digitalWrite (pin5, LOW);
+    digitalWrite (pin6, LOW);
+    digitalWrite (pin7, HIGH);
+    return 8;
+}
+
+int EighthHandler(void)
+{
+    digitalWrite (pin1, HIGH);
+    digitalWrite (pin2, HIGH);
+    digitalWrite (pin3, HIGH);
+    digitalWrite (pin4, HIGH);
+    digitalWrite (pin5, HIGH);
+    digitalWrite (pin6, HIGH);
+    digitalWrite (pin7, HIGH);
+    return 9;
+}
+
+int NinethHandler(void)
+{
+    digitalWrite (pin1, HIGH);
+    digitalWrite (pin2, HIGH);
+    digitalWrite (pin3, HIGH);
+    digitalWrite (pin4, HIGH);
+    digitalWrite (pin5, LOW);
+    digitalWrite (pin6, HIGH);
+    digitalWrite (pin7, HIGH);
+    return 10;
+}
+
+int ZeroHandler(void)
+{
+    digitalWrite (pin1, LOW);
+    digitalWrite (pin2, HIGH);
+    digitalWrite (pin3, HIGH);
+    digitalWrite (pin4, HIGH);
+    digitalWrite (pin5, HIGH);
+    digitalWrite (pin6, HIGH);
+    digitalWrite (pin7, HIGH);
+    return 11;
+}
+
 int main(int argc, char **argv)
 {
   wiringPiSetup();
@@ -171,12 +219,32 @@ int main(int argc, char **argv)
             state = SixthHandler();
         }
         break;
+        case 8:
+        {
+            state = SeventhHandler();
+        }
+        break;
+        case 9:
+        {
+            state = EighthHandler();
+        }
+        break;
+        case 10:
+        {
+            state = NinethHandler();
+        }
+        break;
+        case 11:
+        {
+            state = ZeroHandler();
+        }
+        break;
         default:
             break;
         }
     printf("State changed to %d", state);
     printf("\n");
-    if(state == 7) {
+    if(state == 11) {
         state = 0;
     } else {
         state = state + 1;
