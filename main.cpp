@@ -284,7 +284,7 @@ int main(int argc, char **argv) {
     }
   } while(cur_state !=-1);
   
-  close(sockfd);
+  close(ctx->sockfd);
   return 0;
   
 }
