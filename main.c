@@ -247,7 +247,7 @@ int main(int argc, char **argv)
     } else {
         state = state + 1;
     }
-    sleep(1);
+    sleep(0.500);
   } while(state !=12);
   return 0;
   
