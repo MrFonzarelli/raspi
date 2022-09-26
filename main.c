@@ -172,27 +172,27 @@ int main(int argc, char **argv)
         break;
         case 3:
         {
-            eNextState = SecondHandler();
+            SecondHandler();
         }
         break;
         case 4:
         {
-            eNextState = ThirdHandler();
+            ThirdHandler();
         }
         break;
         case 5:
         {
-            eNextState = FourthHandler();
+            FourthHandler();
         }
         break;
         case 6:
         {
-            eNextState = FifthHandler();
+            FifthHandler();
         }
         break;
         case 7:
         {
-            eNextState = SixthHandler();
+            SixthHandler();
         }
         break;
         default:
