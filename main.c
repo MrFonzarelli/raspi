@@ -287,7 +287,7 @@ int main(int argc, char **argv)
                     }
                     break;
                 }
-        printf("State changed to %d", state);
+        printf("State changed to %d", cur_state);
         printf("\n");
         }
     }
