@@ -227,37 +227,37 @@ int main(int argc, char **argv)
                 {
                 case 0:
                 {
-                    state = ReverseHandler();
+                    cur_state = ReverseHandler();
                 }
                 break;
                 case 1:
                 {
-                    state = NeutralHandler();
+                    cur_state = NeutralHandler();
                 }
                 break;
                 case 2:
                 {
-                    state = FirstHandler();
+                    cur_state = FirstHandler();
                 }
                 break;
                 case 3:
                 {
-                    state = SecondHandler();
+                    cur_state = SecondHandler();
                 }
                 break;
                 case 4:
                 {
-                    state = ThirdHandler();
+                    cur_state = ThirdHandler();
                 }
                 break;
                 case 5:
                 {
-                    state = FourthHandler();
+                    cur_state = FourthHandler();
                 }
                 break;
                 case 6:
                 {
-                    state = FifthHandler();
+                    cur_state = FifthHandler();
                 }
                 break;
                 case 7:
@@ -267,29 +267,30 @@ int main(int argc, char **argv)
                 break;
                 case 8:
                 {
-                    state = SeventhHandler();
+                    cur_state = SeventhHandler();
                 }
                 break;
                 case 9:
                 {
-                    state = EighthHandler();
+                    cur_state = EighthHandler();
                 }
                 break;
                 case 10:
                 {
-                    state = NinethHandler();
+                    cur_state = NinethHandler();
                 }
                 break;
                 default:
                     {
-                    ZeroHandler();
+                        ZeroHandler();
+                        cur_state = des_state;
                     }
                     break;
                 }
         printf("State changed to %d", state);
         printf("\n");
     }
-  } while(state !=17);
+  } while(state !=-1);
   
   close(sockfd);
   return 0;
