@@ -4,6 +4,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include <wiringPi.h>
 
 int pin1 = 15;
@@ -36,6 +38,17 @@ struct outGauge {
     char display1[16];
     char display2[16];
     int id;
+};
+
+struct sockaddr_in {
+    short sin_family;   // e.g. AF_INET
+    unsigned short sin_port;     // e.g. htons(3490)
+    struct in_addr sin_addr;     // see struct in_addr, below
+    char sin_zero[8];  // zero this if you want to
+};
+
+struct in_addr {
+    unsigned long s_addr;  // load with inet_aton()
 };
 
 int ReverseHandler(void) {
@@ -174,17 +187,9 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char message[96];
-  const char addr = "169.254.105.216";
-  int port = 4444;
-    
-  struct conn_ctx *ctx = malloc(sizeof(struct conn_ctx));
-  ctx->sockfd = -1;
-  ctx->sockfd_listen = -1;
-  memset(&ctx->target_addr, 0, sizeof(struct sockaddr_in));
-  memset(&ctx->local_addr, 0, sizeof(struct sockaddr_in));
-  ctx->target_addr.sin_family = AF_INET;
-  ctx->target_addr.sin_addr.s_addr = inet_addr(addr);
-  ctx->target_addr.sin_port = htons(port);
+  in_addr.s_addr = inet_aton(169.254.105.216);
+  sockaddr_in.sin_family = AF_INET;
+  sockaddr_in.sin_port = htons(4444);
     
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
@@ -196,18 +201,18 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  ctx->sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-  if (ctx->sockfd == -1) {
+  sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  if (sockfd == -1) {
     printf("socket err \n");
   }
-  int res = bind(ctx->sockfd, (struct sockaddr *)&ctx->target_addr, sizeof(ctx->target_addr));
+  int res = bind(sockfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
   if (res == -1) {
     printf("bind err \n");
-    close(ctx->sockfd);
+    close(sockfd);
   }
     
   do {
-    int res = recvfrom(ctx->sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
+    int res = recvfrom(sockfd, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
@@ -284,7 +289,7 @@ int main(int argc, char **argv) {
     }
   } while(cur_state !=-1);
   
-  close(ctx->sockfd);
+  close(sockfd);
   return 0;
   
 }
