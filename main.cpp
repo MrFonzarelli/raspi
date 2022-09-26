@@ -183,7 +183,7 @@ int ZeroHandler(void) {
     return 11;
 }
 
-void socket_init(void){
+int socket_init(void){
     in_addr.s_addr = inet_aton("169.254.105.216");
     sockaddr_in.sin_family = AF_INET;
     sockaddr_in.sin_port = htons(4444);
@@ -221,10 +221,8 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
     
-  
-    
   do {
-    int res = recvfrom(socket, message, 96, 0, (struct sockaddr *)&target_addr, sizeof(target_addr));
+    int res = recvfrom(socket, message, 96, 0, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
@@ -301,7 +299,7 @@ int main(int argc, char **argv) {
     }
   } while(cur_state !=-1);
   
-  close(sockfd);
+  close(socket);
   return 0;
   
 }
