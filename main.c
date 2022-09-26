@@ -174,13 +174,14 @@ int main(int argc, char **argv)
         default:
             break;
         }
-    printf("State changed to %d", state, "\n");
+    printf("State changed to %d", state);
+    printf("\n");
     if(state == 7) {
         state = 0;
     } else {
         state = state + 1;
     }
-    sleep(10);
+    sleep(1);
   } while(state !=8);
   return 0;
   
