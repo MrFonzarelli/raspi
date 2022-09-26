@@ -17,19 +17,7 @@ int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
 
-typedef enum
-{
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-} eSystemState;
-
-typedef enum
+enum eSystemEvent
 {
     Reverse_Event,
     Neutral_Event,
@@ -39,7 +27,7 @@ typedef enum
     Fourth_Event,
     Fifth_Event,
     Sixth_Event
-} eSystemEvent;
+};
 
 eSystemState ReverseHandler(void)
 {
