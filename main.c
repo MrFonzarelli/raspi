@@ -134,9 +134,9 @@ int main(int argc, char **argv)
   
   c = getchar();
   while(c < 0 || c > 7) {
-    printf("Gears indexed from reverse upwards (Index 0 - 7)");
+    printf("Index out of range! Use index 0 - 7");
     printf("Gear to display: ");
-    c = getchar();
+    c = getint();
   }
      
     switch(c)
