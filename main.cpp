@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
    
-  myaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  myaddr.sin_addr.s_addr = inet_addr("192.168.137.1");
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
   addr_len = sizeof(myaddr);
