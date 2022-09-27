@@ -176,10 +176,12 @@ int ZeroHandler(void) {
 
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr;
+  socklen_t addr_len;
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
    
+  addr_len = sizeof(myaddr);
   myaddr.sin_addr.s_addr = inet_addr("169.254.105.216");
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
@@ -204,7 +206,7 @@ int main(int argc, char **argv) {
   pinMode(pin8, OUTPUT);
     
   do {
-    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, sizeof(myaddr));
+    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, addr_len);
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
