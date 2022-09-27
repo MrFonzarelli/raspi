@@ -203,7 +203,6 @@ int main(int argc, char **argv) {
   int resu = connect(sfd, (struct sockaddr *) &myaddr, sizeof(myaddr));
   if (resu == -1) {
     printf("conn err \n");
-    printf(errno);
     return 0;
   }
     
