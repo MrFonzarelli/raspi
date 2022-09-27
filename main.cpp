@@ -200,11 +200,11 @@ int main(int argc, char **argv) {
       printf("socket err \n");
       return 0;
   }
-  //int res = bind(sfd, (struct sockaddr *) &myaddr, sizeof(myaddr));
-  //if (res == -1) {
-  //  printf("bind err \n");
-  //  return 0;
-  //}
+  int res = connect(sfd, (struct sockaddr *) &myaddr, sizeof(myaddr));
+  if (res == -1) {
+    printf("conn err \n");
+    return 0;
+  }
     
   do {
     int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
