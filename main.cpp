@@ -221,6 +221,7 @@ int main(int argc, char **argv) {
     } else {
         outGauge *s = (outGauge *)buffer;
         des_state = (int)s->gear;
+        printf("Current gear: %d\n", (int)s->gear);
         if (des_state != cur_state) {
             switch(des_state)
                 {
