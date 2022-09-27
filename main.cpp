@@ -176,7 +176,7 @@ int ZeroHandler(void) {
 
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr;
-  socklen_t* addr_len;
+  socklen_t addr_len;
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
@@ -206,7 +206,7 @@ int main(int argc, char **argv) {
   pinMode(pin8, OUTPUT);
     
   do {
-    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, addr_len);
+    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
