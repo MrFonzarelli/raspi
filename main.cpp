@@ -206,7 +206,7 @@ int main(int argc, char **argv) {
   int resu = bind(sfd, (struct sockaddr *) &myaddr, addr_len);
   printf("Finished bind \n");
   if (resu == -1) {
-    printf("conn err \n");
+    printf("bind err \n");
     return 0;
   }
     
