@@ -174,30 +174,24 @@ int ZeroHandler(void) {
 }
 
 int socket_init(void){
-    in_addr.s_addr = inet_aton("169.254.105.216");
-    sockaddr_in.sin_family = AF_INET;
-    sockaddr_in.sin_port = htons(4444);
-    sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-    if (sfd == -1) {
-        printf("socket err \n");
-        return -1;
-    }
-    int res = bind(sfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
-    if (res == -1) {
-        printf("bind err \n");
-        return -1;
-    }
-    return 0;
+    
 }
 
 int main(int argc, char **argv) {
-  struct sockaddr_storage peer_addr;
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
     
-  if (socket_init() == -1){
-      printf("socket err");
+  in_addr.s_addr = inet_aton("169.254.105.216");
+  sockaddr_in.sin_family = AF_INET;
+  sockaddr_in.sin_port = htons(4444);
+  sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  if (sfd == -1) {
+      printf("socket err \n");
+  }
+  int res = bind(sfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+  if (res == -1) {
+      printf("bind err \n");
       return 0;
   }
     
