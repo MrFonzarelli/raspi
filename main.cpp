@@ -209,7 +209,7 @@ int main(int argc, char **argv) {
   }
     
   do {
-    int res = recvfrom(sfd, buffer, sizeof(128), 0, (struct sockaddr *) &clientaddr, (socklen_t*) &addr_len);
+    int res = recvfrom(sfd, buffer, sizeof(buffer), 0, (struct sockaddr *) &clientaddr, (socklen_t*) &addr_len);
     if (res == -1) {
         printf("recv err \n");
         return 0;
