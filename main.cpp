@@ -195,25 +195,25 @@ int main(int argc, char **argv) {
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
   addr_len = sizeof(myaddr);
-  printf("Doing socket");
+  printf("Doing socket \n");
   sfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-  printf("Finished socket");
+  printf("Finished socket \n");
   if (sfd == -1) {
       printf("socket err \n");
       return 0;
   }
-  printf("Doing connect");
+  printf("Doing bind \n");
   int resu = bind(sfd, (struct sockaddr *) &myaddr, addr_len);
-  printf("Finished connect");
+  printf("Finished bind \n");
   if (resu == -1) {
     printf("conn err \n");
     return 0;
   }
     
   do {
-    printf("Doing recvfrom");
+    printf("Doing recvfrom \n");
     int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
-    printf("Finished recvfrom");
+    printf("Finished recvfrom \n");
     if (res == -1) {
         printf("recvfrom err \n");
         return 0;
