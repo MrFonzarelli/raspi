@@ -7,6 +7,7 @@
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <chrono>
 #include <wiringPi.h>
 
 int pin1 = 15;
@@ -208,6 +209,9 @@ int main(int argc, char **argv) {
     return 0;
   }
     
+  double distance_traveled = 0;
+  auto old_time = std::chrono::high_resolution_clock::now();
+    
   do {
     int res = recvfrom(sfd, buffer, sizeof(buffer), 0, (struct sockaddr *) &clientaddr, (socklen_t*) &addr_len);
     if (res == -1) {
@@ -215,13 +219,11 @@ int main(int argc, char **argv) {
         return 0;
     } else {
         outGauge *s = (outGauge *)buffer;
-        des_state = (int)s->gear;
-        char car[5];
-        memcpy(car, s->car, 4);
-        car[4] = 0;
-        printf("Current gear: %d\n", (int)s->gear);
-        printf("Car: %s\n", car);
-        
+        des_state = (int)s->gear;       
+        auto new_time = std::chrono::high_resolution_clock::now();
+        auto time_delta = new_time - old_time;
+        distance_traveled += time_delta.count() * s->speed / 1000;
+        printf("Distance traveled: %lf\n", distance_traveled);
         if (des_state != cur_state) {
             switch(des_state)
                 {
@@ -287,9 +289,9 @@ int main(int argc, char **argv) {
                     }
                     break;
                 }
-        printf("State changed to %d", cur_state);
-        printf("\n");
+        printf("State changed to %d\n", cur_state);
         }
+        old_time = new_time;
     }
   } while(cur_state !=-1);
   
