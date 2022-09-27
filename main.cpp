@@ -212,7 +212,7 @@ int main(int argc, char **argv) {
     
   do {
     printf("Doing recvfrom \n");
-    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
+    int res = read(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
     printf("Finished recvfrom \n");
     if (res == -1) {
         printf("recvfrom err \n");
