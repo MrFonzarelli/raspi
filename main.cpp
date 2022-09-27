@@ -221,9 +221,9 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         des_state = (int)s->gear;       
         auto new_time = std::chrono::high_resolution_clock::now();
-        auto time_delta = new_time - old_time;
+        std::chrono::duration<double> time_delta = new_time - old_time;
         distance_traveled += time_delta.count() * s->speed / 1000;
-        printf("Distance traveled: %lf\n", distance_traveled);
+        printf("Distance traveled: %lf, speed: %f\n", distance_traveled, s->speed);
         if (des_state != cur_state) {
             switch(des_state)
                 {
