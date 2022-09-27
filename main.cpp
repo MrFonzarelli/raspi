@@ -180,17 +180,6 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
-   
-  addr_len = sizeof(myaddr);
-  myaddr.sin_addr.s_addr = inet_addr("169.254.105.216");
-  myaddr.sin_family = AF_INET;
-  myaddr.sin_port = htons(4444);
-  sfd = socket(AF_INET, SOCK_STREAM, 0);
-  if (sfd == -1) {
-      printf("socket err \n");
-      return 0;
-  }
-
     
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
@@ -201,6 +190,21 @@ int main(int argc, char **argv) {
   pinMode(pin6, OUTPUT);
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
+   
+  addr_len = sizeof(myaddr);
+  myaddr.sin_addr.s_addr = inet_addr("169.254.105.216");
+  myaddr.sin_family = AF_INET;
+  myaddr.sin_port = htons(4444);
+  sfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sfd == -1) {
+      printf("socket err \n");
+      return 0;
+  }
+  int res = bind(sfd, (struct sockaddr *) &myaddr, addr_len);
+  if (res == -1) {
+      printf("bind err \n");
+      return 0;
+  }
     
   do {
     int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
