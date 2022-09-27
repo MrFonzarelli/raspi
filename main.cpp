@@ -16,6 +16,7 @@ int pin5 = 5;
 int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
+int sfd;
 
 struct outGauge {
     unsigned time;
@@ -187,24 +188,24 @@ int socket_init(void){
     in_addr.s_addr = inet_aton("169.254.105.216");
     sockaddr_in.sin_family = AF_INET;
     sockaddr_in.sin_port = htons(4444);
-    socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
-    if (socket == -1) {
+    sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+    if (sfd == -1) {
         printf("socket err \n");
         return -1;
     }
-    int res = bind(socket, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+    int res = bind(sfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
     if (res == -1) {
         printf("bind err \n");
-        close(socket);
         return -1;
     }
     return 0
 }
 
 int main(int argc, char **argv) {
+  struct sockaddr_storage peer_addr;
   int des_state = 1;
   int cur_state = 0;
-  char message[96];
+  char buffer[96];
     
   if (socket_init() == -1){
       printf("socket err");
@@ -222,11 +223,11 @@ int main(int argc, char **argv) {
   pinMode(pin8, OUTPUT);
     
   do {
-    int res = recvfrom(socket, message, 96, 0, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
-        outGauge *s = (outGauge *)message;
+        outGauge *s = (outGauge *)res;
         des_state = (int)s->gear;
         if (des_state != cur_state) {
             switch(des_state)
@@ -299,7 +300,6 @@ int main(int argc, char **argv) {
     }
   } while(cur_state !=-1);
   
-  close(socket);
   return 0;
   
 }
