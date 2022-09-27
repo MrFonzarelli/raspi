@@ -173,23 +173,20 @@ int ZeroHandler(void) {
     return 11;
 }
 
-int socket_init(void){
-    
-}
-
 int main(int argc, char **argv) {
+  struct sockaddr_in myaddr;
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
     
-  in_addr.s_addr = inet_aton("169.254.105.216");
-  sockaddr_in.sin_family = AF_INET;
-  sockaddr_in.sin_port = htons(4444);
+  inet_aton("169.254.105.216", &myaddr.sin_addr.s_addr);
+  myaddr.sin_family = AF_INET;
+  myaddr.sin_port = htons(4444);
   sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
   if (sfd == -1) {
       printf("socket err \n");
   }
-  int res = bind(sfd, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+  int res = bind(sfd, (struct sockaddr *) &myaddr, sizeof(myaddr));
   if (res == -1) {
       printf("bind err \n");
       return 0;
@@ -206,7 +203,7 @@ int main(int argc, char **argv) {
   pinMode(pin8, OUTPUT);
     
   do {
-    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &sockaddr_in, sizeof(sockaddr_in));
+    int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, sizeof(myaddr));
     if (res == -1) {
         printf("recvfrom err \n");
     } else {
