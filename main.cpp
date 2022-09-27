@@ -175,11 +175,13 @@ int ZeroHandler(void) {
 }
 
 int main(int argc, char **argv) {
-  struct sockaddr_in myaddr;
-  socklen_t addr_len;
+  struct sockaddr_in myaddr, clientaddr;
+  memset(&myaddr, 0, sizeof(struct sockaddr_in));
+  memset(&clientaddr, 0, sizeof(struct sockaddr_in));
+  socklen_t addr_len = sizeof(struct sockaddr_in);
   int des_state = 1;
   int cur_state = 0;
-  char buffer[96];
+  char buffer[128];
     
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
@@ -191,7 +193,6 @@ int main(int argc, char **argv) {
   pinMode(pin7, OUTPUT);
   pinMode(pin8, OUTPUT);
    
-  myaddr.sin_addr.s_addr = inet_addr("192.168.137.1");
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
   addr_len = sizeof(myaddr);
@@ -203,7 +204,7 @@ int main(int argc, char **argv) {
       return 0;
   }
   printf("Doing connect \n");
-  int resu = connect(sfd, (struct sockaddr *) &myaddr, addr_len);
+  int resu = bind(sfd, (struct sockaddr *) &myaddr, sizeof(struct sockaddr));
   printf("Finished connect \n");
   if (resu == -1) {
     printf("connect err \n");
@@ -212,7 +213,7 @@ int main(int argc, char **argv) {
     
   do {
     printf("Doing recv \n");
-    int res = recvfrom(sfd, buffer, 128, 0, (struct sockaddr *) &myaddr, (socklen_t*) &addr_len);
+    int res = recvfrom(sfd, buffer, sizeof(128), 0, (struct sockaddr *) &clientaddr, (socklen_t*) &addr_len);
     printf("Finished recvfrom \n");
     if (res == -1) {
         printf("recv err \n");
