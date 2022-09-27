@@ -227,7 +227,7 @@ int main(int argc, char **argv) {
             speed_to_count = 0;
         }
         distance_traveled += time_delta.count() * speed_to_count / 1000;
-        printf("Distance traveled: %06.1lf km", distance_traveled);
+        printf("Distance traveled: %06.1lf km\n", distance_traveled);
         if (des_state != cur_state) {
             switch(des_state)
                 {
