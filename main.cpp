@@ -203,6 +203,7 @@ int main(int argc, char **argv) {
   int resu = connect(sfd, (struct sockaddr *) &myaddr, sizeof(myaddr));
   if (resu == -1) {
     printf("conn err \n");
+    printf(errno);
     return 0;
   }
     
@@ -210,7 +211,6 @@ int main(int argc, char **argv) {
     int res = recvfrom(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
     if (res == -1) {
         printf("recvfrom err \n");
-        printf(errno);
         return 0;
     } else {
         outGauge *s = (outGauge *)res;
