@@ -203,10 +203,10 @@ int main(int argc, char **argv) {
       return 0;
   }
   printf("Doing connect \n");
-  int resu = bind(sfd, (struct sockaddr *) &myaddr, addr_len);
+  int resu = connect(sfd, (struct sockaddr *) &myaddr, addr_len);
   printf("Finished connect \n");
   if (resu == -1) {
-    printf("bind connect \n");
+    printf("connect err \n");
     return 0;
   }
     
