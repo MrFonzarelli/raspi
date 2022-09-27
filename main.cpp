@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
   myaddr.sin_addr.s_addr = inet_addr("169.254.105.216");
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
-  sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
+  sfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sfd == -1) {
       printf("socket err \n");
       return 0;
