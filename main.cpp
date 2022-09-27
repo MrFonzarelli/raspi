@@ -211,11 +211,11 @@ int main(int argc, char **argv) {
   }
     
   do {
-    printf("Doing recvfrom \n");
-    int res = read(sfd, buffer, 96, 0, (struct sockaddr *) &myaddr, (socklen_t*)&addr_len);
+    printf("Doing recv \n");
+    int res = recv(sfd, buffer, 96, 0);
     printf("Finished recvfrom \n");
     if (res == -1) {
-        printf("recvfrom err \n");
+        printf("recv err \n");
         return 0;
     } else {
         outGauge *s = (outGauge *)buffer;
