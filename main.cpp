@@ -182,6 +182,7 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char buffer[128];
+  memset(buffer, 0, sizeof(buffer));
     
   wiringPiSetup();
   pinMode(pin1, OUTPUT);
