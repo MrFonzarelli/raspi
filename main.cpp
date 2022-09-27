@@ -215,7 +215,12 @@ int main(int argc, char **argv) {
     } else {
         outGauge *s = (outGauge *)buffer;
         des_state = (int)s->gear;
+        char car[5];
+        memcpy(car, s->car, 4);
+        car[4] = 0;
         printf("Current gear: %d\n", (int)s->gear);
+        printf("Car: %s\n", car);
+        
         if (des_state != cur_state) {
             switch(des_state)
                 {
