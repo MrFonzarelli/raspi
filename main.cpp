@@ -202,11 +202,11 @@ int main(int argc, char **argv) {
       printf("socket err \n");
       return 0;
   }
-  printf("Doing bind \n");
-  int resu = bind(sfd, (struct sockaddr *) &myaddr, addr_len);
-  printf("Finished bind \n");
+  printf("Doing connect \n");
+  int resu = connect(sfd, (struct sockaddr *) &myaddr, addr_len);
+  printf("Finished connect \n");
   if (resu == -1) {
-    printf("bind err \n");
+    printf("bind connect \n");
     return 0;
   }
     
