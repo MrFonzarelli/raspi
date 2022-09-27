@@ -176,7 +176,7 @@ int ZeroHandler(void) {
 
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr;
-  socklen_t addr_len;
+  socklen_t* addr_len;
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
