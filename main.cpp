@@ -200,7 +200,7 @@ int main(int argc, char **argv) {
       printf("socket err \n");
       return 0;
   }
-  int resu = connect(sfd, (struct sockaddr *) &myaddr, sizeof(myaddr));
+  int resu = connect(sfd, (struct sockaddr *) &myaddr, addr_len);
   if (resu == -1) {
     printf("conn err \n");
     return 0;
