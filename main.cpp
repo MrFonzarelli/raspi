@@ -221,7 +221,7 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         des_state = (int)s->gear;       
         auto new_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_delta = new_time - old_time
+        std::chrono::duration<double> time_delta = new_time - old_time;
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
