@@ -179,8 +179,8 @@ int main(int argc, char **argv) {
   int des_state = 1;
   int cur_state = 0;
   char buffer[96];
-    
-  inet_aton("169.254.105.216", &myaddr.sin_addr.s_addr);
+   
+  myaddr.sin_addr.s_addr = inet_addr("169.254.105.216");
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
   sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_UDP);
