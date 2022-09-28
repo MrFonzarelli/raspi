@@ -259,6 +259,17 @@ int singleDigitOutput(int state){
     return cur_state;
 }
 
+int tripleDigitOutput(int num) {
+    float dig1;
+    float dig2;
+    float dig3;
+    dig1 = num / 100;
+    dig2 = (num - (int)dig1 * 100) / 10;
+    dig3 = (num - ((int)dig1 * 100) - ((int)dig2 * 10));
+    cur_speed = des_speed;
+    printf("Speed: %d hundreds %d tens %d units", (int)dig1, (int)dig2, (int)dig3);
+}
+
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr, clientaddr;
   memset(&myaddr, 0, sizeof(struct sockaddr_in));
@@ -301,7 +312,8 @@ int main(int argc, char **argv) {
         return 0;
     } else {
         outGauge *s = (outGauge *)buffer;
-        des_state = (int)s->gear;       
+        des_state = (int)s->gear;
+        des_speed = (int)s->speed;
         auto new_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_delta = new_time - old_time;
         double speed_to_count = s->speed;
@@ -313,9 +325,9 @@ int main(int argc, char **argv) {
         if (des_state != cur_state) {
             singleDigitOutput(des_state);
         }
-        //if (des_speed != cur_speed) {
-        //    tripleDigitOutput(des_speed);    
-        //}
+        if (des_speed != cur_speed) {
+            tripleDigitOutput(des_speed);    
+        }
         old_time = new_time;
     }
   } while(cur_state !=-1);
