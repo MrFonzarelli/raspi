@@ -260,14 +260,14 @@ int singleDigitOutput(int state){
 }
 
 int tripleDigitOutput(int num) {
-    float dig1;
-    float dig2;
-    float dig3;
-    dig1 = num / 100;
-    dig2 = (num - (int)dig1 * 100) / 10;
-    dig3 = (num - ((int)dig1 * 100) - ((int)dig2 * 10));
+    int dig1;
+    int dig2;
+    int dig3;
+    dig1 = num / 100 % 10;
+    dig2 = num / 10 % 10;
+    dig3 = num % 10;
     cur_speed = des_speed;
-    printf("Speed: %d hundreds %d tens %d units", (int)dig1, (int)dig2, (int)dig3);
+    printf("Speed: %d hundreds %d tens %d units\n", (int)dig1, (int)dig2, (int)dig3);
     return cur_speed;
 }
 
