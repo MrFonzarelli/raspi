@@ -268,6 +268,7 @@ int tripleDigitOutput(int num) {
     dig3 = (num - ((int)dig1 * 100) - ((int)dig2 * 10));
     cur_speed = des_speed;
     printf("Speed: %d hundreds %d tens %d units", (int)dig1, (int)dig2, (int)dig3);
+    return cur_speed;
 }
 
 int main(int argc, char **argv) {
