@@ -18,6 +18,22 @@ int pin5 = 5;
 int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
+int pin9;
+int pin10;
+int pin11;
+int pin12;
+int pin13;
+int pin14;
+int pin15;
+int pin16;
+int pin17;
+int pin18;
+int pin19;
+int pin20;
+int des_state = 1;
+int cur_state = 0;
+int des_speed = 0;
+int cur_speed;
 int sfd;
 
 struct outGauge {
@@ -175,13 +191,79 @@ int ZeroHandler(void) {
     return 11;
 }
 
+int singleDigitOutput(int state){
+    switch(state)
+        {
+        case 0:
+        {
+            cur_state = ReverseHandler();
+        }
+        break;
+        case 1:
+        {
+            cur_state = NeutralHandler();
+        }
+        break;
+        case 2:
+        {
+            cur_state = FirstHandler();
+        }
+        break;
+        case 3:
+        {
+            cur_state = SecondHandler();
+        }
+        break;
+        case 4:
+        {
+            cur_state = ThirdHandler();
+        }
+        break;
+        case 5:
+        {
+            cur_state = FourthHandler();
+        }
+        break;
+        case 6:
+        {
+            cur_state = FifthHandler();
+        }
+        break;
+        case 7:
+        {
+            cur_state = SixthHandler();
+        }
+        break;
+        case 8:
+        {
+            cur_state = SeventhHandler();
+        }
+        break;
+        case 9:
+        {
+            cur_state = EighthHandler();
+        }
+        break;
+        case 10:
+        {
+            cur_state = NinethHandler();
+        }
+        break;
+        default:
+        {
+            ZeroHandler();
+            cur_state = des_state;
+        }
+        break;
+    }
+    return cur_state;
+}
+
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr, clientaddr;
   memset(&myaddr, 0, sizeof(struct sockaddr_in));
   memset(&clientaddr, 0, sizeof(struct sockaddr_in));
   socklen_t addr_len = sizeof(struct sockaddr_in);
-  int des_state = 1;
-  int cur_state = 0;
   char buffer[128];
   memset(buffer, 0, sizeof(buffer));
     
@@ -228,73 +310,13 @@ int main(int argc, char **argv) {
         }
         distance_traveled += time_delta.count() * speed_to_count / 1000;
         //printf("Distance traveled: %06.1lf km\n", distance_traveled);
+        des_speed = 
         if (des_state != cur_state) {
-            switch(des_state)
-                {
-                case 0:
-                {
-                    cur_state = ReverseHandler();
-                }
-                break;
-                case 1:
-                {
-                    cur_state = NeutralHandler();
-                }
-                break;
-                case 2:
-                {
-                    cur_state = FirstHandler();
-                }
-                break;
-                case 3:
-                {
-                    cur_state = SecondHandler();
-                }
-                break;
-                case 4:
-                {
-                    cur_state = ThirdHandler();
-                }
-                break;
-                case 5:
-                {
-                    cur_state = FourthHandler();
-                }
-                break;
-                case 6:
-                {
-                    cur_state = FifthHandler();
-                }
-                break;
-                case 7:
-                {
-                    cur_state = SixthHandler();
-                }
-                break;
-                case 8:
-                {
-                    cur_state = SeventhHandler();
-                }
-                break;
-                case 9:
-                {
-                    cur_state = EighthHandler();
-                }
-                break;
-                case 10:
-                {
-                    cur_state = NinethHandler();
-                }
-                break;
-                default:
-                    {
-                        ZeroHandler();
-                        cur_state = des_state;
-                    }
-                    break;
-                }
-        printf("State changed to %d\n", cur_state);
+            singleDigitOutput(des_state);
         }
+        //if (des_speed != cur_speed) {
+        //    tripleDigitOutput(des_speed);    
+        //}
         old_time = new_time;
     }
   } while(cur_state !=-1);
