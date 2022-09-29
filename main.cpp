@@ -368,27 +368,6 @@ int singleDigitOutput(int state){
     return cur_state;
 }
 
-int tripleDigitOutput(int num) {
-    int dig1;
-    int dig2;
-    int dig3;
-    dig1 = num / 100 % 10;
-    dig2 = num / 10 % 10;
-    dig3 = num % 10;
-    //digitalWrite(pindig3, LOW);
-    //digitSelect(dig1);
-    //digitalWrite(pindig1, HIGH);
-    //digitalWrite(pindig1, LOW);
-    //digitSelect(dig2);
-    //digitalWrite(pindig2, HIGH);
-    //digitalWrite(pindig2, LOW);
-    digitSelect(dig3);
-    //digitalWrite(pindig3, HIGH);
-    cur_speed = des_speed;
-    //printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
-    return cur_speed;
-}
-
 int digitSelect(int num) {
     switch(num)
         {
@@ -449,6 +428,27 @@ int digitSelect(int num) {
         break;
     }
     return num;
+}
+
+int tripleDigitOutput(int num) {
+    int dig1;
+    int dig2;
+    int dig3;
+    dig1 = num / 100 % 10;
+    dig2 = num / 10 % 10;
+    dig3 = num % 10;
+    //digitalWrite(pindig3, LOW);
+    //digitSelect(dig1);
+    //digitalWrite(pindig1, HIGH);
+    //digitalWrite(pindig1, LOW);
+    //digitSelect(dig2);
+    //digitalWrite(pindig2, HIGH);
+    //digitalWrite(pindig2, LOW);
+    digitSelect(dig3);
+    //digitalWrite(pindig3, HIGH);
+    cur_speed = des_speed;
+    //printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
+    return cur_speed;
 }
 
 int main(int argc, char **argv) {
