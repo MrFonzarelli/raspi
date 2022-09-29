@@ -18,21 +18,20 @@ int pin5 = 5;
 int pin6 = 6;
 int pin7 = 10;
 int pin8 = 11;
-int pin9 = 31;
-int pin10 = 26;
-int pin11 = 27;
-int pin12 = 28;
-int pin13 = 29;
-int pin14 = 25;
-int pin15 = 24;
-int pin16 = 23;
-int pin17 = 22;
+int pin9 = 31;  //A
+int pin10 = 26; //B
+int pin11 = 27; //C
+int pin12 = 28; //D
+int pin13 = 29; //E
+int pin14 = 25; //F
+int pin15 = 24; //G
+int pin16 = 23; //DP
 int pindig1 = 14;
 int pindig2 = 13;
 int pindig3 = 12;
 int des_state = 1;
 int cur_state = 0;
-int des_speed = 0;
+int des_speed;
 int cur_speed;
 int sfd;
 
@@ -192,112 +191,112 @@ int ZeroHandler(void) {
 }
 
 int FirstHandlerTri(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, LOW);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 1;
 }
 
 int SecondHandlerTri(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 2;
 }
 
 int ThirdHandlerTri(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 3;
 }
 
 int FourthHandlerTri(void) { 
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, LOW);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 4;
 }
 
 int FifthHandlerTri(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 5;
 }
 
 int SixthHandlerTri(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 6;
 }
 
 int SeventhHandlerTri(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 7;
 }
 
 int EighthHandlerTri(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 8;
 }
 
 int NinethHandlerTri(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 9;
 }
 
 int ZeroHandlerTri(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, HIGH);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
     return 0;
 }
 
@@ -376,15 +375,15 @@ int tripleDigitOutput(int num) {
     dig1 = num / 100 % 10;
     dig2 = num / 10 % 10;
     dig3 = num % 10;
-    digitalWrite(pindig3, LOW);
-    digitSelect(dig1);
-    digitalWrite(pindig1, HIGH);
-    digitalWrite(pindig1, LOW);
-    digitSelect(dig2);
-    digitalWrite(pindig2, HIGH);
-    digitalWrite(pindig2, LOW);
+    //digitalWrite(pindig3, LOW);
+    //digitSelect(dig1);
+    //digitalWrite(pindig1, HIGH);
+    //digitalWrite(pindig1, LOW);
+    //digitSelect(dig2);
+    //digitalWrite(pindig2, HIGH);
+    //digitalWrite(pindig2, LOW);
     digitSelect(dig3);
-    digitalWrite(pindig3, HIGH);
+    //digitalWrite(pindig3, HIGH);
     cur_speed = des_speed;
     //printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
     return cur_speed;
@@ -477,9 +476,9 @@ int main(int argc, char **argv) {
   pinMode(pin15, OUTPUT);
   pinMode(pin16, OUTPUT);
   pinMode(pin17, OUTPUT);
-  pinMode(pindig1, OUTPUT);
-  pinMode(pindig2, OUTPUT);
-  pinMode(pindig3, OUTPUT);
+  pinMode(pindig1, INPUT);
+  pinMode(pindig2, INPUT);
+  pinMode(pindig3, INPUT);
    
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
