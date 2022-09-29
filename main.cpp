@@ -10,14 +10,14 @@
 #include <chrono>
 #include <wiringPi.h>
 
-int pin1 = 15;
-int pin2 = 16;
-int pin3 = 1;
-int pin4 = 4;
-int pin5 = 5;
-int pin6 = 6;
-int pin7 = 10;
-int pin8 = 11;
+int pin1 = 15;  //A
+int pin2 = 16;  //B
+int pin3 = 1;   //C
+int pin4 = 4;   //D
+int pin5 = 5;   //E
+int pin6 = 6;   //F
+int pin7 = 10;  //G
+int pin8 = 11;  //DP
 int pin9 = 31;  //A
 int pin10 = 26; //B
 int pin11 = 27; //C
@@ -59,20 +59,20 @@ struct outGauge {
 };
 
 int ReverseHandler(void) {
-    digitalWrite (pin1, HIGH);
+    digitalWrite (pin1, LOW);
     digitalWrite (pin2, LOW);
     digitalWrite (pin3, LOW);
     digitalWrite (pin4, LOW);
     digitalWrite (pin5, HIGH);
     digitalWrite (pin6, LOW);
-    digitalWrite (pin7, LOW);
+    digitalWrite (pin7, HIGH);
     return 0;
 }
 
 int NeutralHandler(void) {
-    digitalWrite (pin1, HIGH);
+    digitalWrite (pin1, LOW);
     digitalWrite (pin2, LOW);
-    digitalWrite (pin3, LOW);
+    digitalWrite (pin3, HIGH);
     digitalWrite (pin4, LOW);
     digitalWrite (pin5, HIGH);
     digitalWrite (pin6, LOW);
@@ -82,53 +82,53 @@ int NeutralHandler(void) {
 
 int FirstHandler(void) {
     digitalWrite (pin1, LOW);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, LOW);
-    digitalWrite (pin4, HIGH);
+    digitalWrite (pin2, HIGH);
+    digitalWrite (pin3, HIGH);
+    digitalWrite (pin4, LOW);
     digitalWrite (pin5, LOW);
     digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin7, LOW);
     return 2;
 }
 
 int SecondHandler(void) {
     digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
+    digitalWrite (pin2, HIGH);
+    digitalWrite (pin3, LOW);
     digitalWrite (pin4, HIGH);
     digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, LOW);
+    digitalWrite (pin6, LOW);
+    digitalWrite (pin7, HIGH);
     return 3;
 }
 
 int ThirdHandler(void) {
     digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, LOW);
+    digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
     digitalWrite (pin4, HIGH);
     digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
+    digitalWrite (pin6, LOW);
     digitalWrite (pin7, HIGH);
     return 4;
 }
 
 int FourthHandler(void) { 
-    digitalWrite (pin1, HIGH);
+    digitalWrite (pin1, LOW);
     digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, LOW);
-    digitalWrite (pin4, HIGH);
+    digitalWrite (pin3, HIGH);
+    digitalWrite (pin4, LOW);
     digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
+    digitalWrite (pin6, HIGH);
     digitalWrite (pin7, HIGH);
     return 5;
 }
 
 int FifthHandler(void) {
     digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
+    digitalWrite (pin2, LOW);
     digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
+    digitalWrite (pin4, HIGH);
     digitalWrite (pin5, LOW);
     digitalWrite (pin6, HIGH);
     digitalWrite (pin7, HIGH);
@@ -137,9 +137,9 @@ int FifthHandler(void) {
 
 int SixthHandler(void) {
     digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
+    digitalWrite (pin2, LOW);
     digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
+    digitalWrite (pin4, HIGH);
     digitalWrite (pin5, HIGH);
     digitalWrite (pin6, HIGH);
     digitalWrite (pin7, HIGH);
@@ -147,13 +147,13 @@ int SixthHandler(void) {
 }
 
 int SeventhHandler(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, LOW);
+    digitalWrite (pin1, HIGH);
+    digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
+    digitalWrite (pin4, LOW);
     digitalWrite (pin5, LOW);
     digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin7, LOW);
     return 8;
 }
 
@@ -180,13 +180,13 @@ int NinethHandler(void) {
 }
 
 int ZeroHandler(void) {
-    digitalWrite (pin1, LOW);
+    digitalWrite (pin1, HIGH);
     digitalWrite (pin2, HIGH);
     digitalWrite (pin3, HIGH);
     digitalWrite (pin4, HIGH);
     digitalWrite (pin5, HIGH);
     digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (pin7, LOW);
     return 11;
 }
 
