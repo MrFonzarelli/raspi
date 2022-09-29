@@ -10,13 +10,13 @@
 #include <chrono>
 #include <wiringPi.h>
 
-int pin1 = 15;  //A
-int pin2 = 16;  //B
+int pin1 = 6;  //A
+int pin2 = 10;  //B
 int pin3 = 1;   //C
-int pin4 = 4;   //D
-int pin5 = 5;   //E
-int pin6 = 6;   //F
-int pin7 = 10;  //G
+int pin4 = 16;   //D
+int pin5 = 15;   //E
+int pin6 = 5;   //F
+int pin7 = 4;  //G
 int pin8 = 11;  //DP
 int pin9 = 31;  //A
 int pin10 = 26; //B
@@ -514,11 +514,11 @@ int main(int argc, char **argv) {
         }
         distance_traveled += time_delta.count() * speed_to_count / 1000;
         //printf("Distance traveled: %06.1lf km\n", distance_traveled);
-        //if (des_state != cur_state) {
-            //singleDigitOutput(des_state);
-        //}
+        if (des_state != cur_state) {
+            singleDigitOutput(des_state);
+        }
         //if (des_speed != cur_speed) {
-            tripleDigitOutput(des_speed);    
+            //tripleDigitOutput(des_speed);    
         //}
         old_time = new_time;
     }
