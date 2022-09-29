@@ -389,7 +389,7 @@ int tripleDigitOutput(int num) {
     return cur_speed;
 }
 
-void digitSelect(int num) {
+int digitSelect(int num) {
     switch(num)
         {
         case 0:
