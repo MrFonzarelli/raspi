@@ -446,6 +446,7 @@ void digitSelect(int num) {
         {
             num = NinethHandlerTri();
         }
+        break;
     }
     return num;
 }
