@@ -390,7 +390,7 @@ int tripleDigitOutput(int num) {
 }
 
 void digitSelect(int num) {
-    switch(num) {
+    switch(num)
         {
         case 0:
         {
