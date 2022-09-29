@@ -476,7 +476,6 @@ int main(int argc, char **argv) {
   pinMode(pin14, OUTPUT);
   pinMode(pin15, OUTPUT);
   pinMode(pin16, OUTPUT);
-  pinMode(pin17, OUTPUT);
   pinMode(pindig1, INPUT);
   pinMode(pindig2, INPUT);
   pinMode(pindig3, INPUT);
