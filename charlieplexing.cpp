@@ -9,8 +9,8 @@
 
 int state;
 int pin1 = 1;
-int pin2 = 16;
-int pin3 = 15;
+int pin2 = 28;
+int pin3 = 29;
 int pin4 = 4;
 int pin5 = 5;
 int pin6 = 6;
