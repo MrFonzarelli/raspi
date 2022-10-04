@@ -11,8 +11,14 @@ int state;
 int pin1 = 1;
 int pin2 = 16;
 int pin3 = 15;
+int pin4 = 4;
+int pin5 = 5;
+int pin6 = 6;
+int pin7 = 10;
+int pin8 = 11;
+int pin9 = 31;
 
-int ledSelect(int state) {
+int ledSelect1(int state) {
     switch(state)
         {
         case 0:
@@ -33,74 +39,74 @@ int ledSelect(int state) {
             digitalWrite (pin3, LOW);
         }
         break;
-        case 2:
-        {
-            pinMode(pin1, OUTPUT);
-            pinMode(pin2, INPUT);
-            pinMode(pin3, OUTPUT);
-            digitalWrite (pin1, LOW);
-            digitalWrite (pin3, HIGH);
-        }
-        break;
-        case 3:
-        {
-            pinMode(pin1, OUTPUT);
-            pinMode(pin2, INPUT);
-            pinMode(pin3, OUTPUT);
-            digitalWrite (pin1, HIGH);
-            digitalWrite (pin3, LOW);
-        }
-        break;
-        case 4:
-        {
-            pinMode(pin1, OUTPUT);
-            pinMode(pin2, OUTPUT);
-            pinMode(pin3, INPUT);
-            digitalWrite (pin1, LOW);
-            digitalWrite (pin2, HIGH);
-        }
-        break;
-        case 5:
-        {
-            pinMode(pin1, OUTPUT);
-            pinMode(pin2, OUTPUT);
-            pinMode(pin3, INPUT);
-            digitalWrite (pin1, HIGH);
-            digitalWrite (pin2, LOW);
-        }
-        break;
+    }
+    return state;
+}
+
+int ledSelect2(int state) {
+    switch(state)
+    {
+    case 0:
+    {
+        pinMode(pin1, OUTPUT);
+        pinMode(pin2, INPUT);
+        pinMode(pin3, OUTPUT);
+        digitalWrite (pin1, LOW);
+        digitalWrite (pin3, HIGH);
+    }
+    break;
+    case 1:
+    {
+        pinMode(pin1, OUTPUT);
+        pinMode(pin2, INPUT);
+        pinMode(pin3, OUTPUT);
+        digitalWrite (pin1, HIGH);
+        digitalWrite (pin3, LOW);
+    }
+    break;
+    }
+    return state;
+}
+
+int ledSelect3(int state) {
+    switch(state)
+    {
+    case 0:
+    {
+        pinMode(pin1, OUTPUT);
+        pinMode(pin2, OUTPUT);
+        pinMode(pin3, INPUT);
+        digitalWrite (pin1, LOW);
+        digitalWrite (pin2, HIGH);
+    }
+    break;
+    case 1:
+    {
+        pinMode(pin1, OUTPUT);
+        pinMode(pin2, OUTPUT);
+        pinMode(pin3, INPUT);
+        digitalWrite (pin1, HIGH);
+        digitalWrite (pin2, LOW);
+    }
+    break;
     }
     return state;
 }
 
 int main(int argc, char **argv) {
-  int input;  
+  int input;
+  state = 0
   wiringPiSetup();
-  using namespace std;
-  cout << "(1)Red" << endl;
-  cout << "(2)Green" << endl;
-  cout << "Select led color:";
-  cin >> input;
-  if (input == 2) {
-    state = 0;
+  pinMode(pin4, INPUT);
+  pinMode(pin5, INPUT);
+  pinMode(pin6, INPUT);
+  pinMode(pin7, INPUT);
+  pinMode(pin8, INPUT);
+  pinMode(pin9, INPUT);
     do {
-        ledSelect(state);
-        if (state == 4) {
-            state = 0;
-        } else {
-            state = state + 2;
-        }
-    } while (state < 6);
-  } else {
-    state = 1;
-    do {
-        ledSelect(state);
-        if (state == 5) {
-            state = 1;
-        } else {
-            state = state + 2;
-        }
-    } while (state < 6);
-  }
+        ledSelect1(digitalRead(pin4));
+        ledSelect2(digitalRead(pin6));
+        ledSelect3(digitalRead(pin8));
+    } while (state != -5);
   return 0;
 }
