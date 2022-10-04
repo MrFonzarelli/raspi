@@ -76,14 +76,14 @@ int ledSelect(int state) {
 int main(int argc, char **argv) {
   char input;  
   wiringPiSetup();
-  
+  using namespace std;
   do {
-  std::cout << "Red" << std::endl;
-  std::cout << "Green" << std::endl;
-  std::cout << "Select led color:";
-  std::cin << input;
+  cout << "Red" << endl;
+  cout << "Green" << endl;
+  cout << "Select led color:";
+  cin << input;
   } while (input != "red" or input != "green");
-  if (input == "Green") {
+  if (input == "green") {
     state = 0;
     do {
         ledSelect(state);
