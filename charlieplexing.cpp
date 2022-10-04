@@ -78,7 +78,7 @@ int ledSelect(int state) {
 
 int main(int argc, char **argv) {
   wiringPiSetup();
-  state = 0;
+  state = 1;
   do {
     ledSelect(state);
     if (state == 5) {
