@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
   cout << "Red" << endl;
   cout << "Green" << endl;
   cout << "Select led color:";
-  cin << input;
+  cin >> input;
   } while (input != 1 or input != 2);
   if (input == 2) {
     state = 0;
