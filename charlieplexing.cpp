@@ -86,6 +86,6 @@ int main(int argc, char **argv) {
     } else {
       state = state + 1;
     }
-  } while (state < 6);
+  } while (state < -1);
   return 0;
 }
