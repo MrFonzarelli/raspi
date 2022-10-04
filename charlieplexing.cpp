@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
   do {
     ledSelect(state);
     if (state == 5) {
-      state = 0;
+      state = 1;
     } else {
       state = state + 2;
     }
