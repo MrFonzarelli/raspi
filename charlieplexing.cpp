@@ -94,8 +94,7 @@ int ledSelect3(int state) {
 }
 
 int main(int argc, char **argv) {
-  int input;
-  state = 0
+  state = 0;
   wiringPiSetup();
   pinMode(pin4, INPUT);
   pinMode(pin5, INPUT);
