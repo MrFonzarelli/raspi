@@ -77,12 +77,10 @@ int main(int argc, char **argv) {
   int input;  
   wiringPiSetup();
   using namespace std;
-  do {
-  cout << "Red" << endl;
-  cout << "Green" << endl;
+  cout << "(1)Red" << endl;
+  cout << "(2)Green" << endl;
   cout << "Select led color:";
   cin >> input;
-  } while ((int)input != 1 or (int)input != 2);
   if (input == 2) {
     state = 0;
     do {
