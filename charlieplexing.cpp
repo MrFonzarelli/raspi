@@ -77,15 +77,33 @@ int ledSelect(int state) {
 }
 
 int main(int argc, char **argv) {
+  int input;  
   wiringPiSetup();
-  state = 1;
+  state = 6;
   do {
-    ledSelect(state);
-    if (state == 5) {
-      state = 1;
-    } else {
-      state = state + 2;
-    }
-  } while (state < 6);
+  cout << "(1) Red" << endl;
+  cout << "(2) Green" << endl;
+  cout << "Select led color:" << endl;
+  cin << input;
+  } while (input != 1 or input !=2);
+  if (input == 2) {
+    do {
+        ledSelect(state);
+        if (state == 4) {
+            state = 0;
+        } else {
+            state = state + 2;
+        }
+    } while (state < 6);
+  } else {
+    do {
+        ledSelect(state);
+        if (state == 5) {
+            state = 1;
+        } else {
+            state = state + 2;
+        }
+    } while (state < 6);
+  }
   return 0;
 }
