@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/types.h> 
 #include <wiringPi.h>
-#include <iostream.h>
+#include <iostream>
 
 int state;
 int pin1 = 1;
@@ -78,10 +78,10 @@ int main(int argc, char **argv) {
   wiringPiSetup();
   state = 6;
   do {
-  cout << "(1) Red" << endl;
-  cout << "(2) Green" << endl;
-  cout << "Select led color:" << endl;
-  cin << input;
+  std::cout << "(1) Red" << std::endl;
+  std::cout << "(2) Green" << std::endl;
+  std::cout << "Select led color:";
+  std::cin << input;
   } while (input != 1 or input !=2);
   if (input == 2) {
     do {
