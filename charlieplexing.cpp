@@ -11,9 +11,9 @@
 #include <wiringPi.h>
 
 int state;
-int pin1;
-int pin2;
-int pin3;
+int pin1 = 1;
+int pin2 = 16;
+int pin3 = 15;
 
 int ledSelect(int state) {
     switch(state)
