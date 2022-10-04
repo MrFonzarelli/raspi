@@ -81,10 +81,10 @@ int main(int argc, char **argv) {
   state = 0;
   do {
     ledSelect(state);
-    if (state == 5) {
+    if (state == 4) {
       state = 0;
     } else {
-      state = state + 1;
+      state = state + 2;
     }
   } while (state < 6);
   return 0;
