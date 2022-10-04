@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
   std::cout << "Select led color:";
   std::cin << input;
   } while (input != "red" or input != "green");
-  if (input == 2) {
+  if (input == "Green") {
     state = 0;
     do {
         ledSelect(state);
