@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/types.h> 
 #include <wiringPi.h>
-#include <iostream>
+#include <iostream.h>
 
 int state;
 int pin1 = 1;
