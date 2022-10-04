@@ -68,8 +68,8 @@ int ledSelect(int state) {
             pinMode(pin1, OUTPUT);
             pinMode(pin2, OUTPUT);
             pinMode(pin3, INPUT);
-            digitalWrite (pin1, LOW);
-            digitalWrite (pin2, HIGH);
+            digitalWrite (pin1, HIGH);
+            digitalWrite (pin2, LOW);
         }
         break;
     }
