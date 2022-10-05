@@ -192,30 +192,30 @@ int ZeroHandler(void) {
 
 int FirstHandlerTri(void) {
     digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
     digitalWrite (pin13, LOW);
     digitalWrite (pin14, LOW);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (pin15, LOW);
     return 1;
 }
 
 int SecondHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
+    digitalWrite (pin9, HIGH);
+    digitalWrite (pin10, HIGH);
     digitalWrite (pin11, LOW);
     digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
+    digitalWrite (pin13, HIGH);
     digitalWrite (pin14, LOW);
     digitalWrite (pin15, HIGH);
     return 2;
 }
 
 int ThirdHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
+    digitalWrite (pin9, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
     digitalWrite (pin12, HIGH);
     digitalWrite (pin13, LOW);
     digitalWrite (pin14, LOW);
@@ -225,78 +225,78 @@ int ThirdHandlerTri(void) {
 
 int FourthHandlerTri(void) { 
     digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
     digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
+    digitalWrite (pin14, HIGH);
     digitalWrite (pin15, HIGH);
     return 4;
 }
 
 int FifthHandlerTri(void) {
-    digitalWrite (pin9, LOW);
+    digitalWrite (pin9, HIGH);
     digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
+    digitalWrite (pin11, HIGH);
     digitalWrite (pin12, HIGH);
     digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
+    digitalWrite (pin14, HIGH);
     digitalWrite (pin15, HIGH);
     return 5;
 }
 
 int SixthHandlerTri(void) {
-    digitalWrite (pin9, LOW);
+    digitalWrite (pin9, HIGH);
     digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
+    digitalWrite (pin11, HIGH);
     digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
     digitalWrite (pin15, HIGH);
     return 6;
 }
 
 int SeventhHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, HIGH);
+    digitalWrite (pin9, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
     digitalWrite (pin13, LOW);
     digitalWrite (pin14, LOW);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (pin15, LOW);
     return 7;
 }
 
 int EighthHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
+    digitalWrite (pin9, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
     digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
     digitalWrite (pin15, HIGH);
     return 8;
 }
 
 int NinethHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
+    digitalWrite (pin9, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
     digitalWrite (pin12, HIGH);
     digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
+    digitalWrite (pin14, HIGH);
     digitalWrite (pin15, HIGH);
     return 9;
 }
 
 int ZeroHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
+    digitalWrite (pin9, HIGH);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
     digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, LOW);
     return 0;
 }
 
