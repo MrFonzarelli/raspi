@@ -26,9 +26,9 @@ int pin13 = 29; //E
 int pin14 = 25; //F
 int pin15 = 24; //G
 int pin16 = 23; //DP
-int pindig1 = 14;
-int pindig2 = 13;
-int pindig3 = 12;
+int pindig1 = 3;
+int pindig2 = 2;
+int pindig3 = 0;
 int des_state = 1;
 int cur_state = 0;
 int des_speed;
