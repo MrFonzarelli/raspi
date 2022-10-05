@@ -440,14 +440,17 @@ int tripleDigitOutput(int num) {
 
     digitSelect(dig1);
     pinMode(pindig1, INPUT);
+    sleep(0.1);
     pinMode(pindig1, OUTPUT);
     digitalWrite(pindig1, HIGH);
     digitSelect(dig2);
     pinMode(pindig2, INPUT);
+    sleep(0.1);
     pinMode(pindig2, OUTPUT);
     digitalWrite(pindig2, LOW);
     digitSelect(dig3);
     pinMode(pindig3, INPUT);
+    sleep(0.1);
     pinMode(pindig3, OUTPUT);
     digitalWrite(pindig3, LOW);
 
