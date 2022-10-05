@@ -437,15 +437,15 @@ int tripleDigitOutput(int num) {
     dig1 = num / 100 % 10;
     dig2 = num / 10 % 10;
     dig3 = num % 10;
-    //digitalWrite(pindig3, LOW);
-    //digitSelect(dig1);
-    //digitalWrite(pindig1, HIGH);
-    //digitalWrite(pindig1, LOW);
-    //digitSelect(dig2);
-    //digitalWrite(pindig2, HIGH);
-    //digitalWrite(pindig2, LOW);
+    pinMode(pindig3, OUTPUT);
+    digitSelect(dig1);
+    pinMode(pindig1, INPUT);
+    pinMode(pindig1, OUTPUT);
+    digitSelect(dig2);
+    pinMode(pindig2, INPUT);
+    pinMode(pindig2, OUTPUT);
     digitSelect(dig3);
-    //digitalWrite(pindig3, HIGH);
+    pinMode(pindig3, INPUT);
     cur_speed = des_speed;
     //printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
     return cur_speed;
@@ -476,9 +476,9 @@ int main(int argc, char **argv) {
   pinMode(pin14, OUTPUT);
   pinMode(pin15, OUTPUT);
   pinMode(pin16, OUTPUT);
-  pinMode(pindig1, INPUT);
-  pinMode(pindig2, INPUT);
-  pinMode(pindig3, INPUT);
+  pinMode(pindig1, OUTPUT);
+  pinMode(pindig2, OUTPUT);
+  pinMode(pindig3, OUTPUT);
    
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
