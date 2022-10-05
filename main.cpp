@@ -448,13 +448,13 @@ int tripleDigitOutput(int num) {
     digitalWrite(pindig2, LOW);
     pinMode(pindig2, INPUT);    
     digitSelect(dig2);
-    sleep(0.99);
+    nanosleep((const struct timespec[]){{0, 15000000L}}, NULL);
     pinMode(pindig2, OUTPUT);
     digitalWrite(pindig2, HIGH);
     digitalWrite(pindig3, LOW);
     pinMode(pindig3, INPUT);    
     digitSelect(dig3);
-    sleep(0.99);
+    nanosleep((const struct timespec[]){{0, 15000000L}}, NULL);
     pinMode(pindig3, OUTPUT);
     digitalWrite(pindig3, HIGH);
 
