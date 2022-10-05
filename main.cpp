@@ -441,19 +441,19 @@ int tripleDigitOutput(int num) {
     digitalWrite(pindig1, LOW);
     pinMode(pindig1, INPUT);    
     digitSelect(dig1);
-    sleep(1);
+    sleep(0.5);
     pinMode(pindig1, OUTPUT);
     digitalWrite(pindig1, HIGH);
-    digitSelect(dig2);
     digitalWrite(pindig2, LOW);
-    pinMode(pindig2, INPUT);
-    sleep(1);
+    pinMode(pindig2, INPUT);    
+    digitSelect(dig2);
+    sleep(0.5);
     pinMode(pindig2, OUTPUT);
     digitalWrite(pindig2, HIGH);
-    digitSelect(dig3);
     digitalWrite(pindig3, LOW);
-    pinMode(pindig3, INPUT);
-    sleep(1);
+    pinMode(pindig3, INPUT);    
+    digitSelect(dig3);
+    sleep(0.5);
     pinMode(pindig3, OUTPUT);
     digitalWrite(pindig3, HIGH);
 
