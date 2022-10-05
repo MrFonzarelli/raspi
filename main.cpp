@@ -439,12 +439,15 @@ int tripleDigitOutput(int num) {
     dig3 = num % 10;
 
     digitSelect(dig1);
+    pinMode(pindig1, INPUT);
     pinMode(pindig1, OUTPUT);
     digitalWrite(pindig1, LOW);
     digitSelect(dig2);
+    pinMode(pindig2, INPUT);
     pinMode(pindig2, OUTPUT);
     digitalWrite(pindig2, LOW);
     digitSelect(dig3);
+    pinMode(pindig3, INPUT);
     pinMode(pindig3, OUTPUT);
     digitalWrite(pindig3, LOW);
 
