@@ -441,7 +441,7 @@ int tripleDigitOutput(int num) {
     digitSelect(dig1);
     pinMode(pindig1, INPUT);
     pinMode(pindig1, OUTPUT);
-    digitalWrite(pindig1, LOW);
+    digitalWrite(pindig1, HIGH);
     digitSelect(dig2);
     pinMode(pindig2, INPUT);
     pinMode(pindig2, OUTPUT);
