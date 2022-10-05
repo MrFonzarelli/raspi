@@ -441,10 +441,10 @@ int tripleDigitOutput(int num) {
     pinMode(pindig1, INPUT);
     pinMode(pindig1, OUTPUT);
     digitSelect(dig2);
-    pinMode(pindig2, INPUT);
+    pinMode(pindig2, OUTPUT);
     pinMode(pindig2, OUTPUT);
     digitSelect(dig3);
-    pinMode(pindig3, INPUT);
+    pinMode(pindig3, OUTPUT);
     pinMode(pindig3, OUTPUT);
     cur_speed = des_speed;
     printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
