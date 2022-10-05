@@ -437,7 +437,6 @@ int tripleDigitOutput(int num) {
     dig1 = num / 100 % 10;
     dig2 = num / 10 % 10;
     dig3 = num % 10;
-    pinMode(pindig3, OUTPUT);
     digitSelect(dig1);
     pinMode(pindig1, INPUT);
     pinMode(pindig1, OUTPUT);
@@ -446,6 +445,7 @@ int tripleDigitOutput(int num) {
     pinMode(pindig2, OUTPUT);
     digitSelect(dig3);
     pinMode(pindig3, INPUT);
+    pinMode(pindig3, OUTPUT);
     cur_speed = des_speed;
     printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
     return cur_speed;
