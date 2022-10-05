@@ -517,9 +517,9 @@ int main(int argc, char **argv) {
         if (des_state != cur_state) {
             singleDigitOutput(des_state);
         }
-        //if (des_speed != cur_speed) {
-            //tripleDigitOutput(des_speed);    
-        //}
+        if (des_speed != cur_speed) {
+            tripleDigitOutput(des_speed);    
+        }
         old_time = new_time;
     }
   } while(cur_state !=-1);
