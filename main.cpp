@@ -442,19 +442,19 @@ int tripleDigitOutput(int num) {
     digitalWrite(pindig1, LOW);
     pinMode(pindig1, INPUT);    
     digitSelect(dig1);
-    nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
+    nanosleep((const struct timespec[]){{0, 90000000000L}}, NULL);
     pinMode(pindig1, OUTPUT);
     digitalWrite(pindig1, HIGH);
     digitalWrite(pindig2, LOW);
     pinMode(pindig2, INPUT);    
     digitSelect(dig2);
-    nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
+    nanosleep((const struct timespec[]){{0, 90000000000L}}, NULL);
     pinMode(pindig2, OUTPUT);
     digitalWrite(pindig2, HIGH);
     digitalWrite(pindig3, LOW);
     pinMode(pindig3, INPUT);    
     digitSelect(dig3);
-    nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
+    nanosleep((const struct timespec[]){{0, 90000000000L}}, NULL);
     pinMode(pindig3, OUTPUT);
     digitalWrite(pindig3, HIGH);
 
