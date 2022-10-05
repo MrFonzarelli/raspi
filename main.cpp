@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <chrono>
 #include <wiringPi.h>
+#include <time.h>
 
 int pin1 = 6;  //A
 int pin2 = 10;  //B
@@ -441,7 +442,7 @@ int tripleDigitOutput(int num) {
     digitalWrite(pindig1, LOW);
     pinMode(pindig1, INPUT);    
     digitSelect(dig1);
-    sleep(0.99);
+    nanosleep((const struct timespec[]){{0, 15000000L}}, NULL);
     pinMode(pindig1, OUTPUT);
     digitalWrite(pindig1, HIGH);
     digitalWrite(pindig2, LOW);
