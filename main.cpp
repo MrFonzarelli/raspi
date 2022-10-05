@@ -447,7 +447,7 @@ int tripleDigitOutput(int num) {
     digitSelect(dig3);
     pinMode(pindig3, INPUT);
     cur_speed = des_speed;
-    //printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
+    printf("Speed: %d hundreds %d tens %d units\n", dig1, dig2, dig3);
     return cur_speed;
 }
 
@@ -517,9 +517,7 @@ int main(int argc, char **argv) {
         if (des_state != cur_state) {
             singleDigitOutput(des_state);
         }
-        if (des_speed != cur_speed) {
-            tripleDigitOutput(des_speed);    
-        }
+        tripleDigitOutput(des_speed);
         old_time = new_time;
     }
   } while(cur_state !=-1);
