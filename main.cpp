@@ -438,9 +438,9 @@ int tripleDigitOutput(int num) {
     dig2 = num / 10 % 10;
     dig3 = num % 10;
 
-    digitSelect(dig1);
     digitalWrite(pindig1, LOW);
-    pinMode(pindig1, INPUT);
+    pinMode(pindig1, INPUT);    
+    digitSelect(dig1);
     sleep(1);
     pinMode(pindig1, OUTPUT);
     digitalWrite(pindig1, HIGH);
