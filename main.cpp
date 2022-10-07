@@ -462,18 +462,18 @@ int tripleDigitOutput(int num) {
     } else {
         digitalWrite(pindig1, HIGH);
         digitSelect(dig1);
-        //nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+        nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
+        //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig1, LOW);
         digitalWrite(pindig2, HIGH);   
         digitSelect(dig2);
-        //nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+        nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
+        //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig2, LOW);
         digitalWrite(pindig3, HIGH);   
         digitSelect(dig3);
-        //nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+        nanosleep((const struct timespec[]){{0, 9000000L}}, NULL);
+        //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig3, LOW);
     }
     
