@@ -450,27 +450,27 @@ int tripleDigitOutput(int num) {
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig3, HIGH);
         } else {
-            digitalWrite(pindig2, LOW);   
-            digitSelect(dig2);
-            std::cout << "dig2\n";
-            nanosleep((const struct timespec[]){{0, 150000L}}, NULL);
-            //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-            digitalWrite(pindig2, HIGH);
-            
             digitalWrite(pindig3, LOW);   
             digitSelect(dig3);
             std::cout << "dig3\n";
             nanosleep((const struct timespec[]){{0, 150000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig3, HIGH);
+            
+            digitalWrite(pindig2, LOW);   
+            digitSelect(dig2);
+            std::cout << "dig2\n";
+            nanosleep((const struct timespec[]){{0, 150000L}}, NULL);
+            //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+            digitalWrite(pindig2, HIGH);            
         }
     } else {
-        digitalWrite(pindig1, LOW);
-        digitSelect(dig1);
-        std::cout << "dig1\n";
+        digitalWrite(pindig3, LOW);   
+        digitSelect(dig3);
+        std::cout << "dig3\n";
         nanosleep((const struct timespec[]){{0, 150000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-        digitalWrite(pindig1, HIGH);
+        digitalWrite(pindig3, HIGH);
         
         digitalWrite(pindig2, LOW);   
         digitSelect(dig2);
@@ -479,12 +479,12 @@ int tripleDigitOutput(int num) {
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig2, HIGH);
         
-        digitalWrite(pindig3, LOW);   
-        digitSelect(dig3);
-        std::cout << "dig3\n";
+        digitalWrite(pindig1, LOW);
+        digitSelect(dig1);
+        std::cout << "dig1\n";
         nanosleep((const struct timespec[]){{0, 150000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-        digitalWrite(pindig3, HIGH);
+        digitalWrite(pindig1, HIGH);                
     }
     
     cur_speed = des_speed;
