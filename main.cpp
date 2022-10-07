@@ -445,6 +445,7 @@ int tripleDigitOutput(int num) {
         if (dig2 == 0) {
             digitalWrite(pindig3, HIGH);   
             digitSelect(dig3);
+            std::cout >> "dig3\n";
             std::cin >> wait;
             nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -452,6 +453,7 @@ int tripleDigitOutput(int num) {
         } else {
             digitalWrite(pindig2, HIGH);   
             digitSelect(dig2);
+            std::cout >> "dig2\n";
             std::cin >> wait;
             nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -459,6 +461,7 @@ int tripleDigitOutput(int num) {
             
             digitalWrite(pindig3, HIGH);   
             digitSelect(dig3);
+            std::cout >> "dig3\n";
             std::cin >> wait;
             nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -467,6 +470,7 @@ int tripleDigitOutput(int num) {
     } else {
         digitalWrite(pindig1, HIGH);
         digitSelect(dig1);
+        std::cout >> "dig1\n";
         std::cin >> wait;
         nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -474,6 +478,7 @@ int tripleDigitOutput(int num) {
         
         digitalWrite(pindig2, HIGH);   
         digitSelect(dig2);
+        std::cout >> "dig2\n";
         std::cin >> wait;
         nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -481,6 +486,7 @@ int tripleDigitOutput(int num) {
         
         digitalWrite(pindig3, HIGH);   
         digitSelect(dig3);
+        std::cout >> "dig3\n";
         std::cin >> wait;
         nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
