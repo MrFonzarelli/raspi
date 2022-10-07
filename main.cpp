@@ -468,21 +468,21 @@ int tripleDigitOutput(int num) {
         digitalWrite(pindig3, LOW);   
         digitSelect(dig3);
 
-        nanosleep((const struct timespec[]){{0, 150L}}, NULL);
+        nanosleep((const struct timespec[]){{0, 16384L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig3, HIGH);
         
         digitalWrite(pindig2, LOW);   
         digitSelect(dig2);
 
-        nanosleep((const struct timespec[]){{0, 150L}}, NULL);
+        nanosleep((const struct timespec[]){{0, 16384L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig2, HIGH);
         
         digitalWrite(pindig1, LOW);
         digitSelect(dig1);
 
-        nanosleep((const struct timespec[]){{0, 150L}}, NULL);
+        nanosleep((const struct timespec[]){{0, 16384L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig1, HIGH);                
     }
