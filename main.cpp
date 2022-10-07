@@ -10,6 +10,7 @@
 #include <chrono>
 #include <wiringPi.h>
 #include <time.h>
+#include <iostream>
 
 int pin1 = 6;  //A
 int pin2 = 10;  //B
@@ -444,17 +445,21 @@ int tripleDigitOutput(int num) {
         if (dig2 == 0) {
             digitalWrite(pindig3, HIGH);   
             digitSelect(dig3);
+            stdcin >> wait;
             nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig3, LOW);
         } else {
             digitalWrite(pindig2, HIGH);   
             digitSelect(dig2);
+            stdcin >> wait;
             nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig2, LOW);
+            
             digitalWrite(pindig3, HIGH);   
             digitSelect(dig3);
+            stdcin >> wait;
             nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
             //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig3, LOW);
@@ -462,16 +467,21 @@ int tripleDigitOutput(int num) {
     } else {
         digitalWrite(pindig1, HIGH);
         digitSelect(dig1);
+        stdcin >> wait;
         nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig1, LOW);
+        
         digitalWrite(pindig2, HIGH);   
         digitSelect(dig2);
+        stdcin >> wait;
         nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig2, LOW);
+        
         digitalWrite(pindig3, HIGH);   
         digitSelect(dig3);
+        stdcin >> wait;
         nanosleep((const struct timespec[]){{0, 15000L}}, NULL);
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig3, LOW);
