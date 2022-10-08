@@ -37,7 +37,7 @@ int cur_state = 0;
 int des_speed;
 int cur_speed;
 int sfd;
-int wait = 1;
+int wait = 5;
 
 struct outGauge {
     unsigned time;
