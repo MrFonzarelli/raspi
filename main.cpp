@@ -11,6 +11,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include <iostream>
+#include <thread>
 
 int pin1 = 6;  //A
 int pin2 = 10;  //B
