@@ -12,6 +12,7 @@
 #include <time.h>
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 int pin1 = 15;  //A15
 int pin2 = 16;  //B16
@@ -38,6 +39,8 @@ int des_speed;
 int cur_speed;
 int sfd;
 int wait = 7;
+
+std::mutex tripleDigitMutex;
 
 struct outGauge {
     unsigned time;
@@ -434,7 +437,7 @@ int digitSelect(int num) {
     return num;
 }
 
-int tripleDigitOutput(int num) {
+void tripleDigitOutput(int num) {
     int dig1;
     int dig2;
     int dig3;
@@ -487,9 +490,16 @@ int tripleDigitOutput(int num) {
         //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig1, HIGH);                
     }
-    
-    cur_speed = des_speed;
-    return cur_speed;
+}
+
+void doTripleDigitWork() {
+    int speedToDisplay;
+    while (true) {
+        tripleDigitMutex.lock();
+        speedToDisplay = des_speed;
+        tripleDigitMutex.unlock();
+        tripleDigitOutput(speedToDisplay);
+    }
 }
 
 int main(int argc, char **argv) {
@@ -534,6 +544,8 @@ int main(int argc, char **argv) {
     printf("connect err \n");
     return 0;
   }
+
+  std::thread tripleDigitThread(doTripleDigitWork);
     
   double distance_traveled = 0;
   auto old_time = std::chrono::high_resolution_clock::now();
