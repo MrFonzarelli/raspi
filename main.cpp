@@ -665,11 +665,11 @@ int main(int argc, char **argv) {
         }
         auto new_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_delta = new_time - old_time;
-        dist = time_delta.count() * speed_to_count / 100;
+        dist += time_delta.count() * speed_to_count / 100;
         tripleDigitMutex.lock();
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
-        distance = distance + dist;
+        distance = dist;
         tripleDigitMutex.unlock();
         if (des_gear != cur_gear) {
             singleDigitOutput(des_gear);
