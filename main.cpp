@@ -608,6 +608,13 @@ void doTripleDigitWork() {
     }
 }
 
+void doButtonWork() {
+    while (true) {
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    }
+}
+
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr, clientaddr;
   memset(&myaddr, 0, sizeof(struct sockaddr_in));
@@ -667,16 +674,20 @@ int main(int argc, char **argv) {
     } else {
         des_buttonState = digitalRead(pinButton);
         if (last_buttonState != des_buttonState) {
-            if (cur_buttonState == 0) {
-                tripleDigitMutex.lock();
-                if (displayState == 2){
-                    displayState = 0;
+            if (last_buttonState == 0) {
+                if (cur_buttonState == 0) {
+                    tripleDigitMutex.lock();
+                    if (displayState == 2){
+                        displayState = 0;
+                    } else {
+                        displayState += 1;
+                    }
+                    tripleDigitMutex.unlock();
                 } else {
-                    displayState += 1;
+                    cur_buttonState = 0;
                 }
-                tripleDigitMutex.unlock();
             } else {
-                cur_buttonState = 0;
+                last_buttonState = 0;
             }
             last_buttonState = des_buttonState;
         }
