@@ -43,6 +43,7 @@ double dist;
 int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
+int last_buttonState;
 int sfd;
 int wait = 3;
 
@@ -665,10 +666,8 @@ int main(int argc, char **argv) {
         return 0;
     } else {
         des_buttonState = digitalRead(pinButton);
-        if (cur_buttonState != des_buttonState) {
-            if (cur_buttonState == 1){
-                cur_buttonState = 0;
-            } else {
+        if (last_buttonState != des_buttonState) {
+            if (cur_buttonState == 0) {
                 tripleDigitMutex.lock();
                 if (displayState == 2){
                     displayState = 0;
@@ -676,7 +675,10 @@ int main(int argc, char **argv) {
                     displayState += 1;
                 }
                 tripleDigitMutex.unlock();
+            } else {
+                cur_buttonState = 0;
             }
+            last_buttonState = des_buttonState;
         }
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
