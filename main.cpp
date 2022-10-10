@@ -38,6 +38,7 @@ int cur_gear = 0;
 int speed;
 int pressure;
 int distance;
+int dist;
 int displayState = 2;
 int sfd;
 int wait = 3;
@@ -658,16 +659,17 @@ int main(int argc, char **argv) {
     } else {
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
-        auto new_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_delta = new_time - old_time;
-        tripleDigitMutex.lock();
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
         }
-        speed = s->speed * 3.6;
+        auto new_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_delta = new_time - old_time;
+        dist = time_delta.count() * speed_to_count / 100;
+        tripleDigitMutex.lock();
+        speed = ceil(s->speed * 3.6);
         pressure = s->turbo * 10;
-        distance += time_delta.count() * speed_to_count / 100;
+        distance = distance + dist;
         tripleDigitMutex.unlock();
         if (des_gear != cur_gear) {
             singleDigitOutput(des_gear);
