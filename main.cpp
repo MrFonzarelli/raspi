@@ -33,8 +33,8 @@ int pin16 = 23; //DP
 int pindig1 = 0;
 int pindig2 = 2;
 int pindig3 = 3;
-int des_state = 1;
-int cur_state = 0;
+int des_gear = 1;
+int cur_gear = 0;
 int speed;
 int pressure;
 int distance;
@@ -668,7 +668,6 @@ int main(int argc, char **argv) {
         tripleDigitMutex.unlock();
         auto new_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_delta = new_time - old_time;
-        //printf("Distance traveled: %06.1lf km\n", distance_traveled);
         if (des_gear != cur_gear) {
             singleDigitOutput(des_gear);
         }
