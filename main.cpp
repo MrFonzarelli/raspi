@@ -40,7 +40,7 @@ int speed;
 int pressure;
 int distance;
 double dist;
-int displayState = 2;
+int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int sfd;
@@ -673,7 +673,7 @@ int main(int argc, char **argv) {
                 if (displayState == 2){
                     displayState = 0;
                 } else {
-                    displayState += 1
+                    displayState += 1;
                 }
                 tripleDigitMutex.unlock();
             }
