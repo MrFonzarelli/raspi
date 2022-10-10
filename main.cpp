@@ -314,67 +314,67 @@ int singleDigitOutput(int state){
         {
         case 0:
         {
-            cur_state = ReverseHandler();
+            cur_gear = ReverseHandler();
         }
         break;
         case 1:
         {
-            cur_state = NeutralHandler();
+            cur_gear = NeutralHandler();
         }
         break;
         case 2:
         {
-            cur_state = FirstHandler();
+            cur_gear = FirstHandler();
         }
         break;
         case 3:
         {
-            cur_state = SecondHandler();
+            cur_gear = SecondHandler();
         }
         break;
         case 4:
         {
-            cur_state = ThirdHandler();
+            cur_gear = ThirdHandler();
         }
         break;
         case 5:
         {
-            cur_state = FourthHandler();
+            cur_gear = FourthHandler();
         }
         break;
         case 6:
         {
-            cur_state = FifthHandler();
+            cur_gear = FifthHandler();
         }
         break;
         case 7:
         {
-            cur_state = SixthHandler();
+            cur_gear = SixthHandler();
         }
         break;
         case 8:
         {            
-            cur_state = SeventhHandler();
+            cur_gear = SeventhHandler();
         }
         break;
         case 9:
         {
-            cur_state = EighthHandler();
+            cur_gear = EighthHandler();
         }
         break;
         case 10:
         {
-            cur_state = NinethHandler();
+            cur_gear = NinethHandler();
         }
         break;
         default:
         {
             ZeroHandler();
-            cur_state = des_state;
+            cur_gear = des_state;
         }
         break;
     }
-    return cur_state;
+    return cur_gear;
 }
 
 int digitSelect(int num) {
@@ -481,6 +481,7 @@ int digParser(int num, int state) {
         }
         break;
     }
+    return 0;
 }
 
 void tripleDigitOutput() {
@@ -661,13 +662,13 @@ int main(int argc, char **argv) {
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
         }
+        auto new_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_delta = new_time - old_time;
         tripleDigitMutex.lock();
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance += time_delta.count() * speed_to_count / 100;
         tripleDigitMutex.unlock();
-        auto new_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_delta = new_time - old_time;
         if (des_gear != cur_gear) {
             singleDigitOutput(des_gear);
         }
