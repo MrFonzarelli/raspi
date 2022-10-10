@@ -14,25 +14,26 @@
 #include <thread>
 #include <mutex>
 
-int pin1 = 15;  //A15
-int pin2 = 16;  //B16
-int pin3 = 1;   //C1
-int pin4 = 4;   //D4
-int pin5 = 5;   //E5
-int pin6 = 6;   //F6
-int pin7 = 10;  //G10
-int pin8 = 11;  //DP11
-int pin9 = 31;  //A
-int pin10 = 26; //B
-int pin11 = 27; //C
-int pin12 = 28; //D
-int pin13 = 29; //E
-int pin14 = 25; //F
-int pin15 = 24; //G
-int pin16 = 23; //DP
-int pindig1 = 0;
-int pindig2 = 2;
-int pindig3 = 3;
+int pin1 = 15;  //A
+int pin2 = 16;  //B
+int pin3 = 1;   //C
+int pin4 = 4;   //D
+int pin5 = 5;   //E
+int pin6 = 6;   //F
+int pin7 = 10;  //G
+int pin8 = 11;  //DP
+int pin9 = 31;  //3 digit A
+int pin10 = 26; //3 digit B
+int pin11 = 27; //3 digit C
+int pin12 = 28; //3 digit D
+int pin13 = 29; //3 digit E
+int pin14 = 25; //3 digit F
+int pin15 = 24; //3 digit G
+int pin16 = 23; //3 digit DP
+int pinButton = 7;
+int pindig1 = 0; //7 seg 3 digit dig1
+int pindig2 = 2; //7 seg 3 digit dig2
+int pindig3 = 3; //7 seg 3 digit dig3
 int des_gear = 1;
 int cur_gear = 0;
 int speed;
@@ -40,6 +41,8 @@ int pressure;
 int distance;
 double dist;
 int displayState = 2;
+int cur_buttonState = 0;
+int des_buttonState = 0;
 int sfd;
 int wait = 3;
 
@@ -632,6 +635,7 @@ int main(int argc, char **argv) {
   pinMode(pindig1, OUTPUT);
   pinMode(pindig2, OUTPUT);
   pinMode(pindig3, OUTPUT);
+  pinMode(pinButton, INPUT);
    
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
@@ -657,6 +661,20 @@ int main(int argc, char **argv) {
         printf("recv err \n");
         return 0;
     } else {
+        des_buttonState = digitalRead(pinButton);
+        if (cur_buttonState != des_buttonState) {
+            if (cur_buttonState == 1){
+                cur_buttonState = 0;
+            } else {
+                tripleDigitMutex.lock();
+                if (displayState == 2){
+                    displayState = 0;
+                } else {
+                    displayState += 1
+                }
+                tripleDigitMutex.unlock();
+            }
+        }
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
         double speed_to_count = s->speed;
