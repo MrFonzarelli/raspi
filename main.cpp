@@ -658,17 +658,16 @@ int main(int argc, char **argv) {
     } else {
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
+        auto new_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_delta = new_time - old_time;
+        tripleDigitMutex.lock();
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
         }
-        auto new_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_delta = new_time - old_time;
-        tripleDigitMutex.lock();
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance += time_delta.count() * speed_to_count / 100;
-        printf("Distance traveled: %06.1lf km\n", distance);
         tripleDigitMutex.unlock();
         if (des_gear != cur_gear) {
             singleDigitOutput(des_gear);
