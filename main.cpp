@@ -546,7 +546,6 @@ int main(int argc, char **argv) {
     } else {
         outGauge *s = (outGauge *)buffer;
         des_state = (int)s->gear;
-        std::cout << "Gear: " << des_state << std::endl;
         des_speed = s->speed * 3.6;
         auto new_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_delta = new_time - old_time;
