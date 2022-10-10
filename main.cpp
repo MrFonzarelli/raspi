@@ -44,10 +44,14 @@ int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
+int cur_rpm = 0;
+int max_rpm;
+int max_rpmGear;
 int sfd;
 int wait = 3;
 
 std::mutex tripleDigitMutex;
+std::mutex singleDigitMutex;
 
 struct outGauge {
     unsigned time;
@@ -602,6 +606,28 @@ void tripleDigitOutput() {
     }
 }
 
+void doSingleDigitWork() {
+        while (true) {
+            singleDigitMutex.lock();
+            int gear = des_gear;
+            int cur = cur_rpm;
+            int max = max_rpm;
+            singleDigitMutex.unlock();
+            singleDigitOutput(gear)
+            if ((cur/max) >= 0.95) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                    digitalWrite (pin1, LOW);
+                    digitalWrite (pin2, LOW);
+                    digitalWrite (pin3, LOW);
+                    digitalWrite (pin4, LOW);
+                    digitalWrite (pin5, LOW);
+                    digitalWrite (pin6, LOW);
+                    digitalWrite (pin7, LOW);
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }
+}
+
 void doTripleDigitWork() {
     while (true) {
         tripleDigitOutput();
@@ -655,6 +681,7 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  std::thread tripleDigitThread(doSingleDigitWork);
   std::thread tripleDigitThread(doTripleDigitWork);
     
   auto old_time = std::chrono::high_resolution_clock::now();
@@ -686,6 +713,13 @@ int main(int argc, char **argv) {
         }
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
+        cur_rpm = (int)s->rpm;
+        if (max_rpm < cur_rpm) {
+            if (max_rpmGear <= des_gear) {
+                max_rpm = cur_rpm;
+                max_rpmGear = des_gear;
+            }
+        }
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
@@ -694,13 +728,12 @@ int main(int argc, char **argv) {
         std::chrono::duration<double> time_delta = new_time - old_time;
         dist += time_delta.count() * speed_to_count / 100;
         tripleDigitMutex.lock();
+        singleDigitMutex.lock();
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance = dist;
         tripleDigitMutex.unlock();
-        if (des_gear != cur_gear) {
-            singleDigitOutput(des_gear);
-        }
+        singleDigitMutex.unlock();
         old_time = new_time;
     }
   }
