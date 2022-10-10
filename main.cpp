@@ -614,8 +614,8 @@ void doSingleDigitWork() {
             int max = max_rpm;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
-            if ((cur/max) >= 0.95) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            if ((cur/max) >= 0.80) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(150));
                     digitalWrite (pin1, LOW);
                     digitalWrite (pin2, LOW);
                     digitalWrite (pin3, LOW);
@@ -623,7 +623,7 @@ void doSingleDigitWork() {
                     digitalWrite (pin5, LOW);
                     digitalWrite (pin6, LOW);
                     digitalWrite (pin7, LOW);
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                std::this_thread::sleep_for(std::chrono::milliseconds(150));
             }
         }
 }
@@ -732,8 +732,8 @@ int main(int argc, char **argv) {
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance = dist;
-        tripleDigitMutex.unlock();
         singleDigitMutex.unlock();
+        tripleDigitMutex.unlock();
         old_time = new_time;
     }
   }
