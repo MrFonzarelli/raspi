@@ -668,6 +668,7 @@ int main(int argc, char **argv) {
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance += time_delta.count() * speed_to_count / 100;
+        printf("Distance traveled: %06.1lf km\n", distance);
         tripleDigitMutex.unlock();
         if (des_gear != cur_gear) {
             singleDigitOutput(des_gear);
