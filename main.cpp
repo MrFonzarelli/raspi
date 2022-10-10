@@ -38,7 +38,7 @@ int cur_gear = 0;
 int speed;
 int pressure;
 int distance;
-int displayState = 1;
+int displayState = 2;
 int sfd;
 int wait = 3;
 
