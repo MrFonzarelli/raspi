@@ -16,8 +16,8 @@
 int pin1 = 15;  //A15
 int pin2 = 16;  //B16
 int pin3 = 1;   //C1
-int pin4 = 5;   //D4
-int pin5 = 4;   //E5
+int pin4 = 4;   //D4
+int pin5 = 5;   //E5
 int pin6 = 6;   //F6
 int pin7 = 10;  //G10
 int pin8 = 11;  //DP11
