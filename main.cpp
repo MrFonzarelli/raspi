@@ -613,7 +613,7 @@ void doSingleDigitWork() {
             int cur = cur_rpm;
             int max = max_rpm;
             singleDigitMutex.unlock();
-            singleDigitOutput(gear)
+            singleDigitOutput(gear);
             if ((cur/max) >= 0.95) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                     digitalWrite (pin1, LOW);
@@ -681,7 +681,7 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  std::thread tripleDigitThread(doSingleDigitWork);
+  std::thread singleDigitThread(doSingleDigitWork);
   std::thread tripleDigitThread(doTripleDigitWork);
     
   auto old_time = std::chrono::high_resolution_clock::now();
