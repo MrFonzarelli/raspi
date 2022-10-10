@@ -35,8 +35,10 @@ int pindig2 = 2;
 int pindig3 = 3;
 int des_state = 1;
 int cur_state = 0;
-int des_speed;
-int cur_speed;
+int speed;
+int pressure;
+int distance;
+int displayState = 0;
 int sfd;
 int wait = 3;
 
@@ -437,68 +439,166 @@ int digitSelect(int num) {
     return num;
 }
 
-void tripleDigitOutput(int num) {
+int digParser(int num, int state) {
+    int dig;
+    switch(state) {
+        case 0:
+        {
+            dig = speed;
+        }
+        break;
+        case 1:
+        {
+            dig = pressure;
+        }
+        break;
+        case 2:
+        {
+            dig = distance;
+        }
+        break;
+    }
+    switch(num) {
+        case 1:
+        {
+            int dig1;
+            dig1 = dig / 100 % 10;
+            return dig1;
+        }
+        break;
+        case 2:
+        {
+            int dig2;
+            dig2 = dig / 10 % 10;
+            return dig2;
+        }
+        break;
+        case 3:
+        {
+            int dig3;
+            dig3 = dig % 10;
+            return dig3;
+        }
+        break;
+    }
+}
+
+void tripleDigitOutput() {
     int dig1;
     int dig2;
     int dig3;
-    dig1 = num / 100 % 10;
-    dig2 = num / 10 % 10;
-    dig3 = num % 10;
- 
-    if (dig1 == 0) {
-        if (dig2 == 0) {
-            digitalWrite(pindig3, LOW);   
-            digitSelect(dig3);
+    int state;
 
-            //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-            std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-            digitalWrite(pindig3, HIGH);
-        } else {
-            digitalWrite(pindig3, LOW);   
-            digitSelect(dig3);
+    tripleDigitMutex.lock();
+    state = displayState;
+    dig1 = digParser(1, state);
+    dig2 = digParser(2, state);
+    dig3 = digParser(3, state);
+    tripleDigitMutex.unlock();
 
-            //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-            std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-            digitalWrite(pindig3, HIGH);
-            
-            digitalWrite(pindig2, LOW);
-            digitSelect(dig2);
-
-            //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-            std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-            digitalWrite(pindig2, HIGH);            
+    switch(state) {
+        case 0:
+        {
+            if (dig1 == 0) {
+                if (dig2 == 0) {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);
+                } else {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);           
+                    digitalWrite(pindig2, LOW);
+                    digitSelect(dig2);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig2, HIGH);            
+                }
+            } else {
+                digitalWrite(pindig3, LOW);   
+                digitSelect(dig3);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig3, HIGH);       
+                digitalWrite(pindig2, LOW);   
+                digitSelect(dig2);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig2, HIGH);       
+                digitalWrite(pindig1, LOW);
+                digitSelect(dig1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig1, HIGH);                
+            }
         }
-    } else {
-        digitalWrite(pindig3, LOW);   
-        digitSelect(dig3);
-
-        //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-        digitalWrite(pindig3, HIGH);
-        
-        digitalWrite(pindig2, LOW);   
-        digitSelect(dig2);
-
-        //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-        digitalWrite(pindig2, HIGH);
-        
-        digitalWrite(pindig1, LOW);
-        digitSelect(dig1);
-
-        //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-        digitalWrite(pindig1, HIGH);                
+        break;
+        case 1:
+        {
+            if (dig1 == 0) {
+                digitalWrite(pindig3, LOW);   
+                digitSelect(dig3);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig3, HIGH);           
+                digitalWrite(pindig2, LOW);
+                digitSelect(dig2);
+                digitalWrite(pin16, HIGH);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig2, HIGH);  
+                digitalWrite(pin16, LOW);          
+            } else {
+                digitalWrite(pindig3, LOW);   
+                digitSelect(dig3);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig3, HIGH);       
+                digitalWrite(pindig2, LOW);   
+                digitSelect(dig2);
+                digitalWrite(pin16, HIGH);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig2, HIGH); 
+                digitalWrite(pin16, LOW);      
+                digitalWrite(pindig1, LOW);
+                digitSelect(dig1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig1, HIGH);                
+            }
+        }
+        break;
+        case 2:
+        {
+            if (dig1 == 0) {
+                digitalWrite(pindig3, LOW);   
+                digitSelect(dig3);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig3, HIGH);           
+                digitalWrite(pindig2, LOW);
+                digitSelect(dig2);
+                digitalWrite(pin16, HIGH);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig2, HIGH);  
+                digitalWrite(pin16, LOW);          
+            } else {
+                digitalWrite(pindig3, LOW);   
+                digitSelect(dig3);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig3, HIGH);       
+                digitalWrite(pindig2, LOW);   
+                digitSelect(dig2);
+                digitalWrite(pin16, HIGH);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig2, HIGH); 
+                digitalWrite(pin16, LOW);      
+                digitalWrite(pindig1, LOW);
+                digitSelect(dig1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig1, HIGH);                
+            }
+        }
+        break;
     }
 }
 
 void doTripleDigitWork() {
-    int speedToDisplay;
     while (true) {
-        tripleDigitMutex.lock();
-        speedToDisplay = des_speed;
-        tripleDigitMutex.unlock();
-        tripleDigitOutput(speedToDisplay);
+        tripleDigitOutput();
     }
 }
 
@@ -547,35 +647,34 @@ int main(int argc, char **argv) {
 
   std::thread tripleDigitThread(doTripleDigitWork);
     
-  double distance_traveled = 0;
   auto old_time = std::chrono::high_resolution_clock::now();
     
-  do {
+  while (true) {
     int res = recvfrom(sfd, buffer, sizeof(buffer), 0, (struct sockaddr *) &clientaddr, (socklen_t*) &addr_len);
     if (res == -1) {
         printf("recv err \n");
         return 0;
     } else {
         outGauge *s = (outGauge *)buffer;
-        des_state = (int)s->gear;
-        tripleDigitMutex.lock();
-        des_speed = s->speed * 3.6;
-        tripleDigitMutex.unlock();
-        auto new_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_delta = new_time - old_time;
+        des_gear = (int)s->gear;
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
         }
-        distance_traveled += time_delta.count() * speed_to_count / 1000;
+        tripleDigitMutex.lock();
+        speed = s->speed * 3.6;
+        pressure = s->turbo * 10;
+        distance += time_delta.count() * speed_to_count / 100;
+        tripleDigitMutex.unlock();
+        auto new_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_delta = new_time - old_time;
         //printf("Distance traveled: %06.1lf km\n", distance_traveled);
-        if (des_state != cur_state) {
-            singleDigitOutput(des_state);
+        if (des_gear != cur_gear) {
+            singleDigitOutput(des_gear);
         }
-        //tripleDigitOutput(des_speed);
         old_time = new_time;
     }
-  } while(cur_state !=-1);
+  }
   
   return 0;
   
