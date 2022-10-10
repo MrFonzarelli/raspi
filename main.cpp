@@ -636,6 +636,9 @@ int main(int argc, char **argv) {
   pinMode(pindig2, OUTPUT);
   pinMode(pindig3, OUTPUT);
   pinMode(pinButton, INPUT);
+  digitalWrite(pindig1, HIGH);
+  digitalWrite(pindig2, HIGH);
+  digitalWrite(pindig3, HIGH);
    
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
