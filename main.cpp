@@ -608,13 +608,6 @@ void doTripleDigitWork() {
     }
 }
 
-void doButtonWork() {
-    while (true) {
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(150));
-    }
-}
-
 int main(int argc, char **argv) {
   struct sockaddr_in myaddr, clientaddr;
   memset(&myaddr, 0, sizeof(struct sockaddr_in));
