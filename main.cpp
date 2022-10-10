@@ -559,7 +559,7 @@ int main(int argc, char **argv) {
         if (des_state != cur_state) {
             singleDigitOutput(des_state);
         }
-        tripleDigitOutput(des_speed);
+        //tripleDigitOutput(des_speed);
         old_time = new_time;
     }
   } while(cur_state !=-1);
