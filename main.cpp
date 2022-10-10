@@ -667,7 +667,7 @@ int main(int argc, char **argv) {
         std::chrono::duration<double> time_delta = new_time - old_time;
         dist = time_delta.count() * speed_to_count / 100;
         tripleDigitMutex.lock();
-        speed = ceil(s->speed * 3.6);
+        speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance = distance + dist;
         tripleDigitMutex.unlock();
