@@ -45,7 +45,7 @@ int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
 int cur_rpm = 0;
-int max_rpm;
+int max_rpm = 1;
 int max_rpmGear;
 int sfd;
 int wait = 3;
