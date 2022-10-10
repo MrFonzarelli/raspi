@@ -38,7 +38,7 @@ int cur_state = 0;
 int des_speed;
 int cur_speed;
 int sfd;
-int wait = 7;
+int wait = 3;
 
 std::mutex tripleDigitMutex;
 
