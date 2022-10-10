@@ -13,14 +13,14 @@
 #include <iostream>
 #include <thread>
 
-int pin1 = 6;  //A
-int pin2 = 10;  //B
-int pin3 = 1;   //C
-int pin4 = 16;   //D
-int pin5 = 15;   //E
-int pin6 = 5;   //F
-int pin7 = 4;  //G
-int pin8 = 11;  //DP
+int pin1 = 15;  //A15
+int pin2 = 16;  //B16
+int pin3 = 1;   //C1
+int pin4 = 4;   //D4
+int pin5 = 5;   //E5
+int pin6 = 6;   //F6
+int pin7 = 10;  //G10
+int pin8 = 11;  //DP11
 int pin9 = 31;  //A
 int pin10 = 26; //B
 int pin11 = 27; //C
