@@ -370,7 +370,7 @@ int singleDigitOutput(int state){
         default:
         {
             ZeroHandler();
-            cur_gear = des_state;
+            cur_gear = des_gear;
         }
         break;
     }
