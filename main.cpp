@@ -43,7 +43,7 @@ double dist;
 int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
-int last_buttonState;
+int last_buttonState = 0;
 int sfd;
 int wait = 3;
 
