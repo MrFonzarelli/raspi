@@ -558,7 +558,9 @@ int main(int argc, char **argv) {
     } else {
         outGauge *s = (outGauge *)buffer;
         des_state = (int)s->gear;
+        tripleDigitMutex.lock();
         des_speed = s->speed * 3.6;
+        tripleDigitMutex.unlock();
         auto new_time = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> time_delta = new_time - old_time;
         double speed_to_count = s->speed;
