@@ -450,44 +450,44 @@ void tripleDigitOutput(int num) {
             digitalWrite(pindig3, LOW);   
             digitSelect(dig3);
 
-            nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-            //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+            //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
+            std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig3, HIGH);
         } else {
             digitalWrite(pindig3, LOW);   
             digitSelect(dig3);
 
-            nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-            //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+            //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
+            std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig3, HIGH);
             
             digitalWrite(pindig2, LOW);
             digitSelect(dig2);
 
-            nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-            //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+            //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
+            std::this_thread::sleep_for(std::chrono::milliseconds(wait));
             digitalWrite(pindig2, HIGH);            
         }
     } else {
         digitalWrite(pindig3, LOW);   
         digitSelect(dig3);
 
-        nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+        //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
+        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig3, HIGH);
         
         digitalWrite(pindig2, LOW);   
         digitSelect(dig2);
 
-        nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+        //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
+        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig2, HIGH);
         
         digitalWrite(pindig1, LOW);
         digitSelect(dig1);
 
-        nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+        //nanosleep((const struct timespec[]){{0, 7000000}}, NULL);
+        std::this_thread::sleep_for(std::chrono::milliseconds(wait));
         digitalWrite(pindig1, HIGH);                
     }
 }
