@@ -758,7 +758,7 @@ int main(int argc, char **argv) {
   digitalWrite(pindig2, HIGH);
   digitalWrite(pindig3, HIGH);
 
-  for (int i = 0; i < 1000; i++) {
+  for (int i = 0; i < 100; i++) {
     digitalWrite(pindig2, LOW);   
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
@@ -782,7 +782,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig1, HIGH);   
   }
 
-  for (int i = 0; i < 200; i++) {
+  for (int i = 0; i < 20; i++) {
     digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, LOW);
@@ -817,7 +817,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig1, HIGH);
   }
 
-  for (int i = 0; i < 200; i++) {
+  for (int i = 0; i < 20; i++) {
     digitalWrite(pindig3, LOW);   
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
@@ -841,7 +841,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig2, HIGH);   
   }
 
-  for (int i = 0; i < 200; i++) {
+  for (int i = 0; i < 20; i++) {
     digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, LOW);
@@ -865,8 +865,8 @@ int main(int argc, char **argv) {
     digitalWrite(pindig2, HIGH);
   }  
 
-  for (int i = 0; i < 200; i++) {
-    digitalWrite(pindig1, LOW);
+  for (int i = 0; i < 20; i++) {
+    digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
     digitalWrite (pin11, HIGH);
@@ -875,11 +875,11 @@ int main(int argc, char **argv) {
     digitalWrite (pin14, HIGH);
     digitalWrite (pin15, HIGH);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    digitalWrite(pindig1, HIGH);
+    digitalWrite(pindig3, HIGH);
   }
 
-  for (int i = 0; i < 200; i++) {
-    digitalWrite(pindig1, LOW);
+  for (int i = 0; i < 20; i++) {
+    digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
     digitalWrite (pin11, HIGH);
@@ -888,7 +888,7 @@ int main(int argc, char **argv) {
     digitalWrite (pin14, LOW);
     digitalWrite (pin15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    digitalWrite(pindig1, HIGH);
+    digitalWrite(pindig3, HIGH);
   }
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
