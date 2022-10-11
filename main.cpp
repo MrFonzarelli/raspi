@@ -44,8 +44,8 @@ int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
-int cur_rpm = 0;
-int max_rpm = 1;
+double cur_rpm = 0;
+double max_rpm = 1;
 int max_rpmGear;
 int sfd;
 int wait = 3;
@@ -713,7 +713,7 @@ int main(int argc, char **argv) {
         }
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
-        cur_rpm = (int)s->rpm;
+        cur_rpm = s->rpm;
         if (max_rpm <= cur_rpm) {
             if (max_rpmGear <= des_gear) {
                 max_rpm = cur_rpm;
