@@ -620,7 +620,7 @@ void doSingleDigitWork() {
                 } else {
                     if (cur/max >= 0.8) {
                         if (cur/max >= 0.9) {
-                            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                            std::this_thread::sleep_for(std::chrono::milliseconds(100));
                             digitalWrite (pin1, LOW);
                             digitalWrite (pin2, LOW);
                             digitalWrite (pin3, LOW);
