@@ -614,7 +614,7 @@ void doSingleDigitWork() {
             int max = max_rpm;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
-            if ((cur/max) >= 0.5) {
+            if ((cur/max) >= 0.8) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(150));
                     digitalWrite (pin1, LOW);
                     digitalWrite (pin2, LOW);
@@ -715,11 +715,10 @@ int main(int argc, char **argv) {
         des_gear = (int)s->gear;
         cur_rpm = s->rpm;
         if (max_rpmGear <= des_gear) {
-            if (max_rpm != cur_rpm) {
+            if (max_rpm <= cur_rpm) {
                 max_rpm = cur_rpm;
                 max_rpmGear = des_gear;
             }
-            printf("Max RPM: %d achieved on gear: %d\n", (int)max_rpm, max_rpmGear);
         }
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
