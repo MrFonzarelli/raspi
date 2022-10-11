@@ -819,7 +819,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig1, HIGH);   
   }
 
-  for (int i = 0; i < 14; i++) {
+  for (int i = 0; i < 10; i++) {
     digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, LOW);
@@ -854,7 +854,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig1, HIGH);
   }
 
-  for (int i = 0; i < 14; i++) {
+  for (int i = 0; i < 10; i++) {
     digitalWrite(pindig3, LOW);   
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
@@ -878,7 +878,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig2, HIGH);   
   }
 
-  for (int i = 0; i < 14; i++) {
+  for (int i = 0; i < 10; i++) {
     digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, LOW);
@@ -902,7 +902,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig2, HIGH);
   }  
 
-  for (int i = 0; i < 14; i++) {
+  for (int i = 0; i < 10; i++) {
     digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
@@ -915,7 +915,7 @@ int main(int argc, char **argv) {
     digitalWrite(pindig3, HIGH);
   }
 
-  for (int i = 0; i < 14; i++) {
+  for (int i = 0; i < 10; i++) {
     digitalWrite(pindig3, LOW);
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
