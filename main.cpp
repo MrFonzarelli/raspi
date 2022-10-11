@@ -616,7 +616,7 @@ void doSingleDigitWork() {
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
             if (cur/max >= 0.7) {
-                if (gear == max_g) {
+                if (gear == max_g | gear == 1) {
                 } else {
                     if (cur/max >= 0.8) {
                         if (cur/max >= 0.9) {
