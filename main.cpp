@@ -714,12 +714,12 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
         cur_rpm = s->rpm;
-        if (max_rpm <= cur_rpm) {
-            if (max_rpmGear <= des_gear) {
+        if (max_rpmGear <= des_gear) {
+            if (max_rpm != cur_rpm) {
                 max_rpm = cur_rpm;
                 max_rpmGear = des_gear;
             }
-            printf("Max RPM: %d achieved on gear: %d\n", max_rpm, max_rpmGear);
+            printf("Max RPM: %d achieved on gear: %d\n", (int)max_rpm, max_rpmGear);
         }
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
