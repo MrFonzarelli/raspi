@@ -610,6 +610,7 @@ void doSingleDigitWork() {
         while (true) {
             singleDigitMutex.lock();
             int gear = des_gear;
+            int max_g = max_gear;
             float cur = cur_rpm;
             float max = max_rpm;
             singleDigitMutex.unlock();
@@ -730,10 +731,12 @@ int main(int argc, char **argv) {
         des_gear = (int)s->gear;
         cur_rpm = s->rpm;
         if (max_gear <= des_gear) {
+            singleDigitMutex.lock();
             if (max_rpm <= cur_rpm) {
                 max_rpm = cur_rpm;
             }
             max_gear = des_gear;
+            singleDigitMutex.unlock();
         }
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
