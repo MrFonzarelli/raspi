@@ -46,7 +46,7 @@ int des_buttonState = 0;
 int last_buttonState = 0;
 double cur_rpm = 0;
 double max_rpm = 1;
-int max_rpmGear;
+int max_gear;
 int sfd;
 int wait = 3;
 
@@ -614,7 +614,7 @@ void doSingleDigitWork() {
             float max = max_rpm;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
-            if (cur/max >= 0.5) {
+            if (cur/max >= 0.85) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(150));
                     digitalWrite (pin1, LOW);
                     digitalWrite (pin2, LOW);
@@ -714,11 +714,11 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
         cur_rpm = s->rpm;
-        if (max_rpmGear <= des_gear) {
+        if (max_gear <= des_gear) {
             if (max_rpm <= cur_rpm) {
                 max_rpm = cur_rpm;
-                max_rpmGear = des_gear;
             }
+            max_gear = des_gear;
         }
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
