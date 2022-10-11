@@ -614,16 +614,31 @@ void doSingleDigitWork() {
             float max = max_rpm;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
-            if (cur/max >= 0.85) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(150));
-                    digitalWrite (pin1, LOW);
-                    digitalWrite (pin2, LOW);
-                    digitalWrite (pin3, LOW);
-                    digitalWrite (pin4, LOW);
-                    digitalWrite (pin5, LOW);
-                    digitalWrite (pin6, LOW);
-                    digitalWrite (pin7, LOW);
-                std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            if (cur/max >= 0.8) {
+                if (gear == max_g) {
+                } else {
+                    if (cur/max >= 0.9) {
+                       std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                        digitalWrite (pin1, LOW);
+                        digitalWrite (pin2, LOW);
+                        digitalWrite (pin3, LOW);
+                        digitalWrite (pin4, LOW);
+                        digitalWrite (pin5, LOW);
+                        digitalWrite (pin6, LOW);
+                        digitalWrite (pin7, LOW);
+                        ::this_thread::sleep_for(std::chrono::milliseconds(100)); 
+                    } else {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+                        digitalWrite (pin1, LOW);
+                        digitalWrite (pin2, LOW);
+                        digitalWrite (pin3, LOW);
+                        digitalWrite (pin4, LOW);
+                        digitalWrite (pin5, LOW);
+                        digitalWrite (pin6, LOW);
+                        digitalWrite (pin7, LOW);
+                        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+                    }
+                }
             }
         }
 }
