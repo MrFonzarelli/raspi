@@ -795,7 +795,7 @@ int main(int argc, char **argv) {
   digitalWrite(pindig2, HIGH);
   digitalWrite(pindig3, HIGH);
 
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 70; i++) {
     digitalWrite(pindig2, LOW);   
     digitalWrite (pin9, LOW);
     digitalWrite (pin10, HIGH);
