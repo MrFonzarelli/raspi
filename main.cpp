@@ -630,7 +630,7 @@ void doSingleDigitWork() {
                             digitalWrite (pin7, LOW);
                             std::this_thread::sleep_for(std::chrono::milliseconds(50));
                         } else {
-                            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+                            std::this_thread::sleep_for(std::chrono::milliseconds(200));
                             digitalWrite (pin1, LOW);
                             digitalWrite (pin2, LOW);
                             digitalWrite (pin3, LOW);
