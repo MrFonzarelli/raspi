@@ -789,32 +789,6 @@ int main(int argc, char **argv) {
   digitalWrite (pin14, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-  digitalWrite (pin9, HIGH);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin10, HIGH);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin11, HIGH);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin12, HIGH);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin13, HIGH);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin14, HIGH);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-  digitalWrite (pin9, LOW);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin10, LOW);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin11, LOW);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin12, LOW);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin13, LOW);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin14, LOW);
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
   digitalWrite(pindig1, HIGH);
