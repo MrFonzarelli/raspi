@@ -46,6 +46,7 @@ int des_buttonState = 0;
 int last_buttonState = 0;
 double cur_rpm = 0;
 double max_rpm = 1;
+double throttlePos;
 int max_gear;
 int sfd;
 int wait = 3;
@@ -613,43 +614,46 @@ void doSingleDigitWork() {
             int max_g = max_gear;
             float cur = cur_rpm;
             float max = max_rpm;
+            float tht = throttlePos;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
-            if (cur/max >= 0.7) {
-                if (gear == max_g | gear == 1) {
-                } else {
-                    if (cur/max >= 0.8) {
-                        if (cur/max >= 0.9) {
-                            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                            digitalWrite (pin1, LOW);
-                            digitalWrite (pin2, LOW);
-                            digitalWrite (pin3, LOW);
-                            digitalWrite (pin4, LOW);
-                            digitalWrite (pin5, LOW);
-                            digitalWrite (pin6, LOW);
-                            digitalWrite (pin7, LOW);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                        } else {
-                            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-                            digitalWrite (pin1, LOW);
-                            digitalWrite (pin2, LOW);
-                            digitalWrite (pin3, LOW);
-                            digitalWrite (pin4, LOW);
-                            digitalWrite (pin5, LOW);
-                            digitalWrite (pin6, LOW);
-                            digitalWrite (pin7, LOW);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                        }
+            if (tht > 0.1) {
+                if (cur/max >= 0.7) {
+                    if (gear == max_g | gear == 1) {
                     } else {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(300));
-                        digitalWrite (pin1, LOW);
-                        digitalWrite (pin2, LOW);
-                        digitalWrite (pin3, LOW);
-                        digitalWrite (pin4, LOW);
-                        digitalWrite (pin5, LOW);
-                        digitalWrite (pin6, LOW);
-                        digitalWrite (pin7, LOW);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                        if (cur/max >= 0.8) {
+                            if (cur/max >= 0.9) {
+                                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                                digitalWrite (pin1, LOW);
+                                digitalWrite (pin2, LOW);
+                                digitalWrite (pin3, LOW);
+                                digitalWrite (pin4, LOW);
+                                digitalWrite (pin5, LOW);
+                                digitalWrite (pin6, LOW);
+                                digitalWrite (pin7, LOW);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                            } else {
+                                std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                                digitalWrite (pin1, LOW);
+                                digitalWrite (pin2, LOW);
+                                digitalWrite (pin3, LOW);
+                                digitalWrite (pin4, LOW);
+                                digitalWrite (pin5, LOW);
+                                digitalWrite (pin6, LOW);
+                                digitalWrite (pin7, LOW);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                            }
+                        } else {
+                            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+                            digitalWrite (pin1, LOW);
+                            digitalWrite (pin2, LOW);
+                            digitalWrite (pin3, LOW);
+                            digitalWrite (pin4, LOW);
+                            digitalWrite (pin5, LOW);
+                            digitalWrite (pin6, LOW);
+                            digitalWrite (pin7, LOW);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                        }
                     }
                 }
             }
@@ -659,6 +663,31 @@ void doSingleDigitWork() {
 void doTripleDigitWork() {
     while (true) {
         tripleDigitOutput();
+    }
+}
+
+void doButtonWork() {
+    while (true) {
+        des_buttonState = digitalRead(pinButton);
+        if (last_buttonState != des_buttonState) {
+            if (last_buttonState == 0) {
+                if (cur_buttonState == 0) {
+                    tripleDigitMutex.lock();
+                    if (displayState == 2){
+                        displayState = 0;
+                    } else {
+                        displayState += 1;
+                    }
+                    tripleDigitMutex.unlock();
+                } else {
+                    cur_buttonState = 0;
+                }
+            } else {
+                last_buttonState = 0;
+            }
+            last_buttonState = des_buttonState;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 
@@ -695,6 +724,186 @@ int main(int argc, char **argv) {
   digitalWrite(pindig2, HIGH);
   digitalWrite(pindig3, HIGH);
    
+  digitalWrite (pin9, LOW);
+  digitalWrite (pin10, LOW);
+  digitalWrite (pin11, LOW);
+  digitalWrite (pin12, LOW);
+  digitalWrite (pin13, LOW);
+  digitalWrite (pin14, LOW);
+  digitalWrite (pin15, LOW);
+  digitalWrite (pin16, LOW);
+
+  digitalWrite(pindig1, LOW);
+  digitalWrite(pindig2, LOW);
+  digitalWrite(pindig3, LOW);
+
+  digitalWrite (pin9, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin10, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin11, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin12, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin13, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin14, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin15, HIGH);
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  digitalWrite (pin16, HIGH);  
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+  digitalWrite(pindig1, HIGH);
+  digitalWrite(pindig2, HIGH);
+  digitalWrite(pindig3, HIGH);
+
+  for (int i = 0; i < 1000; i++) {
+    digitalWrite(pindig2, LOW);   
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    digitalWrite(pindig2, HIGH);
+
+    digitalWrite(pindig1, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, HIGH);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    digitalWrite(pindig1, HIGH);   
+  }
+
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(pindig3, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3));
+    digitalWrite(pindig3, HIGH);
+
+    digitalWrite(pindig2, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3));
+    digitalWrite(pindig2, HIGH);
+
+    digitalWrite(pindig1, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3));
+    digitalWrite(pindig1, HIGH);
+  }
+
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(pindig3, LOW);   
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    digitalWrite(pindig3, HIGH);
+
+    digitalWrite(pindig2, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, HIGH);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    digitalWrite(pindig2, HIGH);   
+  }
+
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(pindig3, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    digitalWrite(pindig3, HIGH);
+
+    digitalWrite(pindig2, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    digitalWrite(pindig2, HIGH);
+  }  
+
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(pindig1, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, HIGH);
+    digitalWrite (pin14, HIGH);
+    digitalWrite (pin15, HIGH);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    digitalWrite(pindig1, HIGH);
+  }
+
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(pindig1, LOW);
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, HIGH);
+    digitalWrite (pin11, HIGH);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, LOW);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    digitalWrite(pindig1, HIGH);
+  }
+  std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+  digitalWrite (pin9, LOW);
+  digitalWrite (pin10, LOW);
+  digitalWrite (pin11, LOW);
+  digitalWrite (pin12, LOW);
+  digitalWrite (pin13, LOW);
+  digitalWrite (pin14, LOW);
+  digitalWrite (pin15, LOW);
+
+  std::thread singleDigitThread(doSingleDigitWork);
+  std::thread tripleDigitThread(doTripleDigitWork);
+  std::thread buttonThread(doButtonWork);
+
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
   addr_len = sizeof(myaddr);
@@ -708,9 +917,6 @@ int main(int argc, char **argv) {
     printf("connect err \n");
     return 0;
   }
-
-  std::thread singleDigitThread(doSingleDigitWork);
-  std::thread tripleDigitThread(doTripleDigitWork);
     
   auto old_time = std::chrono::high_resolution_clock::now();
     
@@ -720,25 +926,6 @@ int main(int argc, char **argv) {
         printf("recv err \n");
         return 0;
     } else {
-        des_buttonState = digitalRead(pinButton);
-        if (last_buttonState != des_buttonState) {
-            if (last_buttonState == 0) {
-                if (cur_buttonState == 0) {
-                    tripleDigitMutex.lock();
-                    if (displayState == 2){
-                        displayState = 0;
-                    } else {
-                        displayState += 1;
-                    }
-                    tripleDigitMutex.unlock();
-                } else {
-                    cur_buttonState = 0;
-                }
-            } else {
-                last_buttonState = 0;
-            }
-            last_buttonState = des_buttonState;
-        }
         outGauge *s = (outGauge *)buffer;
         des_gear = (int)s->gear;
         cur_rpm = s->rpm;
@@ -762,6 +949,7 @@ int main(int argc, char **argv) {
         speed = s->speed * 3.6;
         pressure = s->turbo * 10;
         distance = dist;
+        throttlePos = s->throttle;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
         old_time = new_time;
