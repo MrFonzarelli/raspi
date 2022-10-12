@@ -973,7 +973,7 @@ int main(int argc, char **argv) {
         return 0;
     } else {
         outGauge *s = (outGauge *)buffer;
-        dashLights = s->dashLights;
+        dashLights = s->showLights;
         if (dashLights != dashLights_old) {
             printf("Hex: %08x\n", dashLights);
             dashLights_old = dashLights;
