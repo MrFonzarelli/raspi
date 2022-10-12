@@ -43,6 +43,8 @@ int engineTemp;
 int oilTemp;
 int oilPressure;
 double dist;
+unsigned dashLights;
+unsigned dashLights_old;
 int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
@@ -971,16 +973,12 @@ int main(int argc, char **argv) {
         return 0;
     } else {
         outGauge *s = (outGauge *)buffer;
-        des_gear = (int)s->gear;
-        cur_rpm = s->rpm;
-        if (max_gear <= des_gear) {
-            singleDigitMutex.lock();
-            if (max_rpm <= cur_rpm) {
-                max_rpm = cur_rpm;
-            }
-            max_gear = des_gear;
-            singleDigitMutex.unlock();
+        dashLights = s->dashLights;
+        if (dashLights != dashLights_old) {
+            printf("Hex: %x\n", dashLights)
+            dashLights_old = dashLights;
         }
+        
         double speed_to_count = s->speed;
         if (speed_to_count < 0.15) {
             speed_to_count = 0;
@@ -996,8 +994,18 @@ int main(int argc, char **argv) {
         throttlePos = s->throttle;
         engineTemp = s->engTemp;
         oilTemp = s->oilTemp;
+        des_gear = (int)s->gear;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
+        cur_rpm = s->rpm;
+        if (max_gear <= des_gear) {
+            singleDigitMutex.lock();
+            if (max_rpm <= cur_rpm) {
+                max_rpm = cur_rpm;
+            }
+            max_gear = des_gear;
+            singleDigitMutex.unlock();
+        }
         old_time = new_time;
     }
   }
