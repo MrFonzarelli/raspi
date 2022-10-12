@@ -39,6 +39,9 @@ int cur_gear = 0;
 int speed;
 int pressure;
 int distance;
+int engineTemp;
+int oilTemp;
+int oilPressure;
 double dist;
 int displayState = 0;
 int cur_buttonState = 0;
@@ -467,6 +470,21 @@ int digParser(int num, int state) {
             dig = distance;
         }
         break;
+        case 3:
+        {
+            dig = engineTemp;
+        }
+        break;
+        case 4:
+        {
+            dig = oilTemp;
+        }
+        break;
+        case 5:
+        {
+            dig = oilPressure;
+        }
+        break;
     }
     switch(num) {
         case 1:
@@ -497,52 +515,17 @@ int digParser(int num, int state) {
 void tripleDigitOutput() {
     int dig1;
     int dig2;
-    int dig3;
-    int state;
+    int dig3; 
 
     tripleDigitMutex.lock();
-    state = displayState;
+    int state = displayState;
     dig1 = digParser(1, state);
     dig2 = digParser(2, state);
     dig3 = digParser(3, state);
     tripleDigitMutex.unlock();
 
-    switch(state) {
-        case 0:
-        {
-            if (dig1 == 0) {
-                if (dig2 == 0) {
-                    digitalWrite(pindig3, LOW);   
-                    digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);
-                } else {
-                    digitalWrite(pindig3, LOW);   
-                    digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);           
-                    digitalWrite(pindig2, LOW);
-                    digitSelect(dig2);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig2, HIGH);            
-                }
-            } else {
-                digitalWrite(pindig3, LOW);   
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, HIGH);       
-                digitalWrite(pindig2, LOW);   
-                digitSelect(dig2);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig2, HIGH);       
-                digitalWrite(pindig1, LOW);
-                digitSelect(dig1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig1, HIGH);                
-            }
-        }
-        break;
-        case 1:
+    switch(state) { //This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
+        case 1:     //These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
             if (dig1 == 0) {
                 digitalWrite(pindig3, LOW);   
@@ -597,6 +580,40 @@ void tripleDigitOutput() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                 digitalWrite(pindig2, HIGH); 
                 digitalWrite(pin16, LOW);      
+                digitalWrite(pindig1, LOW);
+                digitSelect(dig1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig1, HIGH);                
+            }
+        }
+        break;
+        default : //Anything that will be using all three digits without the DP pin should stay on default
+        {
+            if (dig1 == 0) {
+                if (dig2 == 0) {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);
+                } else {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);           
+                    digitalWrite(pindig2, LOW);
+                    digitSelect(dig2);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig2, HIGH);            
+                }
+            } else {
+                digitalWrite(pindig3, LOW);   
+                digitSelect(dig3);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig3, HIGH);       
+                digitalWrite(pindig2, LOW);   
+                digitSelect(dig2);
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                digitalWrite(pindig2, HIGH);       
                 digitalWrite(pindig1, LOW);
                 digitSelect(dig1);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -673,7 +690,7 @@ void doButtonWork() {
             if (last_buttonState == 0) {
                 if (cur_buttonState == 0) {
                     tripleDigitMutex.lock();
-                    if (displayState == 2){
+                    if (displayState == 5){
                         displayState = 0;
                     } else {
                         displayState += 1;
@@ -982,6 +999,9 @@ int main(int argc, char **argv) {
         pressure = s->turbo * 10;
         distance = dist;
         throttlePos = s->throttle;
+        engineTemp = s->engTemp;
+        oilTemp = s->oilTemp;
+        oilPressure = s->oilPressure;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
         old_time = new_time;
