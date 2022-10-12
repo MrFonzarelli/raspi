@@ -975,7 +975,7 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         dashLights = s->dashLights;
         if (dashLights != dashLights_old) {
-            printf("Hex: %x\n", dashLights)
+            printf("Hex: %x\n", dashLights);
             dashLights_old = dashLights;
         }
         
