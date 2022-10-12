@@ -480,11 +480,6 @@ int digParser(int num, int state) {
             dig = oilTemp;
         }
         break;
-        case 5:
-        {
-            dig = oilPressure;
-        }
-        break;
     }
     switch(num) {
         case 1:
@@ -690,7 +685,7 @@ void doButtonWork() {
             if (last_buttonState == 0) {
                 if (cur_buttonState == 0) {
                     tripleDigitMutex.lock();
-                    if (displayState == 5){
+                    if (displayState == 4){
                         displayState = 0;
                     } else {
                         displayState += 1;
@@ -1001,7 +996,6 @@ int main(int argc, char **argv) {
         throttlePos = s->throttle;
         engineTemp = s->engTemp;
         oilTemp = s->oilTemp;
-        oilPressure = s->oilPressure;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
         old_time = new_time;
