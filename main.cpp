@@ -631,46 +631,6 @@ void doSingleDigitWork() {
             float tht = throttlePos;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
-            if (tht > 0.1) {
-                if (cur/max >= 0.7) {
-                    if (gear == max_g | gear == 1) {
-                    } else {
-                        if (cur/max >= 0.8) {
-                            if (cur/max >= 0.9) {
-                                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                                digitalWrite (pin1, LOW);
-                                digitalWrite (pin2, LOW);
-                                digitalWrite (pin3, LOW);
-                                digitalWrite (pin4, LOW);
-                                digitalWrite (pin5, LOW);
-                                digitalWrite (pin6, LOW);
-                                digitalWrite (pin7, LOW);
-                                std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                            } else {
-                                std::this_thread::sleep_for(std::chrono::milliseconds(200));
-                                digitalWrite (pin1, LOW);
-                                digitalWrite (pin2, LOW);
-                                digitalWrite (pin3, LOW);
-                                digitalWrite (pin4, LOW);
-                                digitalWrite (pin5, LOW);
-                                digitalWrite (pin6, LOW);
-                                digitalWrite (pin7, LOW);
-                                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                            }
-                        } else {
-                            std::this_thread::sleep_for(std::chrono::milliseconds(300));
-                            digitalWrite (pin1, LOW);
-                            digitalWrite (pin2, LOW);
-                            digitalWrite (pin3, LOW);
-                            digitalWrite (pin4, LOW);
-                            digitalWrite (pin5, LOW);
-                            digitalWrite (pin6, LOW);
-                            digitalWrite (pin7, LOW);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-                        }
-                    }
-                }
-            }
         }
 }
 
