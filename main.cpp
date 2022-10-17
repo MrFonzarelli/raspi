@@ -49,12 +49,24 @@ int displayState = 0;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
-double cur_rpm = 0;
-double max_rpm = 1;
 double throttlePos;
-int max_gear;
 int sfd;
 int wait = 3;
+
+void printBits(size_t const size, void const * const ptr)
+{
+    unsigned char *b = (unsigned char*) ptr;
+    unsigned char byte;
+    int i, j;
+    
+    for (i = size-1; i >= 0; i--) {
+        for (j = 7; j >= 0; j--) {
+            byte = (b[i] >> j) & 1;
+            printf("%u", byte);
+        }
+    }
+    puts("");
+}
 
 std::mutex tripleDigitMutex;
 std::mutex singleDigitMutex;
@@ -935,7 +947,7 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         dashLights = s->showLights;
         if (dashLights != dashLights_old) {
-            printf("Hex: %08x\n", dashLights);
+            printBits(sizeof(dashLights), &unsigned)
             dashLights_old = dashLights;
         }
         
@@ -957,15 +969,6 @@ int main(int argc, char **argv) {
         des_gear = (int)s->gear;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
-        cur_rpm = s->rpm;
-        if (max_gear <= des_gear) {
-            singleDigitMutex.lock();
-            if (max_rpm <= cur_rpm) {
-                max_rpm = cur_rpm;
-            }
-            max_gear = des_gear;
-            singleDigitMutex.unlock();
-        }
         old_time = new_time;
     }
   }
