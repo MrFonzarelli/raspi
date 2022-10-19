@@ -944,7 +944,7 @@ int main(int argc, char **argv) {
         outGauge *s = (outGauge *)buffer;
         dashLights = s->showLights;
         if (dashLights != dashLights_old) {
-            printBits(sizeof(dashLights), &unsigned)
+            printBits(sizeof(dashLights), &u)
             dashLights_old = dashLights;
         }
         
