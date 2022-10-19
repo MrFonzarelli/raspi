@@ -637,9 +637,6 @@ void doSingleDigitWork() {
         while (true) {
             singleDigitMutex.lock();
             int gear = des_gear;
-            int max_g = max_gear;
-            float cur = cur_rpm;
-            float max = max_rpm;
             float tht = throttlePos;
             singleDigitMutex.unlock();
             singleDigitOutput(gear);
