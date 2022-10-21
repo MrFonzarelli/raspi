@@ -13,6 +13,7 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <cmath>
 
 int pin1 = 15;  //A
 int pin2 = 16;  //B
@@ -991,12 +992,12 @@ int main(int argc, char **argv) {
         dist += time_delta.count() * speed_to_count / 100;
         tripleDigitMutex.lock();
         singleDigitMutex.lock();
-        speed = s->speed * 3.6;
-        pressure = s->turbo * 10;
+        speed = round(s->speed * 3.6);
+        pressure = round(s->turbo * 10);
         distance = dist;
-        throttlePos = s->throttle;
-        engineTemp = s->engTemp;
-        oilTemp = s->oilTemp;
+        throttlePos = round(s->throttle);
+        engineTemp = round(s->engTemp);
+        oilTemp = round(s->oilTemp);
         des_gear = (int)s->gear;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
