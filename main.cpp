@@ -536,32 +536,66 @@ void tripleDigitOutput() {
     switch(state) { //This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
         case 1:     //These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
-            if (dig1 == 0) {
-                digitalWrite(pindig3, LOW);   
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, HIGH);           
-                digitalWrite(pindig2, LOW);
-                digitSelect(dig2);
-                digitalWrite(pin16, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig2, HIGH);  
-                digitalWrite(pin16, LOW);          
+            if (pressure < 0) {
+                if (dig1 == 0) {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);           
+                    digitalWrite(pindig2, LOW);
+                    digitSelect(dig2);
+                    digitalWrite(pin16, HIGH);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig2, HIGH);  
+                    digitalWrite(pin16, LOW);
+                    digitalWrite(pindig1, LOW);
+                    digitalWrite(pin15, HIGH);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig1, HIGH);
+                } else {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);       
+                    digitalWrite(pindig2, LOW);   
+                    digitSelect(dig2);
+                    digitalWrite(pin16, HIGH);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig2, HIGH); 
+                    digitalWrite(pin16, LOW);      
+                    digitalWrite(pindig1, LOW);
+                    digitSelect(dig1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig1, HIGH);                
+                }
             } else {
-                digitalWrite(pindig3, LOW);   
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, HIGH);       
-                digitalWrite(pindig2, LOW);   
-                digitSelect(dig2);
-                digitalWrite(pin16, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig2, HIGH); 
-                digitalWrite(pin16, LOW);      
-                digitalWrite(pindig1, LOW);
-                digitSelect(dig1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig1, HIGH);                
+                if (dig1 == 0) {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);           
+                    digitalWrite(pindig2, LOW);
+                    digitSelect(dig2);
+                    digitalWrite(pin16, HIGH);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig2, HIGH);  
+                    digitalWrite(pin16, LOW);          
+                } else {
+                    digitalWrite(pindig3, LOW);   
+                    digitSelect(dig3);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig3, HIGH);       
+                    digitalWrite(pindig2, LOW);   
+                    digitSelect(dig2);
+                    digitalWrite(pin16, HIGH);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig2, HIGH); 
+                    digitalWrite(pin16, LOW);      
+                    digitalWrite(pindig1, LOW);
+                    digitSelect(dig1);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    digitalWrite(pindig1, HIGH);                
+                }
             }
         }
         break;
