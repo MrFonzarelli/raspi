@@ -571,6 +571,7 @@ void tripleDigitOutput() {
                     digitalWrite(pindig1, HIGH);
             } else {
                 if (dig1 == 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     digitalWrite(pindig3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -603,6 +604,7 @@ void tripleDigitOutput() {
         case 2:
         {
             if (dig1 == 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                 digitalWrite(pindig3, LOW);   
                 digitSelect(dig3);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -635,11 +637,14 @@ void tripleDigitOutput() {
         {
             if (dig1 == 0) {
                 if (dig2 == 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     digitalWrite(pindig3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     digitalWrite(pindig3, HIGH);
                 } else {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     digitalWrite(pindig3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
