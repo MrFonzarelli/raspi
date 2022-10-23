@@ -484,7 +484,6 @@ int digitSelect(int num) {
 
 int digParser(int num, int state) {
     int dig;
-    tripleDigitMutex.lock();
     switch(state) {
         case 0:
         {
@@ -512,7 +511,7 @@ int digParser(int num, int state) {
         }
         break;
     }
-    tripleDigitMutex.unlock();
+
     switch(num) {
         case 1:
         {
