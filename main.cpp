@@ -993,6 +993,7 @@ int main(int argc, char **argv) {
         singleDigitMutex.lock();
         speed = lround(s->speed * 3.6);
         pressure = lround(s->turbo * 10);
+        printf("turbo: %f, pressure: %d\n", s->turbo, pressure);
         distance = dist;
         throttlePos = lround(s->throttle);
         engineTemp = lround(s->engTemp);
