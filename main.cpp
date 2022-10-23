@@ -11,6 +11,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include <iostream>
+#include <fstream>
 #include <thread>
 #include <mutex>
 #include <cmath>
