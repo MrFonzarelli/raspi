@@ -473,6 +473,7 @@ int digitSelect(int num) {
         {
             num = MinusHandlerTri();
         }
+        break;
         default:
         {
             num = NinethHandlerTri();
