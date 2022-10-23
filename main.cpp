@@ -469,6 +469,7 @@ int digitSelect(int num) {
 
 int digParser(int num, int state) {
     int dig;
+    tripleDigitMutex.lock();
     switch(state) {
         case 0:
         {
@@ -496,6 +497,7 @@ int digParser(int num, int state) {
         }
         break;
     }
+    tripleDigitMutex.unlock();
     switch(num) {
         case 1:
         {
@@ -530,7 +532,7 @@ void tripleDigitOutput() {
     tripleDigitMutex.lock();
     int state = displayState;
     dig1 = digParser(1, state);
-    dig2 = digParser(2, state);
+    dig2 = digParser(2, state); //lol
     dig3 = digParser(3, state);
     tripleDigitMutex.unlock();
 
@@ -992,12 +994,12 @@ int main(int argc, char **argv) {
         dist += time_delta.count() * speed_to_count / 100;
         tripleDigitMutex.lock();
         singleDigitMutex.lock();
-        speed = round(s->speed * 3.6);
-        pressure = round(s->turbo * 10);
+        speed = lround(s->speed * 3.6);
+        pressure = lround(s->turbo * 10);
         distance = dist;
-        throttlePos = round(s->throttle);
-        engineTemp = round(s->engTemp);
-        oilTemp = round(s->oilTemp);
+        throttlePos = lround(s->throttle);
+        engineTemp = lround(s->engTemp);
+        oilTemp = lround(s->oilTemp);
         des_gear = (int)s->gear;
         singleDigitMutex.unlock();
         tripleDigitMutex.unlock();
