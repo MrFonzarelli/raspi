@@ -469,7 +469,7 @@ int digitSelect(int num) {
             num = NinethHandlerTri();
         }
         break;
-        case -1:
+        case 10:
         {
             num = MinusHandlerTri();
         }
@@ -565,7 +565,7 @@ void tripleDigitOutput() {
                     digitalWrite(pindig2, HIGH);  
                     digitalWrite(pin16, LOW);
                     digitalWrite(pindig1, LOW);
-                    digitSelect(-1);
+                    digitSelect(10);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     digitalWrite(pindig1, HIGH);
             } else {
