@@ -554,7 +554,6 @@ void tripleDigitOutput() {
         case 1:     //These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
             if (pressure < 0) {
-                if (dig1 == 0) {
                     digitalWrite(pindig3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -569,22 +568,6 @@ void tripleDigitOutput() {
                     digitSelect(-1);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     digitalWrite(pindig1, HIGH);
-                } else {
-                    digitalWrite(pindig3, LOW);   
-                    digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);       
-                    digitalWrite(pindig2, LOW);   
-                    digitSelect(dig2);
-                    digitalWrite(pin16, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig2, HIGH); 
-                    digitalWrite(pin16, LOW);      
-                    digitalWrite(pindig1, LOW);
-                    digitSelect(dig1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig1, HIGH);                
-                }
             } else {
                 if (dig1 == 0) {
                     digitalWrite(pindig3, LOW);   
