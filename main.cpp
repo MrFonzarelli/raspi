@@ -723,7 +723,7 @@ void read_odometer() {
     std::ifstream odo_file(ODOMETER_FILENAME);
     if (odo_file.good())
     {
-        odometer << odo_file;
+        odo_file >> odometer;
     }
     else
     {
