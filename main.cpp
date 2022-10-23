@@ -718,7 +718,7 @@ void doButtonWork() {
             if (last_buttonState == 0) {
                 if (cur_buttonState == 0) {
                     tripleDigitMutex.lock();
-                    displayState = (DisplayState)(((int)DisplayState + 1) % DISPLAY_STATE_COUNT);
+                    displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
                     tripleDigitMutex.unlock();
                 } else {
                     cur_buttonState = 0;
