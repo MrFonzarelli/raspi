@@ -337,6 +337,17 @@ int ZeroHandlerTri(void) {
     return 0;
 }
 
+int MinusHandlerTri(void) {
+    digitalWrite (pin9, LOW);
+    digitalWrite (pin10, LOW);
+    digitalWrite (pin11, LOW);
+    digitalWrite (pin12, LOW);
+    digitalWrite (pin13, LOW);
+    digitalWrite (pin14, LOW);
+    digitalWrite (pin15, HIGH);
+    return 0;
+}
+
 int singleDigitOutput(int state){
     switch(state)
         {
@@ -458,6 +469,10 @@ int digitSelect(int num) {
             num = NinethHandlerTri();
         }
         break;
+        case -1:
+        {
+            num = MinusHandlerTri();
+        }
         default:
         {
             num = NinethHandlerTri();
