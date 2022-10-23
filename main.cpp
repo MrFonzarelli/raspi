@@ -14,6 +14,9 @@
 #include <thread>
 #include <mutex>
 #include <cmath>
+#include <signal.h>
+
+#define ODOMETER_FILENAME "delete-to-reset-odometer"
 
 int pin1 = 15;  //A
 int pin2 = 16;  //B
@@ -39,7 +42,7 @@ int des_gear = 1;
 int cur_gear = 0;
 int speed;
 int pressure;
-int distance;
+int trip_odometer;
 int engineTemp;
 int oilTemp;
 int oilPressure;
@@ -53,6 +56,7 @@ int last_buttonState = 0;
 double throttlePos;
 int sfd;
 int wait = 3;
+int odometer;
 
 void printBits(size_t const size, void const * const ptr)
 {
@@ -498,7 +502,7 @@ int digParser(int num, int state) {
         break;
         case 2:
         {
-            dig = distance;
+            dig = trip_odometer;
         }
         break;
         case 3:
@@ -714,7 +718,37 @@ void doButtonWork() {
     }
 }
 
+void read_odometer() {
+    std::ifstream odo_file(ODOMETER_FILENAME);
+    if (odo_file.good())
+    {
+        odometer << odo_file;
+    }
+    else
+    {
+        odometer = 0;
+    }
+    odo_file.close();
+}
+
+void write_odometer()
+{
+    std::ofstream odo_file(ODOMETER_FILENAME);
+    odo_file << trip_odometer + odometer;
+    odo_file.close();
+}
+
+void odo_signal_handler(int)
+{
+    write_odometer();
+}
+
 int main(int argc, char **argv) {
+  signal(SIGINT, odo_signal_handler);
+  signal(SIGTERM, odo_signal_handler);
+  signal(SIGHUP, odo_signal_handler);
+  read_odometer();
+
   struct sockaddr_in myaddr, clientaddr;
   memset(&myaddr, 0, sizeof(struct sockaddr_in));
   memset(&clientaddr, 0, sizeof(struct sockaddr_in));
@@ -999,7 +1033,7 @@ int main(int argc, char **argv) {
         singleDigitMutex.lock();
         speed = lround(s->speed * 3.6);
         pressure = lround(s->turbo * 10);
-        distance = dist;
+        trip_odometer = dist;
         throttlePos = lround(s->throttle);
         engineTemp = lround(s->engTemp);
         oilTemp = lround(s->oilTemp);
