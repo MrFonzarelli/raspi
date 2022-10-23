@@ -516,21 +516,21 @@ int digParser(int num, int state) {
         case 1:
         {
             int dig1;
-            dig1 = dig / 100 % 10;
+            dig1 = abs(dig) / 100 % 10;
             return dig1;
         }
         break;
         case 2:
         {
             int dig2;
-            dig2 = dig / 10 % 10;
+            dig2 = abs(dig) / 10 % 10;
             return dig2;
         }
         break;
         case 3:
         {
             int dig3;
-            dig3 = dig % 10;
+            dig3 = abs(dig) % 10;
             return dig3;
         }
         break;
