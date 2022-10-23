@@ -19,6 +19,17 @@
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
+#define DISPLAY_STATE_COUNT 6
+enum class DisplayState
+{
+    Speed = 0,
+    TurboPressure = 1,
+    TripOdometer = 2,
+    Odometer = 3,
+    EngineTemp = 4,
+    OilTemp = 5
+}
+
 int pin1 = 15;  //A
 int pin2 = 16;  //B
 int pin3 = 1;   //C
@@ -50,7 +61,7 @@ int oilPressure;
 double dist;
 unsigned dashLights;
 unsigned dashLights_old;
-int displayState = 0;
+DisplayState displayState = Display::Speed;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
@@ -488,34 +499,39 @@ int digitSelect(int num) {
     return num;
 }
 
-int digParser(int num, int state) {
+int digParser(int num, DisplayState state) {
     int dig;
     switch(state) {
-        case 0:
+        case DisplayState::Speed:
         {
             dig = speed;
+            break;
         }
-        break;
-        case 1:
+        case DisplayState::TurboPressure:
         {
             dig = pressure;
+            break;
         }
-        break;
-        case 2:
+        case DisplayState::TripOdometer:
         {
             dig = trip_odometer;
+            break;
         }
-        break;
-        case 3:
+        case DisplayState::Odometer: 
+        {
+            dig = odometer;
+            break;
+        }
+        case DisplayState::EngineTemp:
         {
             dig = engineTemp;
+            break;
         }
-        break;
-        case 4:
+        case DisplayState::OilTemp:
         {
             dig = oilTemp;
+            break;
         }
-        break;
     }
 
     switch(num) {
@@ -550,14 +566,14 @@ void tripleDigitOutput() {
     int dig3; 
 
     tripleDigitMutex.lock();
-    int state = displayState;
+    DisplayState state = displayState;
     dig1 = digParser(1, state);
     dig2 = digParser(2, state); //lol
     dig3 = digParser(3, state);
     tripleDigitMutex.unlock();
 
     switch(state) { //This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
-        case 1:     //These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
+        case DisplayState::TurboPressure:     //These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
             if (pressure < 0) {
                     digitalWrite(pindig3, LOW);   
@@ -606,7 +622,8 @@ void tripleDigitOutput() {
             }
         }
         break;
-        case 2:
+        case DisplayState::TripOdometer:
+        case DisplayState::Odometer:
         {
             if (dig1 == 0) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
@@ -701,11 +718,7 @@ void doButtonWork() {
             if (last_buttonState == 0) {
                 if (cur_buttonState == 0) {
                     tripleDigitMutex.lock();
-                    if (displayState == 4){
-                        displayState = 0;
-                    } else {
-                        displayState += 1;
-                    }
+                    displayState = (DisplayState)(((int)DisplayState + 1) % DISPLAY_STATE_COUNT);
                     tripleDigitMutex.unlock();
                 } else {
                     cur_buttonState = 0;
