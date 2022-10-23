@@ -742,6 +742,7 @@ void write_odometer()
 void odo_signal_handler(int)
 {
     write_odometer();
+    exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char **argv) {
