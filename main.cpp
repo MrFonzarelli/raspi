@@ -28,7 +28,7 @@ enum class DisplayState
     Odometer = 3,
     EngineTemp = 4,
     OilTemp = 5
-}
+};
 
 int pin1 = 15;  //A
 int pin2 = 16;  //B
@@ -61,7 +61,7 @@ int oilPressure;
 double dist;
 unsigned dashLights;
 unsigned dashLights_old;
-DisplayState displayState = Display::Speed;
+DisplayState displayState = DisplayState::Speed;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
