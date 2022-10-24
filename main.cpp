@@ -47,6 +47,7 @@ int pin14 = 25; //3 digit F
 int pin15 = 24; //3 digit G
 int pin16 = 23; //3 digit DP
 int pinButton = 12;
+int pinResetOdo = 8;
 int pindig1 = 0; //7 seg 3 digit dig1
 int pindig2 = 2; //7 seg 3 digit dig2
 int pindig3 = 3; //7 seg 3 digit dig3
@@ -65,6 +66,9 @@ DisplayState displayState = DisplayState::Speed;
 int cur_buttonState = 0;
 int des_buttonState = 0;
 int last_buttonState = 0;
+int cur_ResetOdoButtonState = 0;
+int des_ResetOdoButtonState = 0;
+int last_ResetOdoButtonState = 0;
 double throttlePos;
 int sfd;
 int wait = 3;
@@ -732,6 +736,29 @@ void doButtonWork() {
     }
 }
 
+void doResetOdoButtonWork() {
+    while (true) {
+        des_ResetOdoButtonState = digitalRead(pinResetOdo);
+        if (last_ResetOdoButtonState != des_ResetOdoButtonState) {
+            if (last_ResetOdoButtonState == 0) {
+                if (cur_ResetOdoButtonState == 0) {
+                    tripleDigitMutex.lock();
+                    write_odometer();
+                    trip_odometer = 0;
+                    read_odometer()
+                    tripleDigitMutex.unlock();
+                } else {
+                    cur_ResetOdoButtonState = 0;
+                }
+            } else {
+                last_ResetOdoButtonState = 0;
+            }
+            last_ResetOdoButtonState = des_ResetOdoButtonState;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+}
+
 void read_odometer() {
     std::ifstream odo_file(ODOMETER_FILENAME);
     if (odo_file.good())
@@ -792,6 +819,7 @@ int main(int argc, char **argv) {
   pinMode(pindig2, OUTPUT);
   pinMode(pindig3, OUTPUT);
   pinMode(pinButton, INPUT);
+  pinMode(pinResetOdo, INPUT);
   digitalWrite(pindig1, HIGH);
   digitalWrite(pindig2, HIGH);
   digitalWrite(pindig3, HIGH);
