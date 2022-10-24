@@ -715,6 +715,26 @@ void doTripleDigitWork() {
     }
 }
 
+void read_odometer() {
+    std::ifstream odo_file(ODOMETER_FILENAME);
+    if (odo_file.good())
+    {
+        odo_file >> odometer;
+    }
+    else
+    {
+        odometer = 0;
+    }
+    odo_file.close();
+}
+
+void write_odometer()
+{
+    std::ofstream odo_file(ODOMETER_FILENAME);
+    odo_file << trip_odometer + odometer;
+    odo_file.close();
+}
+
 void doButtonWork() {
     while (true) {
         des_buttonState = digitalRead(pinButton);
@@ -757,26 +777,6 @@ void doResetOdoButtonWork() {
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
-}
-
-void read_odometer() {
-    std::ifstream odo_file(ODOMETER_FILENAME);
-    if (odo_file.good())
-    {
-        odo_file >> odometer;
-    }
-    else
-    {
-        odometer = 0;
-    }
-    odo_file.close();
-}
-
-void write_odometer()
-{
-    std::ofstream odo_file(ODOMETER_FILENAME);
-    odo_file << trip_odometer + odometer;
-    odo_file.close();
 }
 
 void odo_signal_handler(int)
