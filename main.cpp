@@ -765,7 +765,7 @@ void doResetOdoButtonWork() {
                     tripleDigitMutex.lock();
                     write_odometer();
                     trip_odometer = 0;
-                    read_odometer()
+                    read_odometer();
                     tripleDigitMutex.unlock();
                 } else {
                     cur_ResetOdoButtonState = 0;
