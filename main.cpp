@@ -1035,6 +1035,7 @@ int main(int argc, char **argv) {
   std::thread singleDigitThread(doSingleDigitWork);
   std::thread tripleDigitThread(doTripleDigitWork);
   std::thread buttonThread(doButtonWork);
+  std::thread resetOdoButtonThread(doResetOdoButtonWork);
 
   myaddr.sin_family = AF_INET;
   myaddr.sin_port = htons(4444);
