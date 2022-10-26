@@ -19,7 +19,30 @@
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
+#define PIN1 15;  //A
+#define PIN2 16;  //B
+#define PIN3 1;   //C
+#define PIN4 4;   //D
+#define PIN5 5;   //E
+#define PIN6 6;   //F
+#define PIN7 10;  //G
+#define PIN8 11;  //DP
+#define PIN9 31;  //3 digit A
+#define PIN10 26; //3 digit B
+#define PIN11 27; //3 digit C
+#define PIN12 28; //3 digit D
+#define PIN13 29; //3 digit E
+#define PIN14 25; //3 digit F
+#define PIN15 24; //3 digit G
+#define PIN16 23; //3 digit DP
+#define PIN_BUTTON = 12;
+#define PIN_RESET_ODO = 8;
+#define PIN_DIG1 = 0; //7 seg 3 digit dig1
+#define PIN_DIG2 = 2; //7 seg 3 digit dig2
+#define PIN_DIG3 = 3; //7 seg 3 digit dig3
+
 #define DISPLAY_STATE_COUNT 6
+
 enum class DisplayState
 {
     Speed = 0,
@@ -30,27 +53,6 @@ enum class DisplayState
     OilTemp = 5
 };
 
-int pin1 = 15;  //A
-int pin2 = 16;  //B
-int pin3 = 1;   //C
-int pin4 = 4;   //D
-int pin5 = 5;   //E
-int pin6 = 6;   //F
-int pin7 = 10;  //G
-int pin8 = 11;  //DP
-int pin9 = 31;  //3 digit A
-int pin10 = 26; //3 digit B
-int pin11 = 27; //3 digit C
-int pin12 = 28; //3 digit D
-int pin13 = 29; //3 digit E
-int pin14 = 25; //3 digit F
-int pin15 = 24; //3 digit G
-int pin16 = 23; //3 digit DP
-int pinButton = 12;
-int pinResetOdo = 8;
-int pindig1 = 0; //7 seg 3 digit dig1
-int pindig2 = 2; //7 seg 3 digit dig2
-int pindig3 = 3; //7 seg 3 digit dig3
 int des_gear = 1;
 int cur_gear = 0;
 int speed;
@@ -59,20 +61,13 @@ int trip_odometer;
 int engineTemp;
 int oilTemp;
 int oilPressure;
+int wait = 3;
+int odometer;
 double dist;
+int sfd;
 unsigned dashLights;
 unsigned dashLights_old;
 DisplayState displayState = DisplayState::Speed;
-int cur_buttonState = 0;
-int des_buttonState = 0;
-int last_buttonState = 0;
-int cur_ResetOdoButtonState = 0;
-int des_ResetOdoButtonState = 0;
-int last_ResetOdoButtonState = 0;
-double throttlePos;
-int sfd;
-int wait = 3;
-int odometer;
 
 void printBits(size_t const size, void const * const ptr)
 {
@@ -116,255 +111,255 @@ struct outGauge {
 };
 
 int ReverseHandler(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, LOW);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, LOW);
+    digitalWrite (PIN2, LOW);
+    digitalWrite (PIN3, LOW);
+    digitalWrite (PIN4, LOW);
+    digitalWrite (PIN5, HIGH);
+    digitalWrite (PIN6, LOW);
+    digitalWrite (PIN7, HIGH);
     return 0;
 }
 
 int NeutralHandler(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, LOW);
+    digitalWrite (PIN2, LOW);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, LOW);
+    digitalWrite (PIN5, HIGH);
+    digitalWrite (PIN6, LOW);
+    digitalWrite (PIN7, HIGH);
     return 1;
 }
 
 int FirstHandler(void) {
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, LOW);
+    digitalWrite (PIN1, LOW);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, LOW);
+    digitalWrite (PIN5, LOW);
+    digitalWrite (PIN6, LOW);
+    digitalWrite (PIN7, LOW);
     return 2;
 }
 
 int SecondHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, LOW);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, LOW);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, HIGH);
+    digitalWrite (PIN6, LOW);
+    digitalWrite (PIN7, HIGH);
     return 3;
 }
 
 int ThirdHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, LOW);
+    digitalWrite (PIN6, LOW);
+    digitalWrite (PIN7, HIGH);
     return 4;
 }
 
 int FourthHandler(void) { 
-    digitalWrite (pin1, LOW);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, LOW);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, LOW);
+    digitalWrite (PIN5, LOW);
+    digitalWrite (PIN6, HIGH);
+    digitalWrite (PIN7, HIGH);
     return 5;
 }
 
 int FifthHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, LOW);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, LOW);
+    digitalWrite (PIN6, HIGH);
+    digitalWrite (PIN7, HIGH);
     return 6;
 }
 
 int SixthHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, LOW);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, LOW);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, HIGH);
+    digitalWrite (PIN6, HIGH);
+    digitalWrite (PIN7, HIGH);
     return 7;
 }
 
 int SeventhHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, LOW);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, LOW);
-    digitalWrite (pin7, LOW);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, LOW);
+    digitalWrite (PIN5, LOW);
+    digitalWrite (PIN6, LOW);
+    digitalWrite (PIN7, LOW);
     return 8;
 }
 
 int EighthHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, HIGH);
+    digitalWrite (PIN6, HIGH);
+    digitalWrite (PIN7, HIGH);
     return 9;
 }
 
 int NinethHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, LOW);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, HIGH);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, LOW);
+    digitalWrite (PIN6, HIGH);
+    digitalWrite (PIN7, HIGH);
     return 10;
 }
 
 int ZeroHandler(void) {
-    digitalWrite (pin1, HIGH);
-    digitalWrite (pin2, HIGH);
-    digitalWrite (pin3, HIGH);
-    digitalWrite (pin4, HIGH);
-    digitalWrite (pin5, HIGH);
-    digitalWrite (pin6, HIGH);
-    digitalWrite (pin7, LOW);
+    digitalWrite (PIN1, HIGH);
+    digitalWrite (PIN2, HIGH);
+    digitalWrite (PIN3, HIGH);
+    digitalWrite (PIN4, HIGH);
+    digitalWrite (PIN5, HIGH);
+    digitalWrite (PIN6, HIGH);
+    digitalWrite (PIN7, LOW);
     return 11;
 }
 
 int FirstHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     return 1;
 }
 
 int SecondHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, LOW);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, HIGH);
     return 2;
 }
 
 int ThirdHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, HIGH);
     return 3;
 }
 
 int FourthHandlerTri(void) { 
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     return 4;
 }
 
 int FifthHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, LOW);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     return 5;
 }
 
 int SixthHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, LOW);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     return 6;
 }
 
 int SeventhHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     return 7;
 }
 
 int EighthHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     return 8;
 }
 
 int NinethHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     return 9;
 }
 
 int ZeroHandlerTri(void) {
-    digitalWrite (pin9, HIGH);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, HIGH);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, LOW);
+    digitalWrite (PIN9, HIGH);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, HIGH);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, LOW);
     return 0;
 }
 
 int MinusHandlerTri(void) {
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, HIGH);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, LOW);
+    digitalWrite (PIN11, LOW);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, HIGH);
     return 0;
 }
 
@@ -580,48 +575,48 @@ void tripleDigitOutput() {
         case DisplayState::TurboPressure:     //These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
             if (pressure < 0) {
-                    digitalWrite(pindig3, LOW);   
+                    digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);           
-                    digitalWrite(pindig2, LOW);
+                    digitalWrite(PIN_DIG3, HIGH);           
+                    digitalWrite(PIN_DIG2, LOW);
                     digitSelect(dig2);
-                    digitalWrite(pin16, HIGH);
+                    digitalWrite(PIN16, HIGH);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig2, HIGH);  
-                    digitalWrite(pin16, LOW);
-                    digitalWrite(pindig1, LOW);
+                    digitalWrite(PIN_DIG2, HIGH);  
+                    digitalWrite(PIN16, LOW);
+                    digitalWrite(PIN_DIG1, LOW);
                     digitSelect(10);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig1, HIGH);
+                    digitalWrite(PIN_DIG1, HIGH);
             } else {
                 if (dig1 == 0) {
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, LOW);   
+                    digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);           
-                    digitalWrite(pindig2, LOW);
+                    digitalWrite(PIN_DIG3, HIGH);           
+                    digitalWrite(PIN_DIG2, LOW);
                     digitSelect(dig2);
-                    digitalWrite(pin16, HIGH);
+                    digitalWrite(PIN16, HIGH);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig2, HIGH);  
-                    digitalWrite(pin16, LOW);          
+                    digitalWrite(PIN_DIG2, HIGH);  
+                    digitalWrite(PIN16, LOW);          
                 } else {
-                    digitalWrite(pindig3, LOW);   
+                    digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);       
-                    digitalWrite(pindig2, LOW);   
+                    digitalWrite(PIN_DIG3, HIGH);       
+                    digitalWrite(PIN_DIG2, LOW);   
                     digitSelect(dig2);
-                    digitalWrite(pin16, HIGH);
+                    digitalWrite(PIN16, HIGH);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig2, HIGH); 
-                    digitalWrite(pin16, LOW);      
-                    digitalWrite(pindig1, LOW);
+                    digitalWrite(PIN_DIG2, HIGH); 
+                    digitalWrite(PIN16, LOW);      
+                    digitalWrite(PIN_DIG1, LOW);
                     digitSelect(dig1);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig1, HIGH);                
+                    digitalWrite(PIN_DIG1, HIGH);                
                 }
             }
         }
@@ -631,31 +626,31 @@ void tripleDigitOutput() {
         {
             if (dig1 == 0) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, LOW);   
+                digitalWrite(PIN_DIG3, LOW);   
                 digitSelect(dig3);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, HIGH);           
-                digitalWrite(pindig2, LOW);
+                digitalWrite(PIN_DIG3, HIGH);           
+                digitalWrite(PIN_DIG2, LOW);
                 digitSelect(dig2);
-                digitalWrite(pin16, HIGH);
+                digitalWrite(PIN16, HIGH);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig2, HIGH);  
-                digitalWrite(pin16, LOW);          
+                digitalWrite(PIN_DIG2, HIGH);  
+                digitalWrite(PIN16, LOW);          
             } else {
-                digitalWrite(pindig3, LOW);   
+                digitalWrite(PIN_DIG3, LOW);   
                 digitSelect(dig3);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, HIGH);       
-                digitalWrite(pindig2, LOW);   
+                digitalWrite(PIN_DIG3, HIGH);       
+                digitalWrite(PIN_DIG2, LOW);   
                 digitSelect(dig2);
-                digitalWrite(pin16, HIGH);
+                digitalWrite(PIN16, HIGH);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig2, HIGH); 
-                digitalWrite(pin16, LOW);      
-                digitalWrite(pindig1, LOW);
+                digitalWrite(PIN_DIG2, HIGH); 
+                digitalWrite(PIN16, LOW);      
+                digitalWrite(PIN_DIG1, LOW);
                 digitSelect(dig1);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig1, HIGH);                
+                digitalWrite(PIN_DIG1, HIGH);                
             }
         }
         break;
@@ -665,34 +660,34 @@ void tripleDigitOutput() {
                 if (dig2 == 0) {
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, LOW);   
+                    digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);
+                    digitalWrite(PIN_DIG3, HIGH);
                 } else {
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, LOW);   
+                    digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig3, HIGH);           
-                    digitalWrite(pindig2, LOW);
+                    digitalWrite(PIN_DIG3, HIGH);           
+                    digitalWrite(PIN_DIG2, LOW);
                     digitSelect(dig2);
                     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    digitalWrite(pindig2, HIGH);            
+                    digitalWrite(PIN_DIG2, HIGH);            
                 }
             } else {
-                digitalWrite(pindig3, LOW);   
+                digitalWrite(PIN_DIG3, LOW);   
                 digitSelect(dig3);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig3, HIGH);       
-                digitalWrite(pindig2, LOW);   
+                digitalWrite(PIN_DIG3, HIGH);       
+                digitalWrite(PIN_DIG2, LOW);   
                 digitSelect(dig2);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig2, HIGH);       
-                digitalWrite(pindig1, LOW);
+                digitalWrite(PIN_DIG2, HIGH);       
+                digitalWrite(PIN_DIG1, LOW);
                 digitSelect(dig1);
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                digitalWrite(pindig1, HIGH);                
+                digitalWrite(PIN_DIG1, HIGH);                
             }
         }
         break;
@@ -736,8 +731,11 @@ void write_odometer()
 }
 
 void doButtonWork() {
+    int cur_buttonState = 0;
+    int des_buttonState = 0;
+    int last_buttonState = 0;
     while (true) {
-        des_buttonState = digitalRead(pinButton);
+        des_buttonState = digitalRead(PIN_BUTTON);
         if (last_buttonState != des_buttonState) {
             if (last_buttonState == 0) {
                 if (cur_buttonState == 0) {
@@ -757,8 +755,11 @@ void doButtonWork() {
 }
 
 void doResetOdoButtonWork() {
+    int cur_ResetOdoButtonState = 0;
+    int des_ResetOdoButtonState = 0;
+    int last_ResetOdoButtonState = 0;
     while (true) {
-        des_ResetOdoButtonState = digitalRead(pinResetOdo);
+        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO);
         if (last_ResetOdoButtonState != des_ResetOdoButtonState) {
             if (last_ResetOdoButtonState == 0) {
                 if (cur_ResetOdoButtonState == 0) {
@@ -799,238 +800,238 @@ int main(int argc, char **argv) {
   memset(buffer, 0, sizeof(buffer));
     
   wiringPiSetup();
-  pinMode(pin1, OUTPUT);
-  pinMode(pin2, OUTPUT);
-  pinMode(pin3, OUTPUT);
-  pinMode(pin4, OUTPUT);
-  pinMode(pin5, OUTPUT);
-  pinMode(pin6, OUTPUT);
-  pinMode(pin7, OUTPUT);
-  pinMode(pin8, OUTPUT);
-  pinMode(pin9, OUTPUT);
-  pinMode(pin10, OUTPUT);
-  pinMode(pin11, OUTPUT);
-  pinMode(pin12, OUTPUT);
-  pinMode(pin13, OUTPUT);
-  pinMode(pin14, OUTPUT);
-  pinMode(pin15, OUTPUT);
-  pinMode(pin16, OUTPUT);
-  pinMode(pindig1, OUTPUT);
-  pinMode(pindig2, OUTPUT);
-  pinMode(pindig3, OUTPUT);
-  pinMode(pinButton, INPUT);
-  pinMode(pinResetOdo, INPUT);
-  digitalWrite(pindig1, HIGH);
-  digitalWrite(pindig2, HIGH);
-  digitalWrite(pindig3, HIGH);
+  pinMode(PIN1, OUTPUT);
+  pinMode(PIN2, OUTPUT);
+  pinMode(PIN3, OUTPUT);
+  pinMode(PIN4, OUTPUT);
+  pinMode(PIN5, OUTPUT);
+  pinMode(PIN6, OUTPUT);
+  pinMode(PIN7, OUTPUT);
+  pinMode(PIN8, OUTPUT);
+  pinMode(PIN9, OUTPUT);
+  pinMode(PIN10, OUTPUT);
+  pinMode(PIN11, OUTPUT);
+  pinMode(PIN12, OUTPUT);
+  pinMode(PIN13, OUTPUT);
+  pinMode(PIN14, OUTPUT);
+  pinMode(PIN15, OUTPUT);
+  pinMode(PIN16, OUTPUT);
+  pinMode(PIN_DIG1, OUTPUT);
+  pinMode(PIN_DIG2, OUTPUT);
+  pinMode(PIN_DIG3, OUTPUT);
+  pinMode(PIN_BUTTON, INPUT);
+  pinMode(PIN_RESET_ODO, INPUT);
+  digitalWrite(PIN_DIG1, HIGH);
+  digitalWrite(PIN_DIG2, HIGH);
+  digitalWrite(PIN_DIG3, HIGH);
 
-  digitalWrite (pin1, LOW);
-  digitalWrite (pin2, LOW);
-  digitalWrite (pin3, LOW);
-  digitalWrite (pin4, LOW);
-  digitalWrite (pin5, LOW);
-  digitalWrite (pin6, LOW);
-  digitalWrite (pin7, LOW);
-  digitalWrite (pin8, LOW);
+  digitalWrite (PIN1, LOW);
+  digitalWrite (PIN2, LOW);
+  digitalWrite (PIN3, LOW);
+  digitalWrite (PIN4, LOW);
+  digitalWrite (PIN5, LOW);
+  digitalWrite (PIN6, LOW);
+  digitalWrite (PIN7, LOW);
+  digitalWrite (PIN8, LOW);
    
-  digitalWrite (pin9, LOW);
-  digitalWrite (pin10, LOW);
-  digitalWrite (pin11, LOW);
-  digitalWrite (pin12, LOW);
-  digitalWrite (pin13, LOW);
-  digitalWrite (pin14, LOW);
-  digitalWrite (pin15, LOW);
-  digitalWrite (pin16, LOW);
+  digitalWrite (PIN9, LOW);
+  digitalWrite (PIN10, LOW);
+  digitalWrite (PIN11, LOW);
+  digitalWrite (PIN12, LOW);
+  digitalWrite (PIN13, LOW);
+  digitalWrite (PIN14, LOW);
+  digitalWrite (PIN15, LOW);
+  digitalWrite (PIN16, LOW);
 
-  digitalWrite(pindig1, LOW);
-  digitalWrite(pindig2, LOW);
-  digitalWrite(pindig3, LOW);
+  digitalWrite(PIN_DIG1, LOW);
+  digitalWrite(PIN_DIG2, LOW);
+  digitalWrite(PIN_DIG3, LOW);
 
-  digitalWrite (pin9, HIGH);
-  digitalWrite (pin1, HIGH);
+  digitalWrite (PIN9, HIGH);
+  digitalWrite (PIN1, HIGH);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin10, HIGH);
-  digitalWrite (pin2, HIGH);
+  digitalWrite (PIN10, HIGH);
+  digitalWrite (PIN2, HIGH);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin11, HIGH);
-  digitalWrite (pin3, HIGH);
+  digitalWrite (PIN11, HIGH);
+  digitalWrite (PIN3, HIGH);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin12, HIGH);
-  digitalWrite (pin4, HIGH);
+  digitalWrite (PIN12, HIGH);
+  digitalWrite (PIN4, HIGH);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin13, HIGH);
-  digitalWrite (pin5, HIGH);
+  digitalWrite (PIN13, HIGH);
+  digitalWrite (PIN5, HIGH);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin14, HIGH);
-  digitalWrite (pin6, HIGH);
+  digitalWrite (PIN14, HIGH);
+  digitalWrite (PIN6, HIGH);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-  digitalWrite (pin9, LOW);
-  digitalWrite (pin1, LOW);
+  digitalWrite (PIN9, LOW);
+  digitalWrite (PIN1, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin10, LOW);
-  digitalWrite (pin2, LOW);
+  digitalWrite (PIN10, LOW);
+  digitalWrite (PIN2, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin11, LOW);
-  digitalWrite (pin3, LOW);
+  digitalWrite (PIN11, LOW);
+  digitalWrite (PIN3, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin12, LOW);
-  digitalWrite (pin4, LOW);
+  digitalWrite (PIN12, LOW);
+  digitalWrite (PIN4, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin13, LOW);
-  digitalWrite (pin5, LOW);
+  digitalWrite (PIN13, LOW);
+  digitalWrite (PIN5, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  digitalWrite (pin14, LOW);
-  digitalWrite (pin6, LOW);
+  digitalWrite (PIN14, LOW);
+  digitalWrite (PIN6, LOW);
   std::this_thread::sleep_for(std::chrono::milliseconds(100));  
 
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-  digitalWrite(pindig1, HIGH);
-  digitalWrite(pindig2, HIGH);
-  digitalWrite(pindig3, HIGH);
+  digitalWrite(PIN_DIG1, HIGH);
+  digitalWrite(PIN_DIG2, HIGH);
+  digitalWrite(PIN_DIG3, HIGH);
 
   for (int i = 0; i < 70; i++) {
-    digitalWrite(pindig2, LOW);   
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG2, LOW);   
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    digitalWrite(pindig2, HIGH);
+    digitalWrite(PIN_DIG2, HIGH);
 
-    digitalWrite(pindig1, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite(PIN_DIG1, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    digitalWrite(pindig1, HIGH);   
+    digitalWrite(PIN_DIG1, HIGH);   
   }
 
   for (int i = 0; i < 10; i++) {
-    digitalWrite(pindig3, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG3, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, LOW);
+    digitalWrite (PIN11, LOW);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(3));
-    digitalWrite(pindig3, HIGH);
+    digitalWrite(PIN_DIG3, HIGH);
 
-    digitalWrite(pindig2, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG2, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, LOW);
+    digitalWrite (PIN11, LOW);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(3));
-    digitalWrite(pindig2, HIGH);
+    digitalWrite(PIN_DIG2, HIGH);
 
-    digitalWrite(pindig1, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG1, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(3));
-    digitalWrite(pindig1, HIGH);
+    digitalWrite(PIN_DIG1, HIGH);
   }
 
   for (int i = 0; i < 10; i++) {
-    digitalWrite(pindig3, LOW);   
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG3, LOW);   
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    digitalWrite(pindig3, HIGH);
+    digitalWrite(PIN_DIG3, HIGH);
 
-    digitalWrite(pindig2, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite(PIN_DIG2, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    digitalWrite(pindig2, HIGH);   
+    digitalWrite(PIN_DIG2, HIGH);   
   }
 
   for (int i = 0; i < 10; i++) {
-    digitalWrite(pindig3, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, LOW);
-    digitalWrite (pin11, LOW);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG3, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, LOW);
+    digitalWrite (PIN11, LOW);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    digitalWrite(pindig3, HIGH);
+    digitalWrite(PIN_DIG3, HIGH);
 
-    digitalWrite(pindig2, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG2, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    digitalWrite(pindig2, HIGH);
+    digitalWrite(PIN_DIG2, HIGH);
   }  
 
   for (int i = 0; i < 10; i++) {
-    digitalWrite(pindig3, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, HIGH);
-    digitalWrite (pin14, HIGH);
-    digitalWrite (pin15, HIGH);
+    digitalWrite(PIN_DIG3, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, HIGH);
+    digitalWrite (PIN14, HIGH);
+    digitalWrite (PIN15, HIGH);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    digitalWrite(pindig3, HIGH);
+    digitalWrite(PIN_DIG3, HIGH);
   }
 
   for (int i = 0; i < 10; i++) {
-    digitalWrite(pindig3, LOW);
-    digitalWrite (pin9, LOW);
-    digitalWrite (pin10, HIGH);
-    digitalWrite (pin11, HIGH);
-    digitalWrite (pin12, LOW);
-    digitalWrite (pin13, LOW);
-    digitalWrite (pin14, LOW);
-    digitalWrite (pin15, LOW);
+    digitalWrite(PIN_DIG3, LOW);
+    digitalWrite (PIN9, LOW);
+    digitalWrite (PIN10, HIGH);
+    digitalWrite (PIN11, HIGH);
+    digitalWrite (PIN12, LOW);
+    digitalWrite (PIN13, LOW);
+    digitalWrite (PIN14, LOW);
+    digitalWrite (PIN15, LOW);
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    digitalWrite(pindig3, HIGH);
+    digitalWrite(PIN_DIG3, HIGH);
   }
   std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-  digitalWrite (pin9, LOW);
-  digitalWrite (pin10, LOW);
-  digitalWrite (pin11, LOW);
-  digitalWrite (pin12, LOW);
-  digitalWrite (pin13, LOW);
-  digitalWrite (pin14, LOW);
-  digitalWrite (pin15, LOW);
+  digitalWrite (PIN9, LOW);
+  digitalWrite (PIN10, LOW);
+  digitalWrite (PIN11, LOW);
+  digitalWrite (PIN12, LOW);
+  digitalWrite (PIN13, LOW);
+  digitalWrite (PIN14, LOW);
+  digitalWrite (PIN15, LOW);
 
   std::thread singleDigitThread(doSingleDigitWork);
   std::thread tripleDigitThread(doTripleDigitWork);
