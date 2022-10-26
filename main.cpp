@@ -19,27 +19,29 @@
 #include <signal.h>
 
 //definitions
-#define PIN1 15;  //A
-#define PIN2 16;  //B
-#define PIN3 1;   //C
-#define PIN4 4;   //D
-#define PIN5 5;   //E
-#define PIN6 6;   //F
-#define PIN7 10;  //G
-#define PIN8 11;  //DP
-#define PIN9 31;  //3 digit A
-#define PIN10 26; //3 digit B
-#define PIN11 27; //3 digit C
-#define PIN12 28; //3 digit D
-#define PIN13 29; //3 digit E
-#define PIN14 25; //3 digit F
-#define PIN15 24; //3 digit G
-#define PIN16 23; //3 digit DP
-#define PIN_BUTTON = 12;
-#define PIN_RESET_ODO = 8;
-#define PIN_DIG1 = 0; //7 seg 3 digit dig1
-#define PIN_DIG2 = 2; //7 seg 3 digit dig2
-#define PIN_DIG3 = 3; //7 seg 3 digit dig3
+#define PIN1 15;                    //A
+#define PIN2 16;                    //B
+#define PIN3 1;                     //C
+#define PIN4 4;                     //D
+#define PIN5 5;                     //E
+#define PIN6 6;                     //F
+#define PIN7 10;                    //G
+#define PIN8 11;                    //DP
+#define PIN9 31;                    //3 digit -- A
+#define PIN10 26;                   //3 digit -- B
+#define PIN11 27;                   //3 digit -- C
+#define PIN12 28;                   //3 digit -- D
+#define PIN13 29;                   //3 digit -- E
+#define PIN14 25;                   //3 digit -- F
+#define PIN15 24;                   //3 digit -- G
+#define PIN16 23;                   //3 digit -- DP
+#define PIN_BUTTON = 12;            //Cycle display button
+#define PIN_RESET_ODO = 8;          //Reset odometer button
+#define PIN_DIG1 = 0;               //3 digit -- dig1
+#define PIN_DIG2 = 2;               //3 digit -- dig2
+#define PIN_DIG3 = 3;               //3 digit -- dig3
+
+#define WAIT 3                      //3 digit display -- delay per digit
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
@@ -90,7 +92,6 @@ int trip_odometer;
 int engineTemp;
 int oilTemp;
 int oilPressure;
-int wait = 3;
 int odometer;
 double dist;
 int sfd;
@@ -580,45 +581,45 @@ void tripleDigitOutput() {
             if (pressure < 0) {
                     digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, HIGH);           
                     digitalWrite(PIN_DIG2, LOW);
                     digitSelect(dig2);
                     digitalWrite(PIN16, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG2, HIGH);  
                     digitalWrite(PIN16, LOW);
                     digitalWrite(PIN_DIG1, LOW);
                     digitSelect(10);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG1, HIGH);
             } else {
                 if (dig1 == 0) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, HIGH);           
                     digitalWrite(PIN_DIG2, LOW);
                     digitSelect(dig2);
                     digitalWrite(PIN16, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG2, HIGH);  
                     digitalWrite(PIN16, LOW);          
                 } else {
                     digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, HIGH);       
                     digitalWrite(PIN_DIG2, LOW);   
                     digitSelect(dig2);
                     digitalWrite(PIN16, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG2, HIGH); 
                     digitalWrite(PIN16, LOW);      
                     digitalWrite(PIN_DIG1, LOW);
                     digitSelect(dig1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG1, HIGH);                
                 }
             }
@@ -628,31 +629,31 @@ void tripleDigitOutput() {
         case DisplayState::Odometer:
         {
             if (dig1 == 0) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG3, LOW);   
                 digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG3, HIGH);           
                 digitalWrite(PIN_DIG2, LOW);
                 digitSelect(dig2);
                 digitalWrite(PIN16, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG2, HIGH);  
                 digitalWrite(PIN16, LOW);          
             } else {
                 digitalWrite(PIN_DIG3, LOW);   
                 digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG3, HIGH);       
                 digitalWrite(PIN_DIG2, LOW);   
                 digitSelect(dig2);
                 digitalWrite(PIN16, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG2, HIGH); 
                 digitalWrite(PIN16, LOW);      
                 digitalWrite(PIN_DIG1, LOW);
                 digitSelect(dig1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG1, HIGH);                
             }
             break;
@@ -661,35 +662,35 @@ void tripleDigitOutput() {
         {
             if (dig1 == 0) {
                 if (dig2 == 0) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, HIGH);
                 } else {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, LOW);   
                     digitSelect(dig3);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG3, HIGH);           
                     digitalWrite(PIN_DIG2, LOW);
                     digitSelect(dig2);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                     digitalWrite(PIN_DIG2, HIGH);            
                 }
             } else {
                 digitalWrite(PIN_DIG3, LOW);   
                 digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG3, HIGH);       
                 digitalWrite(PIN_DIG2, LOW);   
                 digitSelect(dig2);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG2, HIGH);       
                 digitalWrite(PIN_DIG1, LOW);
                 digitSelect(dig1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
                 digitalWrite(PIN_DIG1, HIGH);                
             }
             break;
