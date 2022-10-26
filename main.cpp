@@ -1,3 +1,4 @@
+//includes
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,8 +18,7 @@
 #include <cmath>
 #include <signal.h>
 
-#define ODOMETER_FILENAME "delete-to-reset-odometer"
-
+//definitions
 #define PIN1 15;  //A
 #define PIN2 16;  //B
 #define PIN3 1;   //C
@@ -41,8 +41,11 @@
 #define PIN_DIG2 = 2; //7 seg 3 digit dig2
 #define PIN_DIG3 = 3; //7 seg 3 digit dig3
 
+#define ODOMETER_FILENAME "delete-to-reset-odometer"
+
 #define DISPLAY_STATE_COUNT 6
 
+//classes
 enum class DisplayState
 {
     Speed = 0,
@@ -52,6 +55,32 @@ enum class DisplayState
     EngineTemp = 4,
     OilTemp = 5
 };
+
+struct outGauge {
+    unsigned time;
+    char car[4];
+    unsigned short flags;
+    char gear;
+    char plid;
+    float speed;
+    float rpm;
+    float turbo;
+    float engTemp;
+    float fuel;
+    float oilPressure;
+    float oilTemp;
+    unsigned dashLights;
+    unsigned showLights;
+    float throttle;
+    float brake;
+    float clutch;
+    char display1[16];
+    char display2[16];
+    int id;
+};
+
+std::mutex tripleDigitMutex;
+std::mutex singleDigitMutex;
 
 int des_gear = 1;
 int cur_gear = 0;
@@ -83,32 +112,6 @@ void printBits(size_t const size, void const * const ptr)
     }
     puts("");
 }
-
-std::mutex tripleDigitMutex;
-std::mutex singleDigitMutex;
-
-struct outGauge {
-    unsigned time;
-    char car[4];
-    unsigned short flags;
-    char gear;
-    char plid;
-    float speed;
-    float rpm;
-    float turbo;
-    float engTemp;
-    float fuel;
-    float oilPressure;
-    float oilTemp;
-    unsigned dashLights;
-    unsigned showLights;
-    float throttle;
-    float brake;
-    float clutch;
-    char display1[16];
-    char display2[16];
-    int id;
-};
 
 int ReverseHandler(void) {
     digitalWrite (PIN1, LOW);
@@ -369,64 +372,64 @@ int singleDigitOutput(int state){
         case 0:
         {
             cur_gear = ReverseHandler();
-        }
-        break;
+            break;
+        }       
         case 1:
         {
             cur_gear = NeutralHandler();
+            break;
         }
-        break;
         case 2:
         {
             cur_gear = FirstHandler();
+            break;
         }
-        break;
         case 3:
         {
             cur_gear = SecondHandler();
+            break;
         }
-        break;
         case 4:
         {
             cur_gear = ThirdHandler();
+            break;
         }
-        break;
         case 5:
         {
             cur_gear = FourthHandler();
+            break;
         }
-        break;
         case 6:
         {
             cur_gear = FifthHandler();
+            break;
         }
-        break;
         case 7:
         {
             cur_gear = SixthHandler();
+            break;
         }
-        break;
         case 8:
         {            
             cur_gear = SeventhHandler();
+            break;
         }
-        break;
         case 9:
         {
             cur_gear = EighthHandler();
+            break;
         }
-        break;
         case 10:
         {
             cur_gear = NinethHandler();
+            break;
         }
-        break;
         default:
         {
             ZeroHandler();
             cur_gear = des_gear;
+            break;
         }
-        break;
     }
     return cur_gear;
 }
@@ -437,63 +440,63 @@ int digitSelect(int num) {
         case 0:
         {
             num = ZeroHandlerTri();
+            break;
         }
-        break;
         case 1:
         {
             num = FirstHandlerTri();
+            break;
         }
-        break;
         case 2:
         {
             num = SecondHandlerTri();
+            break;
         }
-        break;
         case 3:
         {
             num = ThirdHandlerTri();
+            break;
         }
-        break;
         case 4:
         {
             num = FourthHandlerTri();
+            break;
         }
-        break;
         case 5:
         {
             num = FifthHandlerTri();
+            break;
         }
-        break;
         case 6:
         {
             num = SixthHandlerTri();
+            break;
         }
-        break;
         case 7:
         {
             num = SeventhHandlerTri();
+            break;
         }
-        break;
         case 8:
         {
             num = EighthHandlerTri();
+            break;
         }
-        break;
         case 9:
         {
             num = NinethHandlerTri();
+            break;
         }
-        break;
         case 10:
         {
             num = MinusHandlerTri();
+            break;
         }
-        break;
         default:
         {
             num = NinethHandlerTri();
+            break;
         }
-        break;
     }
     return num;
 }
@@ -539,22 +542,22 @@ int digParser(int num, DisplayState state) {
             int dig1;
             dig1 = abs(dig) / 100 % 10;
             return dig1;
+            break;
         }
-        break;
         case 2:
         {
             int dig2;
             dig2 = abs(dig) / 10 % 10;
             return dig2;
+            break;
         }
-        break;
         case 3:
         {
             int dig3;
             dig3 = abs(dig) % 10;
             return dig3;
+            break;
         }
-        break;
     }
     return 0;
 }
@@ -619,8 +622,8 @@ void tripleDigitOutput() {
                     digitalWrite(PIN_DIG1, HIGH);                
                 }
             }
+            break;
         }
-        break;
         case DisplayState::TripOdometer:
         case DisplayState::Odometer:
         {
@@ -652,8 +655,8 @@ void tripleDigitOutput() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                 digitalWrite(PIN_DIG1, HIGH);                
             }
+            break;
         }
-        break;
         default : //Anything that will be using all three digits without the DP pin should stay on default
         {
             if (dig1 == 0) {
@@ -689,8 +692,8 @@ void tripleDigitOutput() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(wait));
                 digitalWrite(PIN_DIG1, HIGH);                
             }
+            break;
         }
-        break;
     }
 }
 
@@ -1048,7 +1051,7 @@ int main(int argc, char **argv) {
   }
   int resu = bind(sfd, (struct sockaddr *) &myaddr, sizeof(struct sockaddr));
   if (resu == -1) {
-    printf("connect err \n");
+    printf("bind err \n");
     return 0;
   }
     
