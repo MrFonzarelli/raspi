@@ -751,7 +751,6 @@ void doSingleDigitWork()
     {
         singleDigitMutex.lock();
         int gear = des_gear;
-        float tht = throttlePos;
         singleDigitMutex.unlock();
         singleDigitOutput(gear);
     }
@@ -1168,7 +1167,6 @@ int main(int argc, char **argv)
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
             trip_odometer = dist;
-            throttlePos = lround(s->throttle);
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
