@@ -92,7 +92,7 @@ int oilPressure;
 int odometer;
 unsigned dashLights;
 unsigned dashLights_old;
-DisplayState displayState = DisplayState::TripOdometer;
+DisplayState displayState = DisplayState::TurboPressure;
 
 void printBits(size_t const size, void const *const ptr)
 {
