@@ -90,9 +90,10 @@ int engineTemp;
 int oilTemp;
 int oilPressure;
 int odometer;
+double dist;
 unsigned dashLights;
 unsigned dashLights_old;
-DisplayState displayState = DisplayState::TurboPressure;
+DisplayState displayState = DisplayState::TripOdometer;
 
 void printBits(size_t const size, void const *const ptr)
 {
@@ -818,7 +819,7 @@ void doResetOdoButtonWork()
                 printf("odometer: %d\n", odometer);
                 odometer += trip_odometer;
                 printf("new_odometer: %d\n", odometer);
-                trip_odometer = 0;
+                dist = 0;
                 printf("new_trip_odometer: %d\n", trip_odometer);
                 write_odometer();
                 tripleDigitMutex.unlock();
@@ -1091,7 +1092,7 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    std::thread buttonThread(doButtonWork);
+    // std::thread buttonThread(doButtonWork);
     std::thread resetOdoButtonThread(doResetOdoButtonWork);
 
     myaddr.sin_family = AF_INET;
@@ -1135,14 +1136,14 @@ int main(int argc, char **argv)
             {
                 speed_to_count = 0;
             }
-            auto new_time = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> time_delta = new_time - old_time;
-            double dist = time_delta.count() * speed_to_count / 100;
             tripleDigitMutex.lock();
             singleDigitMutex.lock();
+            auto new_time = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> time_delta = new_time - old_time;
+            dist += time_delta.count() * speed_to_count / 100;
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
-            trip_odometer += dist;
+            trip_odometer = dist;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
