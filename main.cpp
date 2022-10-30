@@ -813,10 +813,13 @@ void doResetOdoButtonWork()
         {
             if (last_ResetOdoButtonState == 0)
             {
-                printf("read odo button state: %d\n", des_ResetOdoButtonState);
                 tripleDigitMutex.lock();
+                printf("trip_odometer: %d\n", trip_odometer);
+                printf("odometer: %d\n", odometer);
                 odometer += trip_odometer;
+                printf("new_odometer: %d\n", odometer);
                 trip_odometer = 0;
+                printf("new_trip_odometer: %d\n", trip_odometer);
                 write_odometer();
                 tripleDigitMutex.unlock();
             }
