@@ -816,21 +816,29 @@ void doButtonWork()
 
 void doResetOdoButtonWork()
 {
+    int cur_ResetOdoButtonState = 0; // this is never set to anything but 0, so it's useless
     int des_ResetOdoButtonState = 0;
     int last_ResetOdoButtonState = 0;
     while (true)
     {
-        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO);
-        printf("read odo button state: %d\n", des_ResetOdoButtonState);
+        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO); // doesn't work; badly wired?
         if (last_ResetOdoButtonState != des_ResetOdoButtonState)
         {
             if (last_ResetOdoButtonState == 0)
             {
-                tripleDigitMutex.lock();
-                write_odometer();
-                odometer += trip_odometer;
-                trip_odometer = 0;
-                tripleDigitMutex.unlock();
+                printf("read odo button state: %d\n", des_ResetOdoButtonState);
+                if (cur_ResetOdoButtonState == 0)
+                {
+                    tripleDigitMutex.lock();
+                    write_odometer();
+                    odometer += trip_odometer;
+                    trip_odometer = 0;
+                    tripleDigitMutex.unlock();
+                }
+                else
+                {
+                    cur_ResetOdoButtonState = 0;
+                }
             }
             else
             {
