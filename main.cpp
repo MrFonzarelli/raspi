@@ -90,7 +90,6 @@ int engineTemp;
 int oilTemp;
 int oilPressure;
 int odometer;
-double dist;
 unsigned dashLights;
 unsigned dashLights_old;
 DisplayState displayState = DisplayState::TripOdometer;
@@ -792,7 +791,7 @@ void doButtonWork()
         {
             if (last_buttonState == 0)
             {
-                printf("read odo button state: %d\n", des_buttonState);
+                printf(" button state: %d\n", des_buttonState);
                 tripleDigitMutex.lock();
                 displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
@@ -816,9 +815,9 @@ void doResetOdoButtonWork()
             {
                 printf("read odo button state: %d\n", des_ResetOdoButtonState);
                 tripleDigitMutex.lock();
-                write_odometer();
                 odometer += trip_odometer;
                 trip_odometer = 0;
+                write_odometer();
                 tripleDigitMutex.unlock();
             }
             last_ResetOdoButtonState = des_ResetOdoButtonState;
@@ -1135,12 +1134,12 @@ int main(int argc, char **argv)
             }
             auto new_time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_delta = new_time - old_time;
-            dist += time_delta.count() * speed_to_count / 100;
+            double dist = time_delta.count() * speed_to_count / 100;
             tripleDigitMutex.lock();
             singleDigitMutex.lock();
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
-            trip_odometer = dist;
+            trip_odometer += dist;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
