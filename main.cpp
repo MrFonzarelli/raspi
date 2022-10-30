@@ -93,7 +93,7 @@ int odometer;
 double dist;
 unsigned dashLights;
 unsigned dashLights_old;
-DisplayState displayState = DisplayState::Speed;
+DisplayState displayState = DisplayState::TripOdometer;
 
 void printBits(size_t const size, void const *const ptr)
 {
@@ -783,30 +783,19 @@ void write_odometer()
 
 void doButtonWork()
 {
-    int cur_buttonState = 0;
     int des_buttonState = 0;
     int last_buttonState = 0;
     while (true)
     {
-        des_buttonState = digitalRead(PIN_BUTTON);
+        des_buttonState = digitalRead(PIN_RESET_ODO);
         if (last_buttonState != des_buttonState)
         {
             if (last_buttonState == 0)
             {
-                if (cur_buttonState == 0)
-                {
-                    tripleDigitMutex.lock();
-                    displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
-                    tripleDigitMutex.unlock();
-                }
-                else
-                {
-                    cur_buttonState = 0;
-                }
-            }
-            else
-            {
-                last_buttonState = 0;
+                printf("read odo button state: %d\n", des_buttonState);
+                tripleDigitMutex.lock();
+                displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
+                tripleDigitMutex.unlock();
             }
             last_buttonState = des_buttonState;
         }
@@ -816,33 +805,21 @@ void doButtonWork()
 
 void doResetOdoButtonWork()
 {
-    int cur_ResetOdoButtonState = 0; // this is never set to anything but 0, so it's useless
     int des_ResetOdoButtonState = 0;
     int last_ResetOdoButtonState = 0;
     while (true)
     {
-        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO); // doesn't work; badly wired?
+        des_ResetOdoButtonState = digitalRead(PIN_BUTTON); // doesn't work; badly wired?
         if (last_ResetOdoButtonState != des_ResetOdoButtonState)
         {
             if (last_ResetOdoButtonState == 0)
             {
                 printf("read odo button state: %d\n", des_ResetOdoButtonState);
-                if (cur_ResetOdoButtonState == 0)
-                {
-                    tripleDigitMutex.lock();
-                    write_odometer();
-                    odometer += trip_odometer;
-                    trip_odometer = 0;
-                    tripleDigitMutex.unlock();
-                }
-                else
-                {
-                    cur_ResetOdoButtonState = 0;
-                }
-            }
-            else
-            {
-                last_ResetOdoButtonState = 0;
+                tripleDigitMutex.lock();
+                write_odometer();
+                odometer += trip_odometer;
+                trip_odometer = 0;
+                tripleDigitMutex.unlock();
             }
             last_ResetOdoButtonState = des_ResetOdoButtonState;
         }
