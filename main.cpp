@@ -821,11 +821,11 @@ void doResetOdoButtonWork()
     while (true)
     {
         des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO);
+        printf("read odo button state: %d\n", des_ResetOdoButtonState);
         if (last_ResetOdoButtonState != des_ResetOdoButtonState)
         {
             if (last_ResetOdoButtonState == 0)
             {
-                printf("read odo button state: %d\n", des_ResetOdoButtonState);
                 tripleDigitMutex.lock();
                 write_odometer();
                 odometer += trip_odometer;
