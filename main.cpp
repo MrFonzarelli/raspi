@@ -1,5 +1,4 @@
 // includes
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,8 +9,6 @@
 #include <netinet/in.h>
 #include <chrono>
 #include <wiringPi.h>
-#include <time.h>
-#include <iostream>
 #include <fstream>
 #include <thread>
 #include <mutex>
@@ -94,7 +91,6 @@ int oilTemp;
 int oilPressure;
 int odometer;
 double dist;
-int sfd;
 unsigned dashLights;
 unsigned dashLights_old;
 DisplayState displayState = DisplayState::Speed;
@@ -834,8 +830,8 @@ void doResetOdoButtonWork()
                 {
                     tripleDigitMutex.lock();
                     write_odometer();
+                    odometer += trip_odometer;
                     trip_odometer = 0;
-                    read_odometer();
                     tripleDigitMutex.unlock();
                 }
                 else
@@ -1121,7 +1117,7 @@ int main(int argc, char **argv)
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
     addr_len = sizeof(myaddr);
-    sfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    int sfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sfd == -1)
     {
         printf("socket err \n");
