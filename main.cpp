@@ -828,6 +828,7 @@ void doResetOdoButtonWork()
             {
                 if (cur_ResetOdoButtonState == 0)
                 {
+                    printf("button err \n");
                     tripleDigitMutex.lock();
                     write_odometer();
                     odometer += trip_odometer;
