@@ -816,6 +816,7 @@ void doButtonWork()
 
 void doResetOdoButtonWork()
 {
+    printf("reset odo thread is running \n");
     int cur_ResetOdoButtonState = 0;
     int des_ResetOdoButtonState = 0;
     int last_ResetOdoButtonState = 0;
@@ -826,6 +827,7 @@ void doResetOdoButtonWork()
         {
             if (last_ResetOdoButtonState == 0)
             {
+                printf("read odo button state: %d\n", des_ResetOdoButtonState);
                 if (cur_ResetOdoButtonState == 0)
                 {
                     printf("button err \n");
