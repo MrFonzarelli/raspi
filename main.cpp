@@ -93,7 +93,7 @@ int odometer;
 double dist;
 unsigned dashLights;
 unsigned dashLights_old;
-DisplayState displayState = DisplayState::TripOdometer;
+DisplayState displayState = DisplayState::Speed;
 
 void printBits(size_t const size, void const *const ptr)
 {
@@ -787,7 +787,7 @@ void doButtonWork()
     int last_buttonState = 0;
     while (true)
     {
-        des_buttonState = digitalRead(PIN_RESET_ODO);
+        des_buttonState = digitalRead(PIN_BUTTON);
         if (last_buttonState != des_buttonState)
         {
             if (last_buttonState == 0)
@@ -809,7 +809,7 @@ void doResetOdoButtonWork()
     int last_ResetOdoButtonState = 0;
     while (true)
     {
-        des_ResetOdoButtonState = digitalRead(PIN_BUTTON); // doesn't work; badly wired?
+        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO); // doesn't work; badly wired?
         if (last_ResetOdoButtonState != des_ResetOdoButtonState)
         {
             if (last_ResetOdoButtonState == 0)
@@ -1092,8 +1092,8 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    // std::thread buttonThread(doButtonWork);
-    std::thread resetOdoButtonThread(doResetOdoButtonWork);
+    std::thread buttonThread(doButtonWork);
+    // std::thread resetOdoButtonThread(doResetOdoButtonWork);
 
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
