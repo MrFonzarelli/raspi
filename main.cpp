@@ -95,7 +95,7 @@ int odometer;
 double fuelConsumption;
 double fuelConsumption_avg;
 double fuel_burned;
-double dist;
+float dist;
 double fuel_old;
 unsigned dashLights;
 unsigned dashLights_old;
@@ -548,12 +548,12 @@ int digParser(int num, DisplayState state)
     }
     case DisplayState::TripOdometer:
     {
-        dig = trip_odometer;
+        dig = trip_odometer * 10;
         break;
     }
     case DisplayState::Odometer:
     {
-        dig = odometer + trip_odometer;
+        dig = odometer + (trip_odometer * 10);
         break;
     }
     case DisplayState::EngineTemp:
@@ -1193,7 +1193,7 @@ int main(int argc, char **argv)
             fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, fuel_burned, (trip_odometer / 10)) * 10;
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
-            trip_odometer += dist * 10;
+            trip_odometer += dist;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
