@@ -94,7 +94,7 @@ int trip_odometer;
 int odometer;
 double fuelConsumption;
 double fuelConsumption_avg;
-double fuel_burnt;
+double fuel_burned;
 double dist;
 double fuel_old;
 unsigned dashLights;
@@ -566,12 +566,12 @@ int digParser(int num, DisplayState state)
         dig = oilTemp;
         break;
     }
-    case DisplayState::OilTemp:
+    case DisplayState::CurrentFuelConsumption:
     {
         dig = fuelConsumption;
         break;
     }
-    case DisplayState::OilTemp:
+    case DisplayState::AverageFuelConsumption:
     {
         dig = fuelConsumption_avg;
         break;
@@ -833,7 +833,7 @@ void doResetOdoButtonWork()
     int last_ResetOdoButtonState = 0;
     while (true)
     {
-        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO); // doesn't work; badly wired?
+        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO);
         if (last_ResetOdoButtonState != des_ResetOdoButtonState)
         {
             if (last_ResetOdoButtonState == 0)
@@ -856,12 +856,11 @@ void doResetOdoButtonWork()
 
 double calcFuelConsumption(double fuelAmount, double fuelAmount_old, double distance)
 {
-    if (fuelAmount_old < fuelAmount)
-        or (distance == 0)
-        {
-            fuel_old = fuelAmount;
-            return 0;
-        }
+    if ((fuelAmount_old < fuelAmount) or (distance == 0))
+    {
+        fuel_old = fuelAmount;
+        return 0;
+    }
     else
     {
         double res = (100 / distance) * (fuelAmount_old - fuelAmount);
@@ -875,14 +874,13 @@ double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, doub
     if (fuelAmount_old < fuelAmount)
         or (distance == 0)
         {
-            fuel_burnt = 0;
+            fuel_burned = 0;
             return 0;
         }
     else
     {
-
-        res = (100 / distance) * (fuelBurnedForConsumption + fuelAmount_old - fuelAmount);
-        fuel_burnt += fuelAmount_old - fuelAmount;
+        double res = (100 / distance) * (fuelBurnedForConsumption + fuelAmount_old - fuelAmount);
+        fuel_burned += fuelAmount_old - fuelAmount;
         return res;
     }
 }
