@@ -41,17 +41,19 @@
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
-#define DISPLAY_STATE_COUNT 6
+#define DISPLAY_STATE_COUNT 8
 
 // classes
 enum class DisplayState
 {
     Speed = 0,
     TurboPressure = 1,
-    TripOdometer = 2,
-    Odometer = 3,
-    EngineTemp = 4,
-    OilTemp = 5
+    CurrentFuelConsumption = 2,
+    AverageFuelConsumption = 3,
+    TripOdometer = 4,
+    Odometer = 5,
+    EngineTemp = 6,
+    OilTemp = 7
 };
 
 struct outGauge
@@ -85,12 +87,16 @@ int des_gear = 1;
 int cur_gear = 0;
 int speed;
 int pressure;
-int trip_odometer;
 int engineTemp;
 int oilTemp;
 int oilPressure;
+int trip_odometer;
 int odometer;
+double fuelConsumption;
+double fuelConsumption_avg;
+double fuel_burnt;
 double dist;
+double fuel_old;
 unsigned dashLights;
 unsigned dashLights_old;
 DisplayState displayState = DisplayState::Speed;
@@ -560,6 +566,16 @@ int digParser(int num, DisplayState state)
         dig = oilTemp;
         break;
     }
+    case DisplayState::OilTemp:
+    {
+        dig = fuelConsumption;
+        break;
+    }
+    case DisplayState::OilTemp:
+    {
+        dig = fuelConsumption_avg;
+        break;
+    }
     }
 
     switch (num)
@@ -661,6 +677,8 @@ void tripleDigitOutput()
     }
     case DisplayState::TripOdometer:
     case DisplayState::Odometer:
+    case DisplayState::CurrentFuelConsumption:
+    case DisplayState::AverageFuelConsumption:
     {
         if (dig1 == 0)
         {
@@ -776,8 +794,14 @@ void read_odometer()
 
 void write_odometer()
 {
-    std::ofstream odo_file(ODOMETER_FILENAME);
-    odo_file << trip_odometer + odometer;
+    if (odo_file.is_open())
+    {
+    }
+    else
+    {
+        std::ofstream odo_file(ODOMETER_FILENAME);
+        odo_file << trip_odometer + odometer;
+    }
     odo_file.close();
 }
 
@@ -819,7 +843,7 @@ void doResetOdoButtonWork()
                 printf("odometer: %d\n", odometer);
                 odometer += trip_odometer;
                 printf("new_odometer: %d\n", odometer);
-                dist = 0;
+                trip_odometer = 0;
                 printf("new_trip_odometer: %d\n", trip_odometer);
                 write_odometer();
                 tripleDigitMutex.unlock();
@@ -827,6 +851,39 @@ void doResetOdoButtonWork()
             last_ResetOdoButtonState = des_ResetOdoButtonState;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+}
+
+double calcFuelConsumption(double fuelAmount, double fuelAmount_old, double distance)
+{
+    if (fuelAmount_old < fuelAmount)
+        or (distance == 0)
+        {
+            fuel_old = fuelAmount;
+            return 0;
+        }
+    else
+    {
+        double res = (100 / distance) * (fuelAmount_old - fuelAmount);
+        fuel_old = fuelAmount;
+        return res;
+    }
+}
+
+double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, double fuelBurnedForConsumption, double distance)
+{
+    if (fuelAmount_old < fuelAmount)
+        or (distance == 0)
+        {
+            fuel_burnt = 0;
+            return 0;
+        }
+    else
+    {
+
+        res = (100 / distance) * (fuelBurnedForConsumption + fuelAmount_old - fuelAmount);
+        fuel_burnt += fuelAmount_old - fuelAmount;
+        return res;
     }
 }
 
@@ -1140,10 +1197,12 @@ int main(int argc, char **argv)
             singleDigitMutex.lock();
             auto new_time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_delta = new_time - old_time;
-            dist += time_delta.count() * speed_to_count / 100;
+            dist = time_delta.count() * speed_to_count / 1000;
+            fuelConsumption = calcFuelConsumption(s->fuel, fuel_old, dist) * 10;
+            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, trip_odometer / 10) * 10;
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
-            trip_odometer = dist;
+            trip_odometer += dist * 10;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
