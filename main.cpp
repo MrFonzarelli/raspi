@@ -794,14 +794,8 @@ void read_odometer()
 
 void write_odometer()
 {
-    if (odo_file.is_open())
-    {
-    }
-    else
-    {
-        std::ofstream odo_file(ODOMETER_FILENAME);
-        odo_file << trip_odometer + odometer;
-    }
+    std::ofstream odo_file(ODOMETER_FILENAME);
+    odo_file << trip_odometer + odometer;
     odo_file.close();
 }
 
