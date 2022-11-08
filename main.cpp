@@ -865,12 +865,11 @@ double calcFuelConsumption(double fuelAmount, double fuelAmount_old, double dist
 
 double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, double fuelBurnedForConsumption, double distance)
 {
-    if (fuelAmount_old < fuelAmount)
-        || (distance == 0)
-        {
-            fuel_burned = 0;
-            return 0;
-        }
+    if (fuelAmount_old < fuelAmount || distance == 0)
+    {
+        fuel_burned = 0;
+        return 0;
+    }
     else
     {
         double res = (100 / distance) * (fuelBurnedForConsumption + fuelAmount_old - fuelAmount);
@@ -1191,7 +1190,7 @@ int main(int argc, char **argv)
             std::chrono::duration<double> time_delta = new_time - old_time;
             dist = time_delta.count() * speed_to_count / 1000;
             fuelConsumption = calcFuelConsumption(s->fuel, fuel_old, dist) * 10;
-            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, trip_odometer / 10) * 10;
+            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, fuel_burned, trip_odometer / 10) * 10;
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
             trip_odometer += dist * 10;
