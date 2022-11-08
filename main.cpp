@@ -553,7 +553,7 @@ int digParser(int num, DisplayState state)
     }
     case DisplayState::Odometer:
     {
-        dig = odometer + (trip_odometer * 10);
+        dig = (odometer + trip_odometer) * 10;
         break;
     }
     case DisplayState::EngineTemp:
