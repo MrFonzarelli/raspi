@@ -1190,13 +1190,14 @@ int main(int argc, char **argv)
             std::chrono::duration<double> time_delta = new_time - old_time;
             dist = time_delta.count() * speed_to_count / 1000;
             fuelConsumption = calcFuelConsumption(s->fuel, fuel_old, dist) * 10;
-            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, fuel_burned, trip_odometer / 10) * 10;
+            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, fuel_burned, (trip_odometer / 10)) * 10;
             speed = lround(s->speed * 3.6);
             pressure = lround(s->turbo * 10);
             trip_odometer += dist * 10;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
+            printf("Fuel: %d\n", s->fuel);
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
             old_time = new_time;
