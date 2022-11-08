@@ -866,7 +866,7 @@ double calcFuelConsumption(double fuelAmount, double fuelAmount_old, double dist
 double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, double fuelBurnedForConsumption, double distance)
 {
     if (fuelAmount_old < fuelAmount)
-        or (distance == 0)
+        || (distance == 0)
         {
             fuel_burned = 0;
             return 0;
