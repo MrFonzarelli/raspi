@@ -850,7 +850,7 @@ void doResetOdoButtonWork()
 
 double calcFuelConsumption(double fuelAmount, double fuelAmount_old, double distance)
 {
-    if ((fuelAmount_old < fuelAmount) or (distance == 0))
+    if (fuelAmount_old < fuelAmount || distance == 0)
     {
         fuel_old = fuelAmount;
         return 0;
