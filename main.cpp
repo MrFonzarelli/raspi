@@ -543,7 +543,7 @@ int digParser(int num, DisplayState state)
     }
     case DisplayState::TurboPressure:
     {
-        dig = pressure;
+        dig = pressure * 10;
         break;
     }
     case DisplayState::TripOdometer:
@@ -568,12 +568,12 @@ int digParser(int num, DisplayState state)
     }
     case DisplayState::CurrentFuelConsumption:
     {
-        dig = fuelConsumption;
+        dig = fuelConsumption * 10;
         break;
     }
     case DisplayState::AverageFuelConsumption:
     {
-        dig = fuelConsumption_avg;
+        dig = fuelConsumption_avg * 10;
         break;
     }
     }
@@ -1188,12 +1188,12 @@ int main(int argc, char **argv)
             singleDigitMutex.lock();
             auto new_time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_delta = new_time - old_time;
-            dist = time_delta.count() * speed_to_count / 1000;
-            fuelConsumption = calcFuelConsumption(s->fuel, fuel_old, dist) * 10;
-            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, fuel_burned, (trip_odometer / 10)) * 10;
+            trip_odometer += time_delta.count() * speed_to_count / 1000;
+            fuelConsumption = calcFuelConsumption(s->fuel, fuel_old, (trip_odometer - dist));
+            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel, fuel_old, fuel_burned, trip_odometer);
             speed = lround(s->speed * 3.6);
-            pressure = lround(s->turbo * 10);
-            trip_odometer += dist;
+            pressure = lround(s->turbo);
+            dist = trip_odometer;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
