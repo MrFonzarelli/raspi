@@ -96,7 +96,7 @@ int odometer;
 double fuelConsumption;
 double fuelConsumption_avg;
 double fuel_burned;
-int dist;
+float dist;
 double fuel_old;
 unsigned dashLights;
 unsigned dashLights_old;
