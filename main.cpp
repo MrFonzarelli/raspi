@@ -68,6 +68,7 @@ struct outGauge
     float turbo;
     float engTemp;
     float fuel;
+    float fuel_remaining;
     float oilPressure;
     float oilTemp;
     unsigned dashLights;
@@ -1197,7 +1198,8 @@ int main(int argc, char **argv)
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
-            printf("Fuel: %d\n", s->fuel);
+            printf("Fuel %: %f\n", s->fuel);
+            printf("Fuel remaining: %f\n", s->fuel_remaining);
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
             old_time = new_time;
