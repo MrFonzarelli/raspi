@@ -811,7 +811,6 @@ void doButtonWork()
         {
             if (last_buttonState == 0)
             {
-                printf(" button state: %d\n", des_buttonState);
                 tripleDigitMutex.lock();
                 displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
