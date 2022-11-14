@@ -16,8 +16,8 @@
 #include <signal.h>
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics.hpp>
-//#include <boost/accumulators/statistics/rolling_mean.hpp>
-//#include <boost/accumulators/statistics/rolling_count.hpp>
+#include <boost/accumulators/statistics/rolling_count.hpp>
+#include <boost/accumulators/statistics/rolling_mean.hpp>
 
 using namespace boost::accumulators;
 
