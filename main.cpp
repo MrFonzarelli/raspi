@@ -1167,7 +1167,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
+    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 20);
 
     accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 25);
     accumulator_set<double, stats<tag::rolling_sum>> accumulatorTickTime(tag::rolling_window::window_size = 25);
