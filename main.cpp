@@ -14,6 +14,9 @@
 #include <mutex>
 #include <cmath>
 #include <signal.h>
+#include <boost/accumulators/accumulators.hpp>
+
+using namespace boost::accumulators;
 
 // definitions
 #define PIN1 15         // A
@@ -96,6 +99,8 @@ int odometer;
 double fuelConsumption;
 double fuelConsumption_avg;
 double fuel_burned;
+double displayFuelCons;
+double displayFuelConsAvg;
 float dist;
 double fuel_old;
 unsigned dashLights;
@@ -544,17 +549,17 @@ int digParser(int num, DisplayState state)
     }
     case DisplayState::TurboPressure:
     {
-        dig = pressure * 10;
+        dig = lround(pressure * 10);
         break;
     }
     case DisplayState::TripOdometer:
     {
-        dig = trip_odometer * 10;
+        dig = lround(trip_odometer * 10);
         break;
     }
     case DisplayState::Odometer:
     {
-        dig = (odometer + trip_odometer) * 10;
+        dig = lround((odometer + trip_odometer) * 10);
         break;
     }
     case DisplayState::EngineTemp:
@@ -569,12 +574,12 @@ int digParser(int num, DisplayState state)
     }
     case DisplayState::CurrentFuelConsumption:
     {
-        dig = fuelConsumption * 10;
+        dig = lround(displayFuelCons * 10);
         break;
     }
     case DisplayState::AverageFuelConsumption:
     {
-        dig = fuelConsumption_avg * 10;
+        dig = lround(fuelConsumption_avg * 10);
         break;
     }
     }
@@ -1159,6 +1164,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
@@ -1190,9 +1196,11 @@ int main(int argc, char **argv)
             std::chrono::duration<double> time_delta = new_time - old_time;
             trip_odometer += time_delta.count() * speed_to_count / 1000;
             fuelConsumption = calcFuelConsumption(s->fuel_remaining, fuel_old, (trip_odometer - dist));
+            accumulatorFuelConsumption(fuelConsumption);
+            displayFuelCons = rolling_mean(accumulatorFuelConsumption);
             fuelConsumption_avg = calcAverageFuelConsumption(s->fuel_remaining, fuel_old, fuel_burned, trip_odometer);
             speed = lround(s->speed * 3.6);
-            pressure = lround(s->turbo);
+            pressure = s->turbo;
             dist = trip_odometer;
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
