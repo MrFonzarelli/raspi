@@ -15,8 +15,9 @@
 #include <cmath>
 #include <signal.h>
 #include <boost/accumulators/accumulators.hpp>
-#include <boost/accumulators/statistics/rolling_mean.hpp>
-#include <boost/accumulators/statistics/rolling_count.hpp>
+#include <boost/accumulators/statistics.hpp>
+//#include <boost/accumulators/statistics/rolling_mean.hpp>
+//#include <boost/accumulators/statistics/rolling_count.hpp>
 
 using namespace boost::accumulators;
 
@@ -1166,7 +1167,6 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    using namespace boost::accumulators;
     accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
     auto old_time = std::chrono::high_resolution_clock::now();
 
