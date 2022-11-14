@@ -16,7 +16,7 @@
 #include <signal.h>
 #include <boost/accumulators/accumulators.hpp>
 
-using namespace boost::accumulators;
+// using namespace boost::accumulators;
 
 // definitions
 #define PIN1 15         // A
