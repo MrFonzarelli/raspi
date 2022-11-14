@@ -100,7 +100,7 @@ double pressure;
 int engineTemp;
 int oilTemp;
 int oilPressure;
-float trip_odometer;
+double trip_odometer;
 int odometer;
 double fuelBurnedTotal;
 double fuelConsumption;
@@ -868,7 +868,7 @@ double calcFuelConsumption(double fuelBurnedCalc, double distance)
     }
     else
     {
-        return 100 / distance * fuelBurnedCalc;
+        return ((100 / distance) * fuelBurnedCalc);
     }
 }
 
