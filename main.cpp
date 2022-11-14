@@ -857,17 +857,9 @@ void doResetOdoButtonWork()
     }
 }
 
-double calcFuelConsumption(double meanFuelBurned, double distance)
+double calcFuelConsumption(double fuelBurned, double distance)
 {
-    if (meanFuelBurned < 1e-6 || distance < 1e-6)
-    {
-        return 0;
-    }
-    else
-    {
-        double res = (100 / distance) * meanFuelBurned;
-        return res;
-    }
+    return 100 / distance * fuelBurned;
 }
 
 double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, double fuelBurnedForConsumption, double distance)
@@ -1166,8 +1158,10 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 100);
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelAmount(tag::rolling_window::window_size = 50);
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 50);
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorTickTime(tag::rolling_window::window_size = 50);
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelAmount(tag::rolling_window::window_size = 50);
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
@@ -1196,13 +1190,15 @@ int main(int argc, char **argv)
             tripleDigitMutex.lock();
             singleDigitMutex.lock();
             auto new_time = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> time_delta = new_time - old_time;
+            std::chrono::duration<double> tickTime = new_time - old_time;
             if (tick_counter % 4 == 0)
             {
-                double distDelta = time_delta.count() * speed_to_count / 1000;
+                double distDelta = tickTime.count() * speed_to_count / 1000;
+                accumulatorDistDelta(distDelta);
+                accumulatorTickTime(tickTime);
                 trip_odometer += distDelta;
                 accumulatorFuelAmount(fuel_old - s->fuel_remaining);
-                fuelConsumption = calcFuelConsumption(rolling_mean(accumulatorFuelAmount), distDelta);
+                fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
                 accumulatorFuelConsumption(fuelConsumption);
             }
             if (tick_counter % 40 == 0)
@@ -1218,7 +1214,7 @@ int main(int argc, char **argv)
             des_gear = (int)s->gear;
             printf("Fuel cons: %f\n", fuelConsumption);
             printf("Fuel remaining: %f\n", s->fuel_remaining);
-            printf("Tick time: %f\n", time_delta.count());
+            printf("Tick time: %f\n", tickTime.count());
             fuel_old = s->fuel_remaining;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
