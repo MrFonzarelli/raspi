@@ -1192,7 +1192,8 @@ int main(int argc, char **argv)
             trip_odometer += distDelta;
             printf("fuelBurned: %f\n", fuelBurned);
             printf("fuel_old: %f\n", fuel_old);
-            if (s->fuel_remaining < 1e-5)
+            printf("fuel_remaining: %f\n", s->fuel_remaining);
+            if (s->fuel_remaining < 0)
             {
                 fuelBurned = 0;
                 fuel_old = 0;
