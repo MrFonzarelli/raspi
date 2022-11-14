@@ -93,6 +93,7 @@ std::mutex singleDigitMutex;
 int des_gear = 1;
 int cur_gear = 0;
 int speed;
+long long tick_counter = 0;
 double pressure;
 int engineTemp;
 int oilTemp;
@@ -1167,7 +1168,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
+    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 100);
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
@@ -1200,7 +1201,10 @@ int main(int argc, char **argv)
             trip_odometer += time_delta.count() * speed_to_count / 1000;
             fuelConsumption = calcFuelConsumption(s->fuel_remaining, fuel_old, (trip_odometer - dist));
             accumulatorFuelConsumption(fuelConsumption);
-            displayFuelCons = rolling_mean(accumulatorFuelConsumption);
+            if (tick_counter % 50 == 0)
+            {
+                displayFuelCons = rolling_mean(accumulatorFuelConsumption);
+            }
             fuelConsumption_avg = calcAverageFuelConsumption(s->fuel_remaining, fuel_old, fuel_burned, trip_odometer);
             speed = lround(s->speed * 3.6);
             pressure = s->turbo;
@@ -1214,6 +1218,7 @@ int main(int argc, char **argv)
             tripleDigitMutex.unlock();
             old_time = new_time;
         }
+        tick_counter++;
     }
 
     return 0;
