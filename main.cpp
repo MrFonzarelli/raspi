@@ -15,6 +15,7 @@
 #include <cmath>
 #include <signal.h>
 #include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics.hpp>
 
 using namespace boost::accumulators;
 
