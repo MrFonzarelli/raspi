@@ -93,7 +93,7 @@ std::mutex singleDigitMutex;
 int des_gear = 1;
 int cur_gear = 0;
 int speed;
-int pressure;
+double pressure;
 int engineTemp;
 int oilTemp;
 int oilPressure;
