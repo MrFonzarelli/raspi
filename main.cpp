@@ -1193,6 +1193,7 @@ int main(int argc, char **argv)
             if (s->fuel_remaining > 1e-6)
             {
                 fuelBurned = fuel_old - s->fuel_remaining;
+                fuel_old = s->fuel_remaining;
             }
             fuelBurnedTotal += fuelBurned;
             accumulatorFuelAmount(fuelBurned);
@@ -1211,7 +1212,6 @@ int main(int argc, char **argv)
             des_gear = (int)s->gear;
             printf("fuelBurnedTotal: %f\n", fuelBurnedTotal);
             printf("trip_odometer: %f\n", trip_odometer);
-            fuel_old = s->fuel_remaining;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
             old_time = new_time;
