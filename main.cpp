@@ -1197,11 +1197,11 @@ int main(int argc, char **argv)
             accumulatorFuelAmount(fuelBurned);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
             accumulatorFuelConsumption(fuelConsumption);
+            fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, trip_odometer);
             if (tick_counter % 20 == 0)
             {
                 displayFuelCons = rolling_mean(accumulatorFuelConsumption);
             }
-            fuelConsumption_avg = calcAverageFuelConsumption(fuelBurnedTotal, trip_odometer);
             speed = lround(s->speed * 3.6);
             pressure = s->turbo;
             dist = trip_odometer;
