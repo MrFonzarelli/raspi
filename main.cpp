@@ -1215,6 +1215,7 @@ int main(int argc, char **argv)
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
+            printf("fuelBurned: %f\n", fuelBurned);
             printf("fuelBurnedTotal: %f\n", fuelBurnedTotal);
             printf("trip_odometer: %f\n", trip_odometer);
             singleDigitMutex.unlock();
