@@ -1199,7 +1199,13 @@ int main(int argc, char **argv)
                 fuelBurned = fuel_old - s->fuel_remaining;
                 fuel_old = s->fuel_remaining;
             }
-            fuelBurnedTotal += fuelBurned;
+            if (fuelBurned < 1e-6)
+            {
+            }
+            else
+            {
+                fuelBurnedTotal += fuelBurned;
+            }
             accumulatorFuelAmount(fuelBurned);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
             accumulatorFuelConsumption(fuelConsumption);
