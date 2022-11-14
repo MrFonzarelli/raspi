@@ -1168,7 +1168,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 100);
+    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 1000);
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
