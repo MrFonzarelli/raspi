@@ -18,6 +18,7 @@
 #include <boost/accumulators/statistics.hpp>
 #include <boost/accumulators/statistics/rolling_count.hpp>
 #include <boost/accumulators/statistics/rolling_mean.hpp>
+#include <boost/accumulators/statistics/rolling_sum.hpp>
 
 using namespace boost::accumulators;
 
