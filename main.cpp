@@ -627,7 +627,7 @@ void tripleDigitOutput()
     tripleDigitMutex.lock();
     DisplayState state = displayState;
     dig1 = digParser(1, state);
-    dig2 = digParser(2, state); // lol
+    dig2 = digParser(2, state);
     dig3 = digParser(3, state);
     tripleDigitMutex.unlock();
 
@@ -1206,7 +1206,8 @@ int main(int argc, char **argv)
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
-            printf("Fuel cons: %f\n", fuelConsumption);
+            printf("fuelBurnedTotal: %f\n", fuelBurnedTotal);
+            printf("trip_odometer: %f\n", trip_odometer);
             fuel_old = s->fuel_remaining;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
