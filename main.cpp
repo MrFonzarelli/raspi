@@ -102,7 +102,7 @@ int oilTemp;
 int oilPressure;
 float trip_odometer;
 int odometer;
-float fuelBurnedTotal;
+double fuelBurnedTotal;
 double fuelConsumption;
 double fuelConsumption_avg;
 double fuelBurned;
@@ -1156,7 +1156,6 @@ int main(int argc, char **argv)
     accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 20);
 
     accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 25);
-    accumulator_set<double, stats<tag::rolling_sum>> accumulatorTickTime(tag::rolling_window::window_size = 25);
     accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelAmount(tag::rolling_window::window_size = 25);
 
     auto old_time = std::chrono::high_resolution_clock::now();
@@ -1190,7 +1189,6 @@ int main(int argc, char **argv)
             std::chrono::duration<double> tickTime = new_time - old_time;
             double distDelta = tickTime.count() * speed_to_count / 1000;
             accumulatorDistDelta(distDelta);
-            accumulatorTickTime(tickTime.count());
             trip_odometer += distDelta;
             fuelBurned = fuel_old - s->fuel_remaining;
             fuelBurnedTotal += fuelBurned;
