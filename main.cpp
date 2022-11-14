@@ -1202,7 +1202,7 @@ int main(int argc, char **argv)
             accumulatorFuelAmount(fuel_old - s->fuel_remaining);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
             accumulatorFuelConsumption(fuelConsumption);
-            if (tick_counter % 40 == 0)
+            if (tick_counter % 20 == 0)
             {
                 displayFuelCons = rolling_mean(accumulatorFuelConsumption);
             }
