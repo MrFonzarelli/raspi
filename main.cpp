@@ -1213,7 +1213,7 @@ int main(int argc, char **argv)
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
             printf("Fuel cons: %f\n", fuelConsumption);
-            printf("Fuel cons_avg: %f\n", fuelConsumption_avg);
+            printf("Fuel cons_avg: %f\n", s->fuel_remaining);
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
             old_time = new_time;
