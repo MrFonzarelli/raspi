@@ -16,7 +16,7 @@
 #include <signal.h>
 #include <boost/accumulators/accumulators.hpp>
 
-// using namespace boost::accumulators;
+using namespace boost::accumulators;
 
 // definitions
 #define PIN1 15         // A
@@ -1164,6 +1164,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    using namespace boost::accumulators;
     accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
     auto old_time = std::chrono::high_resolution_clock::now();
 
