@@ -1197,7 +1197,7 @@ int main(int argc, char **argv)
             {
                 double distDelta = tickTime.count() * speed_to_count / 1000;
                 accumulatorDistDelta(distDelta);
-                accumulatorTickTime(tickTime);
+                accumulatorTickTime(tickTime.count());
                 trip_odometer += distDelta;
                 accumulatorFuelAmount(fuel_old - s->fuel_remaining);
                 fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
