@@ -1168,7 +1168,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 1000);
+    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 500);
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
@@ -1201,7 +1201,7 @@ int main(int argc, char **argv)
             trip_odometer += time_delta.count() * speed_to_count / 1000;
             fuelConsumption = calcFuelConsumption(s->fuel_remaining, fuel_old, (trip_odometer - dist));
             accumulatorFuelConsumption(fuelConsumption);
-            if (tick_counter % 50 == 0)
+            if (tick_counter % 80 == 0)
             {
                 displayFuelCons = rolling_mean(accumulatorFuelConsumption);
             }
