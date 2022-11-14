@@ -102,9 +102,10 @@ int oilTemp;
 int oilPressure;
 float trip_odometer;
 int odometer;
+float fuelBurnedTotal;
 double fuelConsumption;
 double fuelConsumption_avg;
-double fuel_burned;
+double fuelBurned;
 double displayFuelCons;
 double displayFuelConsAvg;
 float dist;
@@ -861,28 +862,13 @@ void doResetOdoButtonWork()
 
 double calcFuelConsumption(double fuelBurned, double distance)
 {
-    if (fuel_burned < 1e-4 || distance < 1e-4)
+    if (fuelBurned < 1e-4 || distance < 1e-4)
     {
         return 0;
     }
     else
     {
         return 100 / distance * fuelBurned;
-    }
-}
-
-double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, double fuelBurnedForConsumption, double distance)
-{
-    if (fuelAmount_old < fuelAmount || distance == 0)
-    {
-        fuel_burned = 0;
-        return 0;
-    }
-    else
-    {
-        double res = (100 / distance) * (fuelBurnedForConsumption + fuelAmount_old - fuelAmount);
-        fuel_burned += fuelAmount_old - fuelAmount;
-        return res;
     }
 }
 
@@ -1206,14 +1192,16 @@ int main(int argc, char **argv)
             accumulatorDistDelta(distDelta);
             accumulatorTickTime(tickTime.count());
             trip_odometer += distDelta;
-            accumulatorFuelAmount(fuel_old - s->fuel_remaining);
+            fuelBurned = fuel_old - s->fuel_remaining;
+            fuelBurnedTotal += fuelBurned;
+            accumulatorFuelAmount(fuelBurned);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
             accumulatorFuelConsumption(fuelConsumption);
             if (tick_counter % 20 == 0)
             {
                 displayFuelCons = rolling_mean(accumulatorFuelConsumption);
             }
-            fuelConsumption_avg = calcAverageFuelConsumption(s->fuel_remaining, fuel_old, fuel_burned, trip_odometer);
+            fuelConsumption_avg = calcAverageFuelConsumption(fuelBurnedTotal, trip_odometer);
             speed = lround(s->speed * 3.6);
             pressure = s->turbo;
             dist = trip_odometer;
