@@ -109,7 +109,7 @@ double fuelBurned;
 double displayFuelCons;
 double displayFuelConsAvg;
 float dist;
-double fuel_old;
+double fuel_old = 0;
 unsigned dashLights;
 unsigned dashLights_old;
 DisplayState displayState = DisplayState::Speed;
@@ -860,15 +860,15 @@ void doResetOdoButtonWork()
     }
 }
 
-double calcFuelConsumption(double fuelBurned, double distance)
+double calcFuelConsumption(double fuelBurnedCalc, double distance)
 {
-    if (fuelBurned < 1e-4 || distance < 1e-4)
+    if (fuelBurnedCalc < 1e-4 || distance < 1e-4)
     {
         return 0;
     }
     else
     {
-        return 100 / distance * fuelBurned;
+        return 100 / distance * fuelBurnedCalc;
     }
 }
 
