@@ -1197,11 +1197,14 @@ int main(int argc, char **argv)
             singleDigitMutex.lock();
             auto new_time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_delta = new_time - old_time;
-            double distDelta = time_delta.count() * speed_to_count / 1000;
-            trip_odometer += distDelta;
-            accumulatorFuelAmount(fuel_old - s->fuel_remaining);
-            fuelConsumption = calcFuelConsumption(rolling_mean(accumulatorFuelAmount), distDelta);
-            accumulatorFuelConsumption(fuelConsumption);
+            if (tick_counter % 4 == 0)
+            {
+                double distDelta = time_delta.count() * speed_to_count / 1000;
+                trip_odometer += distDelta;
+                accumulatorFuelAmount(fuel_old - s->fuel_remaining);
+                fuelConsumption = calcFuelConsumption(rolling_mean(accumulatorFuelAmount), distDelta);
+                accumulatorFuelConsumption(fuelConsumption);
+            }
             if (tick_counter % 80 == 0)
             {
                 displayFuelCons = rolling_mean(accumulatorFuelConsumption);
