@@ -1214,7 +1214,8 @@ int main(int argc, char **argv)
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
             printf("Fuel cons: %f\n", fuelConsumption);
-            printf("Fuel cons_avg: %f\n", s->fuel_remaining);
+            printf("Fuel remaining: %f\n", s->fuel_remaining);
+            printf("Tick time: %f\n", time_delta.count());
             fuel_old = s->fuel_remaining;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
