@@ -1198,8 +1198,9 @@ int main(int argc, char **argv)
             singleDigitMutex.lock();
             auto new_time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_delta = new_time - old_time;
-            trip_odometer += time_delta.count() * speed_to_count / 1000;
-            fuelConsumption = calcFuelConsumption(s->fuel_remaining, fuel_old, (trip_odometer - dist));
+            double distDelta = time_delta.count() * speed_to_count / 1000;
+            trip_odometer += distDelta;
+            fuelConsumption = calcFuelConsumption(s->fuel_remaining, fuel_old, distDelta);
             accumulatorFuelConsumption(fuelConsumption);
             if (tick_counter % 80 == 0)
             {
