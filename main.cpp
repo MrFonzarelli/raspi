@@ -1190,7 +1190,12 @@ int main(int argc, char **argv)
             double distDelta = tickTime.count() * speed_to_count / 1000;
             accumulatorDistDelta(distDelta);
             trip_odometer += distDelta;
-            if (s->fuel_remaining > 1e-6)
+            if (s->fuel_remaining < 1e-6)
+            {
+                fuelBurned = 0;
+                fuel_old = 0;
+            }
+            else
             {
                 fuelBurned = fuel_old - s->fuel_remaining;
                 fuel_old = s->fuel_remaining;
