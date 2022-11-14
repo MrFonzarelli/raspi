@@ -1190,20 +1190,14 @@ int main(int argc, char **argv)
             double distDelta = tickTime.count() * speed_to_count / 1000;
             accumulatorDistDelta(distDelta);
             trip_odometer += distDelta;
-            printf("fuelBurned: %f\n", fuelBurned);
-            printf("fuel_old: %f\n", fuel_old);
-            printf("fuel_remaining: %f\n", s->fuel_remaining);
-            if (s->fuel_remaining < 0)
+            if (fuel_old < 1e-6)
             {
-                fuelBurned = 0;
-                fuel_old = 0;
-                printf("gud");
+                fuel_old = s->fuel_remaining;
             }
             else
             {
                 fuelBurned = fuel_old - s->fuel_remaining;
                 fuel_old = s->fuel_remaining;
-                printf("BAD");
             }
             fuelBurnedTotal += fuelBurned;
             accumulatorFuelAmount(fuelBurned);
@@ -1220,9 +1214,6 @@ int main(int argc, char **argv)
             engineTemp = lround(s->engTemp);
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
-            printf("fuelBurned: %f\n", fuelBurned);
-            printf("fuelBurnedTotal: %f\n", fuelBurnedTotal);
-            printf("trip_odometer: %f\n", trip_odometer);
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
             old_time = new_time;
