@@ -1190,15 +1190,19 @@ int main(int argc, char **argv)
             double distDelta = tickTime.count() * speed_to_count / 1000;
             accumulatorDistDelta(distDelta);
             trip_odometer += distDelta;
+            printf("fuelBurned: %f\n", fuelBurned);
+            printf("fuel_old: %f\n", fuel_old);
             if (s->fuel_remaining < 1e-5)
             {
                 fuelBurned = 0;
                 fuel_old = 0;
+                printf("gud");
             }
             else
             {
                 fuelBurned = fuel_old - s->fuel_remaining;
                 fuel_old = s->fuel_remaining;
+                printf("BAD");
             }
             fuelBurnedTotal += fuelBurned;
             accumulatorFuelAmount(fuelBurned);
