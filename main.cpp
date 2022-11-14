@@ -861,7 +861,14 @@ void doResetOdoButtonWork()
 
 double calcFuelConsumption(double fuelBurned, double distance)
 {
-    return 100 / distance * fuelBurned;
+    if (fuel_burned < 1e-4 || distance < 1e-4)
+    {
+        return 0;
+    }
+    else
+    {
+        return 100 / distance * fuelBurned;
+    }
 }
 
 double calcAverageFuelConsumption(double fuelAmount, double fuelAmount_old, double fuelBurnedForConsumption, double distance)
@@ -1214,8 +1221,6 @@ int main(int argc, char **argv)
             oilTemp = lround(s->oilTemp);
             des_gear = (int)s->gear;
             printf("Fuel cons: %f\n", fuelConsumption);
-            printf("Fuel remaining: %f\n", s->fuel_remaining);
-            printf("Tick time: %f\n", tickTime.count());
             fuel_old = s->fuel_remaining;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock();
