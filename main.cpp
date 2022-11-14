@@ -1161,9 +1161,11 @@ int main(int argc, char **argv)
     }
 
     accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 50);
-    accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 50);
-    accumulator_set<double, stats<tag::rolling_sum>> accumulatorTickTime(tag::rolling_window::window_size = 50);
-    accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelAmount(tag::rolling_window::window_size = 50);
+
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 25);
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorTickTime(tag::rolling_window::window_size = 25);
+    accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelAmount(tag::rolling_window::window_size = 25);
+
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
@@ -1193,16 +1195,13 @@ int main(int argc, char **argv)
             singleDigitMutex.lock();
             auto new_time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> tickTime = new_time - old_time;
-            if (tick_counter % 4 == 0)
-            {
-                double distDelta = tickTime.count() * speed_to_count / 1000;
-                accumulatorDistDelta(distDelta);
-                accumulatorTickTime(tickTime.count());
-                trip_odometer += distDelta;
-                accumulatorFuelAmount(fuel_old - s->fuel_remaining);
-                fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
-                accumulatorFuelConsumption(fuelConsumption);
-            }
+            double distDelta = tickTime.count() * speed_to_count / 1000;
+            accumulatorDistDelta(distDelta);
+            accumulatorTickTime(tickTime.count());
+            trip_odometer += distDelta;
+            accumulatorFuelAmount(fuel_old - s->fuel_remaining);
+            fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
+            accumulatorFuelConsumption(fuelConsumption);
             if (tick_counter % 40 == 0)
             {
                 displayFuelCons = rolling_mean(accumulatorFuelConsumption);
