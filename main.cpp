@@ -1192,6 +1192,7 @@ int main(int argc, char **argv)
             trip_odometer += distDelta;
             if (fuel_old < 1e-6)
             {
+                fuelBurned = 0;
                 fuel_old = s->fuel_remaining;
             }
             else
@@ -1199,21 +1200,22 @@ int main(int argc, char **argv)
                 fuelBurned = fuel_old - s->fuel_remaining;
                 fuel_old = s->fuel_remaining;
             }
-            if (fuelBurned < 1e-6)
-            {
-            }
-            else
+            if (fuelBurned > 1e-6)
             {
                 fuelBurnedTotal += fuelBurned;
             }
             accumulatorFuelAmount(fuelBurned);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
             accumulatorFuelConsumption(fuelConsumption);
-            fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, trip_odometer);
-            if (tick_counter % 20 == 0)
+            if (tick_counter % 5 == 0)
             {
-                displayFuelCons = rolling_mean(accumulatorFuelConsumption);
+                fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, trip_odometer);
+                if (tick_counter % 20 == 0)
+                {
+                    displayFuelCons = rolling_mean(accumulatorFuelConsumption);
+                }
             }
+
             speed = lround(s->speed * 3.6);
             pressure = s->turbo;
             dist = trip_odometer;
