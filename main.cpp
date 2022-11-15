@@ -101,7 +101,7 @@ int engineTemp;
 int oilTemp;
 int oilPressure;
 double trip_odometer;
-int odometer;
+float odometer;
 double fuelBurnedTotal;
 double fuelConsumption;
 double fuelConsumption_avg;
