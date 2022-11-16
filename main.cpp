@@ -111,8 +111,8 @@ float dist;
 double fuel_old = 0;
 unsigned dashLights;
 unsigned dashLights_old;
-bool GayUnits = False;
-bool ExtremelyGayUnits = False;
+bool GayUnits = false;
+bool ExtremelyGayUnits = false;
 
 DisplayState displayState = DisplayState::Speed;
 
