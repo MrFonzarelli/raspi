@@ -94,25 +94,24 @@ std::mutex singleDigitMutex;
 
 int des_gear = 1;
 int cur_gear = 0;
+float odometer;
+float dist;
 double speed;
-long long tick_counter = 0;
 double pressure;
 double engineTemp;
 double oilTemp;
 double trip_odometer;
-float odometer;
 double fuelBurnedTotal;
 double fuelConsumption;
 double fuelConsumption_avg;
 double fuelBurned;
 double displayFuelCons;
 double displayFuelConsAvg;
-float dist;
-double fuel_old = 0;
+double fuel_old;
 unsigned dashLights;
 unsigned dashLights_old;
 bool GayUnits = false;
-bool ExtremelyGayUnits = false;
+long long tick_counter = 0;
 
 DisplayState displayState = DisplayState::Speed;
 
@@ -549,103 +548,97 @@ int digitSelect(int num)
 int digParser(int num, DisplayState state)
 {
     int dig;
-    if (ExtremelyGayUnits == false)
+    if (GayUnits == false)
     {
-        if (GayUnits == false)
+        switch (state)
         {
-            switch (state)
-            {
-            case DisplayState::Speed:
-            {
-                dig = lround(speed);
-                break;
-            }
-            case DisplayState::TurboPressure:
-            {
-                dig = lround(pressure * 10);
-                break;
-            }
-            case DisplayState::TripOdometer:
-            {
-                dig = lround(trip_odometer * 10);
-                break;
-            }
-            case DisplayState::Odometer:
-            {
-                dig = lround((odometer + trip_odometer) * 10);
-                break;
-            }
-            case DisplayState::EngineTemp:
-            {
-                dig = lround(engineTemp);
-                break;
-            }
-            case DisplayState::OilTemp:
-            {
-                dig = lround(oilTemp);
-                break;
-            }
-            case DisplayState::CurrentFuelConsumption:
-            {
-                dig = lround(displayFuelCons * 10);
-                break;
-            }
-            case DisplayState::AverageFuelConsumption:
-            {
-                dig = lround(fuelConsumption_avg * 10);
-                break;
-            }
-            }
+        case DisplayState::Speed:
+        {
+            dig = lround(speed);
+            break;
         }
-        else
+        case DisplayState::TurboPressure:
         {
-            switch (state)
-            {
-            case DisplayState::Speed:
-            {
-                dig = lround(speed * 0.621371);
-                break;
-            }
-            case DisplayState::TurboPressure:
-            {
-                dig = lround(pressure * 145.038);
-                break;
-            }
-            case DisplayState::TripOdometer:
-            {
-                dig = lround(trip_odometer * 6.21371);
-                break;
-            }
-            case DisplayState::Odometer:
-            {
-                dig = lround((odometer + trip_odometer) * 6.21371);
-                break;
-            }
-            case DisplayState::EngineTemp:
-            {
-                dig = lround(engineTemp * 1.8) + 32;
-                break;
-            }
-            case DisplayState::OilTemp:
-            {
-                dig = lround(oilTemp * 1.8) + 32;
-                break;
-            }
-            case DisplayState::CurrentFuelConsumption:
-            {
-                dig = lround(235.21 / (displayFuelCons / 10));
-                break;
-            }
-            case DisplayState::AverageFuelConsumption:
-            {
-                dig = lround(235.21 / (fuelConsumption_avg / 10));
-                break;
-            }
-            }
+            dig = lround(pressure * 10);
+            break;
+        }
+        case DisplayState::TripOdometer:
+        {
+            dig = lround(trip_odometer * 10);
+            break;
+        }
+        case DisplayState::Odometer:
+        {
+            dig = lround((odometer + trip_odometer) * 10);
+            break;
+        }
+        case DisplayState::EngineTemp:
+        {
+            dig = lround(engineTemp);
+            break;
+        }
+        case DisplayState::OilTemp:
+        {
+            dig = lround(oilTemp);
+            break;
+        }
+        case DisplayState::CurrentFuelConsumption:
+        {
+            dig = lround(displayFuelCons * 10);
+            break;
+        }
+        case DisplayState::AverageFuelConsumption:
+        {
+            dig = lround(fuelConsumption_avg * 10);
+            break;
+        }
         }
     }
     else
     {
+        switch (state)
+        {
+        case DisplayState::Speed:
+        {
+            dig = lround(speed * 0.621371);
+            break;
+        }
+        case DisplayState::TurboPressure:
+        {
+            dig = lround(pressure * 145.038);
+            break;
+        }
+        case DisplayState::TripOdometer:
+        {
+            dig = lround(trip_odometer * 6.21371);
+            break;
+        }
+        case DisplayState::Odometer:
+        {
+            dig = lround((odometer + trip_odometer) * 6.21371);
+            break;
+        }
+        case DisplayState::EngineTemp:
+        {
+            dig = lround(engineTemp * 1.8) + 32;
+            break;
+        }
+        case DisplayState::OilTemp:
+        {
+            dig = lround(oilTemp * 1.8) + 32;
+            break;
+        }
+        case DisplayState::CurrentFuelConsumption:
+        {
+            dig = lround(235.21 / (displayFuelCons / 10));
+            break;
+        }
+        case DisplayState::AverageFuelConsumption:
+        {
+            dig = lround(235.21 / (fuelConsumption_avg / 10));
+            break;
+        }
+        }
     }
 
     switch (num)
@@ -1272,7 +1265,6 @@ int main(int argc, char **argv)
                     displayFuelCons = rolling_mean(accumulatorFuelConsumption);
                 }
             }
-            printf("flags: %u\n", s->flags);
             speed = s->speed * 3.6;
             pressure = s->turbo;
             dist = trip_odometer;
