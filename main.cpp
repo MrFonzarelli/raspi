@@ -548,97 +548,104 @@ int digitSelect(int num)
 int digParser(int num, DisplayState state)
 {
     int dig;
-    if (GayUnits == false)
+    switch (state)
     {
-        switch (state)
-        {
-        case DisplayState::Speed:
+    case DisplayState::Speed:
+    {
+        if (GayUnits == false)
         {
             dig = lround(speed);
-            break;
         }
-        case DisplayState::TurboPressure:
-        {
-            dig = lround(pressure * 10);
-            break;
-        }
-        case DisplayState::TripOdometer:
-        {
-            dig = lround(trip_odometer * 10);
-            break;
-        }
-        case DisplayState::Odometer:
-        {
-            dig = lround((odometer + trip_odometer) * 10);
-            break;
-        }
-        case DisplayState::EngineTemp:
-        {
-            dig = lround(engineTemp);
-            break;
-        }
-        case DisplayState::OilTemp:
-        {
-            dig = lround(oilTemp);
-            break;
-        }
-        case DisplayState::CurrentFuelConsumption:
-        {
-            dig = lround(displayFuelCons * 10);
-            break;
-        }
-        case DisplayState::AverageFuelConsumption:
-        {
-            dig = lround(fuelConsumption_avg * 10);
-            break;
-        }
-        }
-    }
-    else
-    {
-        switch (state)
-        {
-        case DisplayState::Speed:
+        else
         {
             dig = lround(speed * 0.621371);
-            break;
         }
-        case DisplayState::TurboPressure:
+        break;
+    }
+    case DisplayState::TurboPressure:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround(pressure * 10);
+        }
+        else
         {
             dig = lround(pressure * 145.038);
-            break;
         }
-        case DisplayState::TripOdometer:
+        break;
+    }
+    case DisplayState::TripOdometer:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround(trip_odometer * 10);
+        }
+        else
         {
             dig = lround(trip_odometer * 6.21371);
-            break;
         }
-        case DisplayState::Odometer:
+        break;
+    }
+    case DisplayState::Odometer:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround((odometer + trip_odometer) * 10);
+        }
+        else
         {
             dig = lround((odometer + trip_odometer) * 6.21371);
-            break;
         }
-        case DisplayState::EngineTemp:
+        break;
+    }
+    case DisplayState::EngineTemp:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround(engineTemp);
+        }
+        else
         {
             dig = lround(engineTemp * 1.8) + 32;
-            break;
         }
-        case DisplayState::OilTemp:
+        break;
+    }
+    case DisplayState::OilTemp:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround(oilTemp);
+        }
+        else
         {
             dig = lround(oilTemp * 1.8) + 32;
-            break;
         }
-        case DisplayState::CurrentFuelConsumption:
+        break;
+    }
+    case DisplayState::CurrentFuelConsumption:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround(displayFuelCons * 10);
+        }
+        else
         {
             dig = lround(235.21 / (displayFuelCons / 10));
-            break;
         }
-        case DisplayState::AverageFuelConsumption:
+        break;
+    }
+    case DisplayState::AverageFuelConsumption:
+    {
+        if (GayUnits == false)
+        {
+            dig = lround(fuelConsumption_avg * 10);
+        }
+        else
         {
             dig = lround(235.21 / (fuelConsumption_avg / 10));
-            break;
         }
-        }
+        break;
+    }
     }
 
     switch (num)
@@ -905,6 +912,27 @@ void doResetOdoButtonWork()
                 tripleDigitMutex.unlock();
             }
             last_ResetOdoButtonState = des_ResetOdoButtonState;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+}
+
+void doExtremelyGayButtonWork()
+{
+    int des_ExtremelyGayButtonState = 0;
+    int last_ExtremelyGayButtonState = 0;
+    while (true)
+    {
+        des_ExtremelyGayButtonState = digitalRead(PIN_RESET_ODO);
+        if (last_ExtremelyGayButtonState != des_ExtremelyGayButtonState)
+        {
+            if (last_ExtremelyGayButtonState == 0)
+            {
+                tripleDigitMutex.lock();
+                GayUnits = !GayUnits;
+                tripleDigitMutex.unlock();
+            }
+            last_ExtremelyGayButtonState = des_ExtremelyGayButtonState;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
@@ -1186,6 +1214,7 @@ int main(int argc, char **argv)
     std::thread tripleDigitThread(doTripleDigitWork);
     std::thread buttonThread(doButtonWork);
     // std::thread resetOdoButtonThread(doResetOdoButtonWork);
+    // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
 
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
@@ -1204,7 +1233,6 @@ int main(int argc, char **argv)
     }
 
     accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 20);
-
     accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 25);
     accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelAmount(tag::rolling_window::window_size = 25);
 
@@ -1222,24 +1250,23 @@ int main(int argc, char **argv)
         {
             outGauge *s = (outGauge *)buffer;
             dashLights = s->showLights;
+
             if (dashLights != dashLights_old)
             {
                 printBits(sizeof(dashLights), &dashLights);
                 dashLights_old = dashLights;
             }
 
+            tripleDigitMutex.lock(); // Mutex start
+            singleDigitMutex.lock();
+            auto new_time = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> tickTime = new_time - old_time;
             double speed_to_count = s->speed;
+
             if (speed_to_count < 0.15)
             {
                 speed_to_count = 0;
             }
-            tripleDigitMutex.lock();
-            singleDigitMutex.lock();
-            auto new_time = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> tickTime = new_time - old_time;
-            double distDelta = tickTime.count() * speed_to_count / 1000;
-            accumulatorDistDelta(distDelta);
-            trip_odometer += distDelta;
             if (fuel_old < 1e-6)
             {
                 fuelBurned = 0;
@@ -1254,9 +1281,14 @@ int main(int argc, char **argv)
             {
                 fuelBurnedTotal += fuelBurned;
             }
+
+            double distDelta = tickTime.count() * speed_to_count / 1000;
+            trip_odometer += distDelta;
             accumulatorFuelAmount(fuelBurned);
+            accumulatorDistDelta(distDelta);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
             accumulatorFuelConsumption(fuelConsumption);
+
             if (tick_counter % 5 == 0)
             {
                 fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, trip_odometer);
@@ -1265,6 +1297,7 @@ int main(int argc, char **argv)
                     displayFuelCons = rolling_mean(accumulatorFuelConsumption);
                 }
             }
+
             speed = s->speed * 3.6;
             pressure = s->turbo;
             dist = trip_odometer;
@@ -1272,7 +1305,8 @@ int main(int argc, char **argv)
             oilTemp = s->oilTemp;
             des_gear = (int)s->gear;
             singleDigitMutex.unlock();
-            tripleDigitMutex.unlock();
+            tripleDigitMutex.unlock(); // Mutex end
+
             old_time = new_time;
         }
         tick_counter++;
