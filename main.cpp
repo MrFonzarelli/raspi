@@ -692,7 +692,7 @@ void tripleDigitOutput()
     {                                 // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
     case DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
     {
-        if (pressure < 0)
+        if (pressure < 0) // This can display small negative numbers with a minus sign
         {
             digitalWrite(PIN_DIG3, LOW);
             digitSelect(dig3);
@@ -750,7 +750,7 @@ void tripleDigitOutput()
     case DisplayState::CurrentFuelConsumption:
     case DisplayState::AverageFuelConsumption:
     {
-        if (dig1 == 0)
+        if (dig1 == 0) // This displays two digits (up to 99) and the DP
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(WAIT));
             digitalWrite(PIN_DIG3, LOW);
