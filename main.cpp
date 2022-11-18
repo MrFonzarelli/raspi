@@ -40,8 +40,9 @@ using namespace boost::accumulators;
 #define PIN14 25                   // 3 digit -- F
 #define PIN15 24                   // 3 digit -- G
 #define PIN16 23                   // 3 digit -- DP
-#define PIN_BUTTON 12              // Cycle display button
-#define PIN_RESET_ODO 8            // Reset odometer button
+#define PIN_SCROLL_RIGHT_BUTTON 12 // Scroll display right button
+#define PIN_SCROLL_LEFT_BUTTON 12  // Scroll display left button
+#define PIN_RESET_STAT 8           // Reset odometer button
 #define PIN_CHANGE_UNITS_BUTTON 99 // Change units button
 #define PIN_DIG1 0                 // 3 digit -- dig1
 #define PIN_DIG2 2                 // 3 digit -- dig2
@@ -102,6 +103,7 @@ double pressure;
 double engineTemp;
 double oilTemp;
 double trip_odometer;
+double fuelDistance;
 double fuelBurnedTotal;
 double fuelConsumption;
 double fuelConsumption_avg;
@@ -870,49 +872,78 @@ void write_odometer()
     odo_file.close();
 }
 
-void doButtonWork()
+void doScreenScrollRightButtonWork()
 {
-    int des_buttonState = 0;
-    int last_buttonState = 0;
+    int des_RightbuttonState = 0;
+    int last_RightbuttonState = 0;
     while (true)
     {
-        des_buttonState = digitalRead(PIN_BUTTON);
-        if (last_buttonState != des_buttonState)
+        des_RightbuttonState = digitalRead(PIN_SCROLL_RIGHT_BUTTON);
+        if (last_RightbuttonState != des_RightbuttonState)
         {
-            if (last_buttonState == 0)
+            if (last_RightbuttonState == 0)
             {
                 tripleDigitMutex.lock();
                 displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
             }
-            last_buttonState = des_buttonState;
+            last_RightbuttonState = des_RightbuttonState;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 
-void doResetOdoButtonWork()
+void doScreenScrollLeftButtonWork()
 {
-    int des_ResetOdoButtonState = 0;
-    int last_ResetOdoButtonState = 0;
+    int des_LeftbuttonState = 0;
+    int last_LeftbuttonState = 0;
     while (true)
     {
-        des_ResetOdoButtonState = digitalRead(PIN_RESET_ODO);
-        if (last_ResetOdoButtonState != des_ResetOdoButtonState)
+        des_LeftbuttonState = digitalRead(PIN_SCROLL_LEFT_BUTTON);
+        if (last_LeftbuttonState != des_LeftbuttonState)
         {
-            if (last_ResetOdoButtonState == 0)
+            if (last_LeftbuttonState == 0)
             {
                 tripleDigitMutex.lock();
-                printf("trip_odometer: %d\n", trip_odometer);
-                printf("odometer: %d\n", odometer);
-                odometer += trip_odometer;
-                printf("new_odometer: %d\n", odometer);
-                trip_odometer = 0;
-                printf("new_trip_odometer: %d\n", trip_odometer);
-                write_odometer();
+                displayState = (DisplayState)(((int)displayState - 1) % DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
             }
-            last_ResetOdoButtonState = des_ResetOdoButtonState;
+            last_LeftbuttonState = des_LeftbuttonState;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+}
+
+void doResetStatButtonWork()
+{
+    int des_ResetStatButtonState = 0;
+    int last_ResetStatButtonState = 0;
+    while (true)
+    {
+        des_ResetStatButtonState = digitalRead(PIN_RESET_STAT);
+        if (last_ResetStatButtonState != des_ResetStatButtonState)
+        {
+            if (last_ResetStatButtonState == 0)
+            {
+                tripleDigitMutex.lock();
+                switch (displayState)
+                {
+                case DisplayState::AverageFuelConsumption:
+                {
+                    fuelBurnedTotal = 0;
+                    fuelDistance = 0;
+                    break;
+                }
+                case DisplayState::TripOdometer:
+                {
+                    odometer += trip_odometer;
+                    trip_odometer = 0;
+                    break;
+                }
+                }
+                tripleDigitMutex.unlock();
+            }
+            last_ResetStatButtonState = des_ResetStatButtonState;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
@@ -992,7 +1023,7 @@ int main(int argc, char **argv)
     pinMode(PIN_DIG2, OUTPUT);
     pinMode(PIN_DIG3, OUTPUT);
     pinMode(PIN_BUTTON, INPUT);
-    pinMode(PIN_RESET_ODO, INPUT);
+    pinMode(PIN_RESET_STAT, INPUT);
     digitalWrite(PIN_DIG1, HIGH);
     digitalWrite(PIN_DIG2, HIGH);
     digitalWrite(PIN_DIG3, HIGH);
@@ -1213,9 +1244,10 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    std::thread buttonThread(doButtonWork);
+    // std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
+    std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
     // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
-    // std::thread resetOdoButtonThread(doResetOdoButtonWork);
+    // std::thread resetStatButtonThread(doResetStatButtonWork);
 
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
@@ -1285,6 +1317,7 @@ int main(int argc, char **argv)
 
             double distDelta = tickTime.count() * speed_to_count / 1000;
             trip_odometer += distDelta;
+            fuelDistance += distDelta;
             accumulatorFuelAmount(fuelBurned);
             accumulatorDistDelta(distDelta);
             fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
@@ -1292,7 +1325,7 @@ int main(int argc, char **argv)
 
             if (tick_counter % 5 == 0)
             {
-                fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, trip_odometer);
+                fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, fuelDistance);
                 if (tick_counter % 20 == 0)
                 {
                     displayFuelCons = rolling_mean(accumulatorFuelConsumption);
