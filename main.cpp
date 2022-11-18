@@ -24,28 +24,29 @@
 using namespace boost::accumulators;
 
 // definitions
-#define PIN1 15         // A
-#define PIN2 16         // B
-#define PIN3 1          // C
-#define PIN4 4          // D
-#define PIN5 5          // E
-#define PIN6 6          // F
-#define PIN7 10         // G
-#define PIN8 11         // DP
-#define PIN9 31         // 3 digit -- A
-#define PIN10 26        // 3 digit -- B
-#define PIN11 27        // 3 digit -- C
-#define PIN12 28        // 3 digit -- D
-#define PIN13 29        // 3 digit -- E
-#define PIN14 25        // 3 digit -- F
-#define PIN15 24        // 3 digit -- G
-#define PIN16 23        // 3 digit -- DP
-#define PIN_BUTTON 12   // Cycle display button
-#define PIN_RESET_ODO 8 // Reset odometer button
-#define PIN_DIG1 0      // 3 digit -- dig1
-#define PIN_DIG2 2      // 3 digit -- dig2
-#define PIN_DIG3 3      // 3 digit -- dig3
-#define WAIT 3          // 3 digit display -- delay per digit
+#define PIN1 15                    // A
+#define PIN2 16                    // B
+#define PIN3 1                     // C
+#define PIN4 4                     // D
+#define PIN5 5                     // E
+#define PIN6 6                     // F
+#define PIN7 10                    // G
+#define PIN8 11                    // DP
+#define PIN9 31                    // 3 digit -- A
+#define PIN10 26                   // 3 digit -- B
+#define PIN11 27                   // 3 digit -- C
+#define PIN12 28                   // 3 digit -- D
+#define PIN13 29                   // 3 digit -- E
+#define PIN14 25                   // 3 digit -- F
+#define PIN15 24                   // 3 digit -- G
+#define PIN16 23                   // 3 digit -- DP
+#define PIN_BUTTON 12              // Cycle display button
+#define PIN_RESET_ODO 8            // Reset odometer button
+#define PIN_CHANGE_UNITS_BUTTON 99 // Change units button
+#define PIN_DIG1 0                 // 3 digit -- dig1
+#define PIN_DIG2 2                 // 3 digit -- dig2
+#define PIN_DIG3 3                 // 3 digit -- dig3
+#define WAIT 3                     // 3 digit display -- delay per digit
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
@@ -555,12 +556,10 @@ int digParser(int num, DisplayState state)
         if (GayUnits == false)
         {
             dig = lround(speed); // km/h
-            printf("Speed: %i km/h\n", dig);
         }
         else
         {
             dig = lround(speed * 0.621371); // mph
-            printf("Speed: %i mph\n", dig);
         }
         break;
     }
@@ -925,7 +924,7 @@ void doExtremelyGayButtonWork()
     int last_ExtremelyGayButtonState = 0;
     while (true)
     {
-        des_ExtremelyGayButtonState = digitalRead(PIN_BUTTON);
+        des_ExtremelyGayButtonState = digitalRead(PIN_CHANGE_UNITS_BUTTON);
         if (last_ExtremelyGayButtonState != des_ExtremelyGayButtonState)
         {
             if (last_ExtremelyGayButtonState == 0)
@@ -1214,8 +1213,8 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    // std::thread buttonThread(doButtonWork);
-    std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
+    std::thread buttonThread(doButtonWork);
+    // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
     // std::thread resetOdoButtonThread(doResetOdoButtonWork);
 
     myaddr.sin_family = AF_INET;
