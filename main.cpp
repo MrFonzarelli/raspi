@@ -555,12 +555,12 @@ int digParser(int num, DisplayState state)
         if (GayUnits == false)
         {
             dig = lround(speed); // km/h
-            printf("Speed km/h: %i", dig);
+            printf("Speed: %i km/h\n", dig);
         }
         else
         {
             dig = lround(speed * 0.621371); // mph
-            printf("Speed mph: %i", dig);
+            printf("Speed: %i mph\n", dig);
         }
         break;
     }
