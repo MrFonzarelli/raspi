@@ -905,7 +905,7 @@ void doScreenScrollLeftButtonWork()
             if (last_LeftbuttonState == 0)
             {
                 tripleDigitMutex.lock();
-                displayState = (DisplayState)(((int)displayState - 1) % DISPLAY_STATE_COUNT);
+                displayState = (DisplayState)(((int)displayState + DISPLAY_STATE_COUNT - 1) % DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
             }
             last_LeftbuttonState = des_LeftbuttonState;
@@ -1246,8 +1246,8 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
-    // std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
+    // std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
+    std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
     // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
     // std::thread resetStatButtonThread(doResetStatButtonWork);
 
