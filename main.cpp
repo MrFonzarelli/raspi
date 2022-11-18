@@ -1022,7 +1022,9 @@ int main(int argc, char **argv)
     pinMode(PIN_DIG1, OUTPUT);
     pinMode(PIN_DIG2, OUTPUT);
     pinMode(PIN_DIG3, OUTPUT);
-    pinMode(PIN_BUTTON, INPUT);
+    pinMode(PIN_SCROLL_RIGHT_BUTTON, INPUT);
+    pinMode(PIN_SCROLL_LEFT_BUTTON, INPUT);
+    pinMode(PIN_CHANGE_UNITS_BUTTON, INPUT);
     pinMode(PIN_RESET_STAT, INPUT);
     digitalWrite(PIN_DIG1, HIGH);
     digitalWrite(PIN_DIG2, HIGH);
