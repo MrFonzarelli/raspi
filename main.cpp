@@ -923,7 +923,7 @@ void doExtremelyGayButtonWork()
     int last_ExtremelyGayButtonState = 0;
     while (true)
     {
-        des_ExtremelyGayButtonState = digitalRead(PIN_RESET_ODO);
+        des_ExtremelyGayButtonState = digitalRead(PIN_BUTTON);
         if (last_ExtremelyGayButtonState != des_ExtremelyGayButtonState)
         {
             if (last_ExtremelyGayButtonState == 0)
@@ -1212,9 +1212,9 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    std::thread buttonThread(doButtonWork);
+    // std::thread buttonThread(doButtonWork);
+    std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
     // std::thread resetOdoButtonThread(doResetOdoButtonWork);
-    // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
 
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
