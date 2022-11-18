@@ -1246,8 +1246,8 @@ int main(int argc, char **argv)
 
     std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
-    // std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
-    std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
+    std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
+    // std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
     // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
     // std::thread resetStatButtonThread(doResetStatButtonWork);
 
