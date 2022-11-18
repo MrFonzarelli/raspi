@@ -554,11 +554,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(speed);
+            dig = lround(speed); // km/h
         }
         else
         {
-            dig = lround(speed * 0.621371);
+            dig = lround(speed * 0.621371); // mph
         }
         break;
     }
@@ -566,11 +566,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(pressure * 10);
+            dig = lround(pressure * 10); // bar
         }
         else
         {
-            dig = lround(pressure * 145.038);
+            dig = lround(pressure * 145.038); // psi
         }
         break;
     }
@@ -578,11 +578,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(trip_odometer * 10);
+            dig = lround(trip_odometer * 10); // km
         }
         else
         {
-            dig = lround(trip_odometer * 6.21371);
+            dig = lround(trip_odometer * 6.21371); // m
         }
         break;
     }
@@ -590,11 +590,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround((odometer + trip_odometer) * 10);
+            dig = lround((odometer + trip_odometer) * 10); // km
         }
         else
         {
-            dig = lround((odometer + trip_odometer) * 6.21371);
+            dig = lround((odometer + trip_odometer) * 6.21371); // m
         }
         break;
     }
@@ -602,11 +602,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(engineTemp);
+            dig = lround(engineTemp); // °C
         }
         else
         {
-            dig = lround(engineTemp * 1.8) + 32;
+            dig = lround(engineTemp * 1.8) + 32; // °F
         }
         break;
     }
@@ -614,11 +614,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(oilTemp);
+            dig = lround(oilTemp); // °C
         }
         else
         {
-            dig = lround(oilTemp * 1.8) + 32;
+            dig = lround(oilTemp * 1.8) + 32; // °F
         }
         break;
     }
@@ -626,11 +626,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(displayFuelCons * 10);
+            dig = lround(displayFuelCons * 10); // l/100km
         }
         else
         {
-            dig = lround(235.21 / (displayFuelCons / 10));
+            dig = lround(235.21 / (displayFuelCons / 10)); // mpg
         }
         break;
     }
@@ -638,11 +638,11 @@ int digParser(int num, DisplayState state)
     {
         if (GayUnits == false)
         {
-            dig = lround(fuelConsumption_avg * 10);
+            dig = lround(fuelConsumption_avg * 10); // l/100km
         }
         else
         {
-            dig = lround(235.21 / (fuelConsumption_avg / 10));
+            dig = lround(235.21 / (fuelConsumption_avg / 10)); // mpg
         }
         break;
     }
