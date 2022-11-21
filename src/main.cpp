@@ -1,5 +1,6 @@
 // includes
 #include "display.hpp"
+#include "display_single_digit.hpp"
 #include "pins.hpp"
 #include <stdio.h>
 #include <stdlib.h>
