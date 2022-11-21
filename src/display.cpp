@@ -1,12 +1,15 @@
 #include "display.hpp"
 #include "display_animations.hpp"
+#include "display_single_digit.hpp"
 #include "pins.hpp"
 #include <chrono>
+#include <memory>
 #include <thread>
 #include <wiringPi.h>
 
 namespace Display
 {
+    std::unique_ptr<std::thread> g_SingleDigitThread;
 
     void initialize()
     {
@@ -36,6 +39,8 @@ namespace Display
         pinMode(PIN_RESET_STAT, INPUT);
 
         Animations::welcome();
+
+        g_SingleDigitThread = SingleDigit::startThread();
     }
 
 }

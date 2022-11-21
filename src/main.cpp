@@ -37,8 +37,6 @@ using namespace boost::accumulators;
 std::mutex tripleDigitMutex;
 std::mutex singleDigitMutex;
 
-int des_gear = 1;
-int cur_gear = 0;
 float odometer;
 float dist;
 double speed;
@@ -59,75 +57,6 @@ bool GayUnits = false;
 long long tick_counter = 0;
 
 Display::DisplayState displayState = Display::DisplayState::Speed;
-
-int singleDigitOutput(int state)
-{
-    switch (state)
-    {
-    case 0:
-    {
-        cur_gear = Display::SingleDigit::reverseHandler();
-        break;
-    }
-    case 1:
-    {
-        cur_gear = Display::SingleDigit::neutralHandler();
-        break;
-    }
-    case 2:
-    {
-        cur_gear = Display::SingleDigit::firstHandler();
-        break;
-    }
-    case 3:
-    {
-        cur_gear = Display::SingleDigit::secondHandler();
-        break;
-    }
-    case 4:
-    {
-        cur_gear = Display::SingleDigit::thirdHandler();
-        break;
-    }
-    case 5:
-    {
-        cur_gear = Display::SingleDigit::fourthHandler();
-        break;
-    }
-    case 6:
-    {
-        cur_gear = Display::SingleDigit::fifthHandler();
-        break;
-    }
-    case 7:
-    {
-        cur_gear = Display::SingleDigit::sixthHandler();
-        break;
-    }
-    case 8:
-    {
-        cur_gear = Display::SingleDigit::seventhHandler();
-        break;
-    }
-    case 9:
-    {
-        cur_gear = Display::SingleDigit::eighthHandler();
-        break;
-    }
-    case 10:
-    {
-        cur_gear = Display::SingleDigit::ninethHandler();
-        break;
-    }
-    default:
-    {
-        Display::SingleDigit::zeroHandler();
-        cur_gear = des_gear;
-        break;
-    }
-    }
-    return cur_gear;
-}
 
 int digitSelect(int num)
 {
@@ -481,17 +410,6 @@ void tripleDigitOutput()
     }
 }
 
-void doSingleDigitWork()
-{
-    while (true)
-    {
-        singleDigitMutex.lock();
-        int gear = des_gear;
-        singleDigitMutex.unlock();
-        singleDigitOutput(gear);
-    }
-}
-
 void doTripleDigitWork()
 {
     while (true)
@@ -653,7 +571,6 @@ int main(int argc, char **argv)
 
     Display::initialize();
 
-    std::thread singleDigitThread(doSingleDigitWork);
     std::thread tripleDigitThread(doTripleDigitWork);
     std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
     // std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
@@ -749,7 +666,6 @@ int main(int argc, char **argv)
             dist = trip_odometer;
             engineTemp = tick.outGauge.engTemp;
             oilTemp = tick.outGauge.oilTemp;
-            des_gear = (int)tick.outGauge.gear;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock(); // Mutex end
 

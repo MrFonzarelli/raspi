@@ -1,5 +1,7 @@
+#include "data.hpp"
 #include "display_single_digit.hpp"
 #include "pins.hpp"
+#include <chrono>
 #include <wiringPi.h>
 
 namespace Display::SingleDigit
@@ -147,6 +149,88 @@ namespace Display::SingleDigit
         digitalWrite(PIN6, HIGH);
         digitalWrite(PIN7, LOW);
         return 11;
+    }
+
+    void singleDigitOutput(int value)
+    {
+        switch (value)
+        {
+        case 0:
+        {
+            reverseHandler();
+            break;
+        }
+        case 1:
+        {
+            neutralHandler();
+            break;
+        }
+        case 2:
+        {
+            firstHandler();
+            break;
+        }
+        case 3:
+        {
+            secondHandler();
+            break;
+        }
+        case 4:
+        {
+            thirdHandler();
+            break;
+        }
+        case 5:
+        {
+            fourthHandler();
+            break;
+        }
+        case 6:
+        {
+            fifthHandler();
+            break;
+        }
+        case 7:
+        {
+            sixthHandler();
+            break;
+        }
+        case 8:
+        {
+            seventhHandler();
+            break;
+        }
+        case 9:
+        {
+            eighthHandler();
+            break;
+        }
+        case 10:
+        {
+            ninethHandler();
+            break;
+        }
+        default:
+        {
+            zeroHandler();
+            break;
+        }
+        }
+    }
+
+    void doSingleDigitWork()
+    {
+        while (true)
+        {
+            Data::Tick tick = Data::get();
+            Display::singleDigitOutput(tick.outGauge.gear);
+            std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
+        }
+    }
+
+    std::thread *startThread()
+    {
+        return new std::thread(doSingleDigitWork);
     }
 
 }

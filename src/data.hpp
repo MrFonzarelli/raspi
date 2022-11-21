@@ -5,6 +5,7 @@
 
 namespace Data
 {
+    const int ACCESS_DELAY_MS = 10;
 
     struct Tick
     {
