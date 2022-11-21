@@ -150,5 +150,3 @@ namespace Display::SingleDigit
     }
 
 }
-
-#endif
