@@ -1,6 +1,7 @@
 // includes
 #include "display.hpp"
 #include "display_single_digit.hpp"
+#include "display_triple_digit.hpp"
 #include "pins.hpp"
 #include <stdio.h>
 #include <stdlib.h>
@@ -97,138 +98,6 @@ long long tick_counter = 0;
 
 DisplayState displayState = DisplayState::Speed;
 
-int FirstHandlerTri(void)
-{
-    digitalWrite(PIN9, LOW);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, LOW);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, LOW);
-    digitalWrite(PIN15, LOW);
-    return 1;
-}
-
-int SecondHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, LOW);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, HIGH);
-    digitalWrite(PIN14, LOW);
-    digitalWrite(PIN15, HIGH);
-    return 2;
-}
-
-int ThirdHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, LOW);
-    digitalWrite(PIN15, HIGH);
-    return 3;
-}
-
-int FourthHandlerTri(void)
-{
-    digitalWrite(PIN9, LOW);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, LOW);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, HIGH);
-    digitalWrite(PIN15, HIGH);
-    return 4;
-}
-
-int FifthHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, LOW);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, HIGH);
-    digitalWrite(PIN15, HIGH);
-    return 5;
-}
-
-int SixthHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, LOW);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, HIGH);
-    digitalWrite(PIN14, HIGH);
-    digitalWrite(PIN15, HIGH);
-    return 6;
-}
-
-int SeventhHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, LOW);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, LOW);
-    digitalWrite(PIN15, LOW);
-    return 7;
-}
-
-int EighthHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, HIGH);
-    digitalWrite(PIN14, HIGH);
-    digitalWrite(PIN15, HIGH);
-    return 8;
-}
-
-int NinethHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, HIGH);
-    digitalWrite(PIN15, HIGH);
-    return 9;
-}
-
-int ZeroHandlerTri(void)
-{
-    digitalWrite(PIN9, HIGH);
-    digitalWrite(PIN10, HIGH);
-    digitalWrite(PIN11, HIGH);
-    digitalWrite(PIN12, HIGH);
-    digitalWrite(PIN13, HIGH);
-    digitalWrite(PIN14, HIGH);
-    digitalWrite(PIN15, LOW);
-    return 0;
-}
-
-int MinusHandlerTri(void)
-{
-    digitalWrite(PIN9, LOW);
-    digitalWrite(PIN10, LOW);
-    digitalWrite(PIN11, LOW);
-    digitalWrite(PIN12, LOW);
-    digitalWrite(PIN13, LOW);
-    digitalWrite(PIN14, LOW);
-    digitalWrite(PIN15, HIGH);
-    return 0;
-}
-
 int singleDigitOutput(int state)
 {
     switch (state)
@@ -304,62 +173,62 @@ int digitSelect(int num)
     {
     case 0:
     {
-        num = ZeroHandlerTri();
+        num = Display::TripleDigit::zeroHandlerTri();
         break;
     }
     case 1:
     {
-        num = FirstHandlerTri();
+        num = Display::TripleDigit::firstHandlerTri();
         break;
     }
     case 2:
     {
-        num = SecondHandlerTri();
+        num = Display::TripleDigit::secondHandlerTri();
         break;
     }
     case 3:
     {
-        num = ThirdHandlerTri();
+        num = Display::TripleDigit::thirdHandlerTri();
         break;
     }
     case 4:
     {
-        num = FourthHandlerTri();
+        num = Display::TripleDigit::fourthHandlerTri();
         break;
     }
     case 5:
     {
-        num = FifthHandlerTri();
+        num = Display::TripleDigit::fifthHandlerTri();
         break;
     }
     case 6:
     {
-        num = SixthHandlerTri();
+        num = Display::TripleDigit::sixthHandlerTri();
         break;
     }
     case 7:
     {
-        num = SeventhHandlerTri();
+        num = Display::TripleDigit::seventhHandlerTri();
         break;
     }
     case 8:
     {
-        num = EighthHandlerTri();
+        num = Display::TripleDigit::eighthHandlerTri();
         break;
     }
     case 9:
     {
-        num = NinethHandlerTri();
+        num = Display::TripleDigit::ninethHandlerTri();
         break;
     }
     case 10:
     {
-        num = MinusHandlerTri();
+        num = Display::TripleDigit::minusHandlerTri();
         break;
     }
     default:
     {
-        num = NinethHandlerTri();
+        num = Display::TripleDigit::ninethHandlerTri();
         break;
     }
     }
