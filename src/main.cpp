@@ -1,5 +1,6 @@
 // includes
 #include "display.hpp"
+#include "pins.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,30 +26,7 @@
 using namespace boost::accumulators;
 
 // definitions
-#define PIN1 15                    // A
-#define PIN2 16                    // B
-#define PIN3 1                     // C
-#define PIN4 4                     // D
-#define PIN5 5                     // E
-#define PIN6 6                     // F
-#define PIN7 10                    // G
-#define PIN8 11                    // DP
-#define PIN9 31                    // 3 digit -- A
-#define PIN10 26                   // 3 digit -- B
-#define PIN11 27                   // 3 digit -- C
-#define PIN12 28                   // 3 digit -- D
-#define PIN13 29                   // 3 digit -- E
-#define PIN14 25                   // 3 digit -- F
-#define PIN15 24                   // 3 digit -- G
-#define PIN16 23                   // 3 digit -- DP
-#define PIN_SCROLL_RIGHT_BUTTON 12 // Scroll display right button
-#define PIN_SCROLL_LEFT_BUTTON 12  // Scroll display left button
-#define PIN_RESET_STAT 8           // Reset odometer button
-#define PIN_CHANGE_UNITS_BUTTON 99 // Change units button
-#define PIN_DIG1 0                 // 3 digit -- dig1
-#define PIN_DIG2 2                 // 3 digit -- dig2
-#define PIN_DIG3 3                 // 3 digit -- dig3
-#define WAIT 3                     // 3 digit display -- delay per digit
+#define WAIT 3 // 3 digit display -- delay per digit
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
@@ -113,172 +91,10 @@ double displayFuelCons;
 double displayFuelConsAvg;
 double fuel_old;
 unsigned dashLights;
-unsigned dashLights_old;
 bool GayUnits = false;
 long long tick_counter = 0;
 
 DisplayState displayState = DisplayState::Speed;
-
-void printBits(size_t const size, void const *const ptr)
-{
-    unsigned char *b = (unsigned char *)ptr;
-    unsigned char byte;
-    int i, j;
-
-    for (i = size - 1; i >= 0; i--)
-    {
-        for (j = 7; j >= 0; j--)
-        {
-            byte = (b[i] >> j) & 1;
-            printf("%u", byte);
-        }
-    }
-    puts("");
-}
-
-int ReverseHandler(void)
-{
-    digitalWrite(PIN1, LOW);
-    digitalWrite(PIN2, LOW);
-    digitalWrite(PIN3, LOW);
-    digitalWrite(PIN4, LOW);
-    digitalWrite(PIN5, HIGH);
-    digitalWrite(PIN6, LOW);
-    digitalWrite(PIN7, HIGH);
-    return 0;
-}
-
-int NeutralHandler(void)
-{
-    digitalWrite(PIN1, LOW);
-    digitalWrite(PIN2, LOW);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, LOW);
-    digitalWrite(PIN5, HIGH);
-    digitalWrite(PIN6, LOW);
-    digitalWrite(PIN7, HIGH);
-    return 1;
-}
-
-int FirstHandler(void)
-{
-    digitalWrite(PIN1, LOW);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, LOW);
-    digitalWrite(PIN5, LOW);
-    digitalWrite(PIN6, LOW);
-    digitalWrite(PIN7, LOW);
-    return 2;
-}
-
-int SecondHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, LOW);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, HIGH);
-    digitalWrite(PIN6, LOW);
-    digitalWrite(PIN7, HIGH);
-    return 3;
-}
-
-int ThirdHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, LOW);
-    digitalWrite(PIN6, LOW);
-    digitalWrite(PIN7, HIGH);
-    return 4;
-}
-
-int FourthHandler(void)
-{
-    digitalWrite(PIN1, LOW);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, LOW);
-    digitalWrite(PIN5, LOW);
-    digitalWrite(PIN6, HIGH);
-    digitalWrite(PIN7, HIGH);
-    return 5;
-}
-
-int FifthHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, LOW);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, LOW);
-    digitalWrite(PIN6, HIGH);
-    digitalWrite(PIN7, HIGH);
-    return 6;
-}
-
-int SixthHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, LOW);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, HIGH);
-    digitalWrite(PIN6, HIGH);
-    digitalWrite(PIN7, HIGH);
-    return 7;
-}
-
-int SeventhHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, LOW);
-    digitalWrite(PIN5, LOW);
-    digitalWrite(PIN6, LOW);
-    digitalWrite(PIN7, LOW);
-    return 8;
-}
-
-int EighthHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, HIGH);
-    digitalWrite(PIN6, HIGH);
-    digitalWrite(PIN7, HIGH);
-    return 9;
-}
-
-int NinethHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, LOW);
-    digitalWrite(PIN6, HIGH);
-    digitalWrite(PIN7, HIGH);
-    return 10;
-}
-
-int ZeroHandler(void)
-{
-    digitalWrite(PIN1, HIGH);
-    digitalWrite(PIN2, HIGH);
-    digitalWrite(PIN3, HIGH);
-    digitalWrite(PIN4, HIGH);
-    digitalWrite(PIN5, HIGH);
-    digitalWrite(PIN6, HIGH);
-    digitalWrite(PIN7, LOW);
-    return 11;
-}
 
 int FirstHandlerTri(void)
 {
@@ -418,62 +234,62 @@ int singleDigitOutput(int state)
     {
     case 0:
     {
-        cur_gear = ReverseHandler();
+        cur_gear = Display::SingleDigit::reverseHandler();
         break;
     }
     case 1:
     {
-        cur_gear = NeutralHandler();
+        cur_gear = Display::SingleDigit::neutralHandler();
         break;
     }
     case 2:
     {
-        cur_gear = FirstHandler();
+        cur_gear = Display::SingleDigit::firstHandler();
         break;
     }
     case 3:
     {
-        cur_gear = SecondHandler();
+        cur_gear = Display::SingleDigit::secondHandler();
         break;
     }
     case 4:
     {
-        cur_gear = ThirdHandler();
+        cur_gear = Display::SingleDigit::thirdHandler();
         break;
     }
     case 5:
     {
-        cur_gear = FourthHandler();
+        cur_gear = Display::SingleDigit::fourthHandler();
         break;
     }
     case 6:
     {
-        cur_gear = FifthHandler();
+        cur_gear = Display::SingleDigit::fifthHandler();
         break;
     }
     case 7:
     {
-        cur_gear = SixthHandler();
+        cur_gear = Display::SingleDigit::sixthHandler();
         break;
     }
     case 8:
     {
-        cur_gear = SeventhHandler();
+        cur_gear = Display::SingleDigit::seventhHandler();
         break;
     }
     case 9:
     {
-        cur_gear = EighthHandler();
+        cur_gear = Display::SingleDigit::eighthHandler();
         break;
     }
     case 10:
     {
-        cur_gear = NinethHandler();
+        cur_gear = Display::SingleDigit::ninethHandler();
         break;
     }
     default:
     {
-        ZeroHandler();
+        Display::SingleDigit::zeroHandler();
         cur_gear = des_gear;
         break;
     }
@@ -1046,12 +862,6 @@ int main(int argc, char **argv)
         {
             outGauge *s = (outGauge *)buffer;
             dashLights = s->showLights;
-
-            if (dashLights != dashLights_old)
-            {
-                printBits(sizeof(dashLights), &dashLights);
-                dashLights_old = dashLights;
-            }
 
             tripleDigitMutex.lock(); // Mutex start
             singleDigitMutex.lock();
