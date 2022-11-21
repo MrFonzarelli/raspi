@@ -1,0 +1,4 @@
+#ifndef DISPLAY_ANIMATIONS_HPP
+#define DISPLAY_ANIMATIONS_HPP
+
+#endif
