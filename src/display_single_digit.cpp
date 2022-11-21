@@ -223,7 +223,7 @@ namespace Display::SingleDigit
         while (true)
         {
             Data::Tick tick = Data::get();
-            Display::singleDigitOutput(tick.outGauge.gear);
+            singleDigitOutput(tick.outGauge.gear);
             std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
         }
     }
