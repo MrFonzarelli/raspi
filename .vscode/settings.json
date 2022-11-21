@@ -108,5 +108,6 @@
         "valarray": "cpp",
         "variant": "cpp",
         "xhash": "cpp"
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
 }
