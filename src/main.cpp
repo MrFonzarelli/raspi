@@ -34,21 +34,6 @@ using namespace boost::accumulators;
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
-#define DISPLAY_STATE_COUNT 8
-
-// classes
-enum class DisplayState
-{
-    Speed = 0,
-    TurboPressure = 1,
-    CurrentFuelConsumption = 2,
-    AverageFuelConsumption = 3,
-    TripOdometer = 4,
-    Odometer = 5,
-    EngineTemp = 6,
-    OilTemp = 7
-};
-
 std::mutex tripleDigitMutex;
 std::mutex singleDigitMutex;
 
@@ -73,7 +58,7 @@ unsigned dashLights;
 bool GayUnits = false;
 long long tick_counter = 0;
 
-DisplayState displayState = DisplayState::Speed;
+Display::DisplayState displayState = Display::DisplayState::Speed;
 
 int singleDigitOutput(int state)
 {
@@ -212,12 +197,12 @@ int digitSelect(int num)
     return num;
 }
 
-int digParser(int num, DisplayState state)
+int digParser(int num, Display::DisplayState state)
 {
     int dig;
     switch (state)
     {
-    case DisplayState::Speed:
+    case Display::DisplayState::Speed:
     {
         if (GayUnits == false)
         {
@@ -229,7 +214,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::TurboPressure:
+    case Display::DisplayState::TurboPressure:
     {
         if (GayUnits == false)
         {
@@ -241,7 +226,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::TripOdometer:
+    case Display::DisplayState::TripOdometer:
     {
         if (GayUnits == false)
         {
@@ -253,7 +238,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::Odometer:
+    case Display::DisplayState::Odometer:
     {
         if (GayUnits == false)
         {
@@ -265,7 +250,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::EngineTemp:
+    case Display::DisplayState::EngineTemp:
     {
         if (GayUnits == false)
         {
@@ -277,7 +262,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::OilTemp:
+    case Display::DisplayState::OilTemp:
     {
         if (GayUnits == false)
         {
@@ -289,7 +274,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::CurrentFuelConsumption:
+    case Display::DisplayState::CurrentFuelConsumption:
     {
         if (GayUnits == false)
         {
@@ -301,7 +286,7 @@ int digParser(int num, DisplayState state)
         }
         break;
     }
-    case DisplayState::AverageFuelConsumption:
+    case Display::DisplayState::AverageFuelConsumption:
     {
         if (GayUnits == false)
         {
@@ -349,15 +334,15 @@ void tripleDigitOutput()
     int dig3;
 
     tripleDigitMutex.lock();
-    DisplayState state = displayState;
+    Display::DisplayState state = displayState;
     dig1 = digParser(1, state);
     dig2 = digParser(2, state);
     dig3 = digParser(3, state);
     tripleDigitMutex.unlock();
 
     switch (state)
-    {                                 // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
-    case DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
+    {                                          // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
+    case Display::DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
     {
         if (pressure < 0) // This can display small negative numbers with a minus sign
         {
@@ -412,10 +397,10 @@ void tripleDigitOutput()
         }
         break;
     }
-    case DisplayState::TripOdometer:
-    case DisplayState::Odometer:
-    case DisplayState::CurrentFuelConsumption:
-    case DisplayState::AverageFuelConsumption:
+    case Display::DisplayState::TripOdometer:
+    case Display::DisplayState::Odometer:
+    case Display::DisplayState::CurrentFuelConsumption:
+    case Display::DisplayState::AverageFuelConsumption:
     {
         if (dig1 == 0) // This displays two digits (up to 99) and the DP
         {
@@ -548,7 +533,7 @@ void doScreenScrollRightButtonWork()
             if (last_RightbuttonState == 0)
             {
                 tripleDigitMutex.lock();
-                displayState = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
+                displayState = (Display::DisplayState)(((int)displayState + 1) % Display::DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
             }
             last_RightbuttonState = des_RightbuttonState;
@@ -569,7 +554,7 @@ void doScreenScrollLeftButtonWork()
             if (last_LeftbuttonState == 0)
             {
                 tripleDigitMutex.lock();
-                displayState = (DisplayState)(((int)displayState + DISPLAY_STATE_COUNT - 1) % DISPLAY_STATE_COUNT);
+                displayState = (Display::DisplayState)(((int)displayState + Display::DISPLAY_STATE_COUNT - 1) % Display::DISPLAY_STATE_COUNT);
                 tripleDigitMutex.unlock();
             }
             last_LeftbuttonState = des_LeftbuttonState;
@@ -592,13 +577,13 @@ void doResetStatButtonWork()
                 tripleDigitMutex.lock();
                 switch (displayState)
                 {
-                case DisplayState::AverageFuelConsumption:
+                case Display::DisplayState::AverageFuelConsumption:
                 {
                     fuelBurnedTotal = 0;
                     fuelDistance = 0;
                     break;
                 }
-                case DisplayState::TripOdometer:
+                case Display::DisplayState::TripOdometer:
                 {
                     odometer += trip_odometer;
                     trip_odometer = 0;
