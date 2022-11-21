@@ -35,7 +35,6 @@ using namespace boost::accumulators;
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
 std::mutex tripleDigitMutex;
-std::mutex singleDigitMutex;
 
 float odometer;
 float dist;
@@ -622,7 +621,6 @@ int main(int argc, char **argv)
             Data::Tick tick = Data::get();
 
             tripleDigitMutex.lock(); // Mutex start
-            singleDigitMutex.lock();
             double speed_to_count = tick.outGauge.speed;
 
             if (speed_to_count < 0.15)
@@ -666,7 +664,6 @@ int main(int argc, char **argv)
             dist = trip_odometer;
             engineTemp = tick.outGauge.engTemp;
             oilTemp = tick.outGauge.oilTemp;
-            singleDigitMutex.unlock();
             tripleDigitMutex.unlock(); // Mutex end
 
             old_time = new_time;
