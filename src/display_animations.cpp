@@ -1,4 +1,5 @@
 #include "display_animations.hpp"
+#include "pins.hpp"
 #include <chrono>
 #include <thread>
 #include <wiringPi.h>
