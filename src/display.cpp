@@ -1,4 +1,5 @@
 #include "display.hpp"
+#include "display_animations.hpp"
 #include "pins.hpp"
 #include <chrono>
 #include <thread>
@@ -33,6 +34,8 @@ namespace Display
         pinMode(PIN_SCROLL_LEFT_BUTTON, INPUT);
         pinMode(PIN_CHANGE_UNITS_BUTTON, INPUT);
         pinMode(PIN_RESET_STAT, INPUT);
+
+        Animations::welcome();
 
         // digitalWrite(PIN_DIG1, HIGH);
         // digitalWrite(PIN_DIG2, HIGH);
