@@ -40,7 +40,7 @@ namespace Display
 
         Animations::welcome();
 
-        g_SingleDigitThread = SingleDigit::startThread();
+        g_SingleDigitThread.reset(SingleDigit::startThread());
     }
 
 }
