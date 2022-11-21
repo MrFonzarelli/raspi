@@ -1,7 +1,9 @@
 // includes
+#include "data.hpp"
 #include "display.hpp"
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
+#include "outgauge.hpp"
 #include "pins.hpp"
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,31 +47,6 @@ enum class DisplayState
     Odometer = 5,
     EngineTemp = 6,
     OilTemp = 7
-};
-
-struct outGauge
-{
-    unsigned time;
-    char car[4];
-    unsigned short flags;
-    char gear;
-    char plid;
-    float speed;
-    float rpm;
-    float turbo;
-    float engTemp;
-    float fuel;
-    float fuel_remaining;
-    float oilPressure;
-    float oilTemp;
-    unsigned dashLights;
-    unsigned showLights;
-    float throttle;
-    float brake;
-    float clutch;
-    char display1[16];
-    char display2[16];
-    int id;
 };
 
 std::mutex tripleDigitMutex;
@@ -730,14 +707,21 @@ int main(int argc, char **argv)
         }
         else
         {
-            outGauge *s = (outGauge *)buffer;
-            dashLights = s->showLights;
+            auto new_time = std::chrono::high_resolution_clock::now();
+            {
+                OutGauge *s = (OutGauge *)buffer;
+                Data::Tick tickData;
+                tickData.outGauge = *s;
+                tickData.tickCounter = tick_counter;
+                tickData.tickTime = (new_time - old_time).count();
+                Data::set(tickData);
+            }
+
+            Data::Tick tick = Data::get();
 
             tripleDigitMutex.lock(); // Mutex start
             singleDigitMutex.lock();
-            auto new_time = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> tickTime = new_time - old_time;
-            double speed_to_count = s->speed;
+            double speed_to_count = tick.outGauge.speed;
 
             if (speed_to_count < 0.15)
             {
@@ -746,19 +730,19 @@ int main(int argc, char **argv)
             if (fuel_old < 1e-6)
             {
                 fuelBurned = 0;
-                fuel_old = s->fuel_remaining;
+                fuel_old = tick.outGauge.fuel_remaining;
             }
             else
             {
-                fuelBurned = fuel_old - s->fuel_remaining;
-                fuel_old = s->fuel_remaining;
+                fuelBurned = fuel_old - tick.outGauge.fuel_remaining;
+                fuel_old = tick.outGauge.fuel_remaining;
             }
             if (fuelBurned > 1e-6)
             {
                 fuelBurnedTotal += fuelBurned;
             }
 
-            double distDelta = tickTime.count() * speed_to_count / 1000;
+            double distDelta = tick.tickTime * speed_to_count / 1000;
             trip_odometer += distDelta;
             fuelDistance += distDelta;
             accumulatorFuelAmount(fuelBurned);
@@ -775,12 +759,12 @@ int main(int argc, char **argv)
                 }
             }
 
-            speed = s->speed * 3.6;
-            pressure = s->turbo;
+            speed = tick.outGauge.speed * 3.6;
+            pressure = tick.outGauge.turbo;
             dist = trip_odometer;
-            engineTemp = s->engTemp;
-            oilTemp = s->oilTemp;
-            des_gear = (int)s->gear;
+            engineTemp = tick.outGauge.engTemp;
+            oilTemp = tick.outGauge.oilTemp;
+            des_gear = (int)tick.outGauge.gear;
             singleDigitMutex.unlock();
             tripleDigitMutex.unlock(); // Mutex end
 
