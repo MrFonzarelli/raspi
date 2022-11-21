@@ -1,4 +1,6 @@
 #include "display_single_digit.hpp"
+#include "pins.hpp"
+#include <wiringPi.h>
 
 namespace Display::SingleDigit
 {
