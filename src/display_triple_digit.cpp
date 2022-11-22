@@ -230,11 +230,11 @@ namespace Display::TripleDigit
         {
             if (tick.impUnits == false)
             {
-                dig = lround(tick.outGauge.pressure * 10); // bar
+                dig = lround(tick.outGauge.turbo * 10); // bar
             }
             else
             {
-                dig = lround(tick.outGauge.pressure * 145.038); // psi
+                dig = lround(tick.outGauge.turbo * 145.038); // psi
             }
             break;
         }
