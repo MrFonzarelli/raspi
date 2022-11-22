@@ -153,7 +153,7 @@ namespace Display::SingleDigit
 
     void singleDigitOutput(int value)
     {
-        switch (value)
+        switch (value % 10)
         {
         case 0:
         {
