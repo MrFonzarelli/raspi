@@ -29,19 +29,12 @@
 
 using namespace boost::accumulators;
 
-// definitions
-#define WAIT 3 // 3 digit display -- delay per digit
-
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
 std::mutex tripleDigitMutex;
 
 float odometer;
 float dist;
-double speed;
-double pressure;
-double engineTemp;
-double oilTemp;
 double trip_odometer;
 double fuelDistance;
 double fuelBurnedTotal;
@@ -51,7 +44,6 @@ double fuelBurned;
 double displayFuelCons;
 double displayFuelConsAvg;
 double fuel_old;
-unsigned dashLights;
 bool GayUnits = false;
 long long tick_counter = 0;
 
@@ -290,11 +282,7 @@ int main(int argc, char **argv)
                 }
             }
 
-            speed = tick.outGauge.speed * 3.6;
-            pressure = tick.outGauge.turbo;
             dist = trip_odometer;
-            engineTemp = tick.outGauge.engTemp;
-            oilTemp = tick.outGauge.oilTemp;
             tripleDigitMutex.unlock(); // Mutex end
 
             {
