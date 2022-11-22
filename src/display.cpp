@@ -1,6 +1,7 @@
 #include "display.hpp"
 #include "display_animations.hpp"
 #include "display_single_digit.hpp"
+#include "display_triple_digit.hpp"
 #include "pins.hpp"
 #include <chrono>
 #include <memory>
