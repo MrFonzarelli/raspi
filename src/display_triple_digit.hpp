@@ -1,8 +1,13 @@
 #ifndef DISPLAY_TRIPLE_DIGIT_HPP
 #define DISPLAY_TRIPLE_DIGIT_HPP
 
+#include <thread>
+
+#define WAIT 3
+
 namespace Display::TripleDigit
 {
+    const int DISPLAY_RENDER_WAIT = 3;
 
     int firstHandlerTri(void);
     int secondHandlerTri(void);
@@ -15,6 +20,7 @@ namespace Display::TripleDigit
     int ninethHandlerTri(void);
     int zeroHandlerTri(void);
     int minusHandlerTri(void);
+    std::thread *startThread();
 }
 
 #endif

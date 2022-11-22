@@ -2,6 +2,7 @@
 #define DATA_HPP
 
 #include "outgauge.hpp"
+#include "display.hpp"
 
 namespace Data
 {
@@ -12,6 +13,12 @@ namespace Data
         OutGauge outGauge;
         long long tickCounter;
         double tickTime;
+        double tripOdometer;
+        double odometer;
+        double fuelCons;
+        double fuelConsAvg;
+        bool impUnits;
+        Display::DisplayState displayState;
     };
 
     void set(const Tick &tick);
