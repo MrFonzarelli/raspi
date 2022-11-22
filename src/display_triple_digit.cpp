@@ -495,8 +495,8 @@ namespace Display::TripleDigit
     {
         while (true)
         {
-            tripleDigitOutput()
-                std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
+            tripleDigitOutput();
+            std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
         }
     }
 
