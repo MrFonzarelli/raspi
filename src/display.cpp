@@ -10,6 +10,7 @@
 namespace Display
 {
     std::unique_ptr<std::thread> g_SingleDigitThread;
+    std::unique_ptr<std::thread> g_TripleDigitThread;
 
     void initialize()
     {
@@ -41,6 +42,7 @@ namespace Display
         Animations::welcome();
 
         g_SingleDigitThread.reset(SingleDigit::startThread());
+        g_TripleDigitThread.reset(TripleDigit::startThread());
     }
 
 }
