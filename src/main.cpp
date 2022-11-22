@@ -57,14 +57,6 @@ long long tick_counter = 0;
 
 Display::DisplayState displayState = Display::DisplayState::Speed;
 
-void doTripleDigitWork()
-{
-    while (true)
-    {
-        tripleDigitOutput();
-    }
-}
-
 void read_odometer()
 {
     std::ifstream odo_file(ODOMETER_FILENAME);
@@ -218,7 +210,6 @@ int main(int argc, char **argv)
 
     Display::initialize();
 
-    std::thread tripleDigitThread(doTripleDigitWork);
     std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
     // std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
     // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
@@ -257,6 +248,8 @@ int main(int argc, char **argv)
         else
         {
             auto new_time = std::chrono::high_resolution_clock::now();
+
+            Data::Tick tick = Data::get();
 
             tripleDigitMutex.lock(); // Mutex start
             double speed_to_count = tick.outGauge.speed;
