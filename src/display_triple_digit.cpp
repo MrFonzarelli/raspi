@@ -354,7 +354,7 @@ namespace Display::TripleDigit
         {                                          // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
         case Display::DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
-            if (pressure < 0) // This can display small negative numbers with a minus sign
+            if (tick.outGauge.turbo < 0) // This can display small negative numbers with a minus sign
             {
                 digitalWrite(PIN_DIG3, LOW);
                 digitSelect(dig3);
