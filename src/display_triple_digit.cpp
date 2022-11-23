@@ -214,7 +214,7 @@ namespace Display::TripleDigit
         int dig;
         switch (tick.displayState)
         {
-        case Display::DisplayState::Speed:
+        case DisplayState::Speed:
         {
             if (tick.impUnits == false)
             {
@@ -226,7 +226,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::TurboPressure:
+        case DisplayState::TurboPressure:
         {
             if (tick.impUnits == false)
             {
@@ -238,7 +238,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::TripOdometer:
+        case DisplayState::TripOdometer:
         {
             if (tick.impUnits == false)
             {
@@ -250,7 +250,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::Odometer:
+        case DisplayState::Odometer:
         {
             if (tick.impUnits == false)
             {
@@ -262,7 +262,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::EngineTemp:
+        case DisplayState::EngineTemp:
         {
             if (tick.impUnits == false)
             {
@@ -274,7 +274,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::OilTemp:
+        case DisplayState::OilTemp:
         {
             if (tick.impUnits == false)
             {
@@ -286,7 +286,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::CurrentFuelConsumption:
+        case DisplayState::CurrentFuelConsumption:
         {
             if (tick.impUnits == false)
             {
@@ -298,7 +298,7 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::AverageFuelConsumption:
+        case DisplayState::AverageFuelConsumption:
         {
             if (tick.impUnits == false)
             {
@@ -351,8 +351,8 @@ namespace Display::TripleDigit
         dig3 = digParser(3, tick);
 
         switch (tick.displayState)
-        {                                          // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
-        case Display::DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
+        {                                 // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
+        case DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
             if (tick.outGauge.turbo < 0) // This can display small negative numbers with a minus sign
             {
@@ -407,10 +407,10 @@ namespace Display::TripleDigit
             }
             break;
         }
-        case Display::DisplayState::TripOdometer:
-        case Display::DisplayState::Odometer:
-        case Display::DisplayState::CurrentFuelConsumption:
-        case Display::DisplayState::AverageFuelConsumption:
+        case DisplayState::TripOdometer:
+        case DisplayState::Odometer:
+        case DisplayState::CurrentFuelConsumption:
+        case DisplayState::AverageFuelConsumption:
         {
             if (dig1 == 0) // This displays two digits (up to 99) and the DP
             {

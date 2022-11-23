@@ -246,7 +246,7 @@ int main(int argc, char **argv)
             tripleDigitMutex.lock(); // Mutex start
             double speed_to_count = tick.outGauge.speed;
 
-            if (speed_to_count < 0.15)
+            if (speed_to_count < 0.5)
             {
                 speed_to_count = 0;
             }
