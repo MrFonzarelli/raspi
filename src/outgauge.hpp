@@ -9,6 +9,7 @@ struct OutGauge
     char gear;
     char plid;
     float speed;
+    float airspeed;
     float rpm;
     float turbo;
     float engTemp;
