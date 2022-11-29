@@ -125,7 +125,7 @@ namespace Display::TripleDigit
         digitalWrite(PIN12, HIGH); // D
         digitalWrite(PIN13, HIGH); // E
         digitalWrite(PIN14, HIGH); // F
-        digitalWrite(PIN15, LOW; // G
+        digitalWrite(PIN15, LOW);  // G
         return 0;
     }
 
