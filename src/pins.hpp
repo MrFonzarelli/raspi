@@ -15,8 +15,8 @@
 #define PIN12 24                   // 3 digit -- D
 #define PIN13 30                   // 3 digit -- E
 #define PIN14 28                   // 3 digit -- F
-#define PIN15 23                   // 3 digit -- G
-#define PIN16 22                   // 3 digit -- DP
+#define PIN15 22                   // 3 digit -- G
+#define PIN16 23                   // 3 digit -- DP
 #define PIN_SCROLL_RIGHT_BUTTON 12 // Scroll display right button
 #define PIN_SCROLL_LEFT_BUTTON 12  // Scroll display left button
 #define PIN_RESET_STAT 8           // Reset odometer button
