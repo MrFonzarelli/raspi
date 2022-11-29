@@ -11,11 +11,11 @@
 #define PIN8 11                    // DP
 #define PIN9 29                    // 3 digit -- A
 #define PIN10 27                   // 3 digit -- B
-#define PIN11 21                   // 3 digit -- C
+#define PIN11 22                   // 3 digit -- C
 #define PIN12 24                   // 3 digit -- D
 #define PIN13 30                   // 3 digit -- E
 #define PIN14 28                   // 3 digit -- F
-#define PIN15 22                   // 3 digit -- G
+#define PIN15 21                   // 3 digit -- G
 #define PIN16 23                   // 3 digit -- DP
 #define PIN_SCROLL_RIGHT_BUTTON 12 // Scroll display right button
 #define PIN_SCROLL_LEFT_BUTTON 12  // Scroll display left button
