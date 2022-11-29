@@ -119,7 +119,7 @@ namespace Display::TripleDigit
 
     int zeroHandlerTri(void)
     {
-        digitalWrite(PIN9, HIGH);
+        digitalWrite(PIN9, LOW);
         digitalWrite(PIN10, HIGH);
         digitalWrite(PIN11, HIGH);
         digitalWrite(PIN12, HIGH);
