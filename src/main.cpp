@@ -47,7 +47,7 @@ double fuel_old;
 bool GayUnits = false;
 long long tick_counter = 0;
 
-Display::DisplayState displayState = Display::DisplayState::Pressure;
+Display::DisplayState displayState = Display::DisplayState::TurboPressure;
 
 void read_odometer()
 {
