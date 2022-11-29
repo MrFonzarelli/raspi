@@ -21,8 +21,8 @@
 #define PIN_SCROLL_LEFT_BUTTON 12  // Scroll display left button
 #define PIN_RESET_STAT 8           // Reset odometer button
 #define PIN_CHANGE_UNITS_BUTTON 99 // Change units button
-#define PIN_DIG1 3                 // 3 digit -- dig1
+#define PIN_DIG1 0                 // 3 digit -- dig1
 #define PIN_DIG2 2                 // 3 digit -- dig2
-#define PIN_DIG3 0                 // 3 digit -- dig3
+#define PIN_DIG3 3                 // 3 digit -- dig3
 
 #endif
