@@ -123,7 +123,7 @@ namespace Display::TripleDigit
         digitalWrite(PIN10, HIGH);
         digitalWrite(PIN11, HIGH);
         digitalWrite(PIN12, HIGH);
-        digitalWrite(PIN13, LOW);
+        digitalWrite(PIN13, HIGH);
         digitalWrite(PIN14, HIGH);
         digitalWrite(PIN15, HIGH);
         return 0;
