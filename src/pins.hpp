@@ -13,7 +13,7 @@
 #define PIN10 27                   // 3 digit -- B
 #define PIN11 22                   // 3 digit -- C
 #define PIN12 24                   // 3 digit -- D
-#define PIN13 30                   // 3 digit -- E
+#define PIN13 25                   // 3 digit -- E
 #define PIN14 28                   // 3 digit -- F
 #define PIN15 21                   // 3 digit -- G
 #define PIN16 23                   // 3 digit -- DP
