@@ -3,6 +3,7 @@
 
 #include "io.hpp"
 #include <mutex>
+#include <thread>
 
 namespace IO::Buttons
 {
