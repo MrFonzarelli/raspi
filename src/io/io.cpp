@@ -55,9 +55,24 @@ namespace IO
         g_SingleDigitThread.reset(SingleDigit::startThread());
         g_TripleDigitThread.reset(TripleDigit::startThread(g_DisplayState, g_DisplayStateMutex, g_GayUnits, g_GayUnitsMutex));
         g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread(g_DisplayState, g_DisplayStateMutex));
-        // g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
-        // g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
-        // g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
+        g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread(g_DisplayState, g_DisplayStateMutex));
+        g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
+        g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
+    }
+
+    void getDisplayState()
+    {
+        g_DisplayStateMutex.lock();
+        DisplayState result = g_DisplayState;
+        g_DisplayStateMutex.unlock();
+        return result;
+    }
+
+    void toggleUnits()
+    {
+        g_GayUnitsMutex.lock();
+        g_GayUnits = !g_GayUnits;
+        g_GayUnitsMutex.unlock();
     }
 
 }

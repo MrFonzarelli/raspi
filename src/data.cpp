@@ -19,8 +19,8 @@ namespace Data
     accumulator_set<double, stats<tag::rolling_sum>> g_AccumulatorFuelAmount(tag::rolling_window::window_size = 25);
 
     double g_Odometer = 0;
-    double g_TripOdometer = 0;
-    double g_FuelBurnedTotal = 0;
+    double g_FuelBurnedSinceFuelReset = 0;
+    double g_DistanceSinceFuelReset = 0;
 
     double calcFuelConsumption(double fuelBurnedCalc, double distance)
     {
@@ -28,15 +28,12 @@ namespace Data
         {
             return 0;
         }
-        else
-        {
-            return ((100 / distance) * fuelBurnedCalc);
-        }
+
+        return ((100 / distance) * fuelBurnedCalc);
     }
 
     void set(const Tick &tick)
     {
-
         g_DataMutex.lock();
 
         Data::Tick prevTick = g_CurrentTick;
@@ -51,11 +48,12 @@ namespace Data
 
         if (fuelBurned > 1e-6)
         {
-            g_FuelBurnedTotal += fuelBurned;
+            g_FuelBurnedSinceFuelReset += fuelBurned;
         }
 
         double distDelta = g_CurrentTick.tickTime * speedToCount / 1000;
-        g_TripOdometer += distDelta;
+        g_CurrentTick.odometer.trip = prevTick.odometer.trip + distDelta;
+        g_DistanceSinceFuelReset += distDelta;
         g_AccumulatorFuelAmount(fuelBurned);
         g_AccumulatorDistDelta(distDelta);
         double fuelConsumption = calcFuelConsumption(rolling_sum(g_AccumulatorFuelAmount), rolling_sum(g_AccumulatorDistDelta));
@@ -68,8 +66,7 @@ namespace Data
                                             : prevTick.fuelConsAvg;
         }
         g_CurrentTick.fuelCons = fuelConsumption;
-        g_CurrentTick.odometer = g_Odometer;
-        g_CurrentTick.tripOdometer = g_TripOdometer;
+        g_CurrentTick.odometer.total = g_Odometer;
 
         g_DataMutex.unlock();
     }
@@ -80,5 +77,36 @@ namespace Data
         Tick tick = g_CurrentTick;
         g_DataMutex.unlock();
         return tick;
+    }
+
+    Odometer getOdometer()
+    {
+        g_DataMutex.lock();
+        Odometer result = g_CurrentTick.odometer;
+        g_DataMutex.unlock();
+        return result;
+    }
+
+    void setTotalOdometer(double value)
+    {
+        g_DataMutex.lock();
+        g_Odometer = value;
+        g_DataMutex.unlock();
+    }
+
+    void resetTripOdometer()
+    {
+        g_DataMutex.lock();
+        g_CurrentTick.odometer.total += g_CurrentTick.odometer.trip;
+        g_CurrentTick.odometer.trip = 0;
+        g_DataMutex.unlock();
+    }
+
+    void resetAvgFuelConsumption()
+    {
+        g_DataMutex.lock();
+        g_FuelBurnedSinceFuelReset = 0;
+        g_DistanceSinceFuelReset = 0;
+        g_DataMutex.unlock();
     }
 }

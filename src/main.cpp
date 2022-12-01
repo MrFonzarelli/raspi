@@ -21,11 +21,13 @@ void readOdometer()
     std::ifstream odoFile(ODOMETER_FILENAME);
     if (odoFile.good())
     {
-        // odoFile >> odometer; TODO
+        double odoValue;
+        odoFile >> odoValue;
+        Data::setOdometer(odoValue);
     }
     else
     {
-        // odometer = 0; TODO
+        Data::setOdometer(0);
     }
     odoFile.close();
 }
@@ -33,7 +35,8 @@ void readOdometer()
 void writeOdometer()
 {
     std::ofstream odoFile(ODOMETER_FILENAME);
-    // odoFile << trip_odometer + odometer; TODO
+    Odometer odometer = Data::getOdometer();
+    odoFile << odometer.trip + odometer.total;
     odoFile.close();
 }
 

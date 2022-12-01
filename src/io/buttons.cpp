@@ -31,7 +31,7 @@ namespace IO::Buttons
         }
     }
 
-    void doScreenScrollLeftButtonWork()
+    void doScreenScrollLeftButtonWork(DisplayState &displayStateRef, std::mutex &displayStateMutex)
     {
         int des_LeftbuttonState = 0;
         int last_LeftbuttonState = 0;
@@ -42,9 +42,10 @@ namespace IO::Buttons
             {
                 if (last_LeftbuttonState == 0)
                 {
-                    // tripleDigitMutex.lock();
-                    //  displayState = (IO::DisplayState)(((int)displayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT);
-                    // tripleDigitMutex.unlock();
+                    displayStateMutex.lock();
+                    DisplayState displayState = displayStateRef;
+                    displayStateRef = (DisplayState)(((int)displayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT);
+                    displayStateMutex.unlock();
                 }
                 last_LeftbuttonState = des_LeftbuttonState;
             }
@@ -54,7 +55,7 @@ namespace IO::Buttons
 
     void doResetStatButtonWork()
     {
-        DisplayState displayState = DisplayState::Speed;
+        DisplayState displayState = Data::getDisplayState();
         int des_ResetStatButtonState = 0;
         int last_ResetStatButtonState = 0;
         while (true)
@@ -64,25 +65,19 @@ namespace IO::Buttons
             {
                 if (last_ResetStatButtonState == 0)
                 {
-                    // tripleDigitMutex.lock();
                     switch (displayState)
                     {
                     case DisplayState::AverageFuelConsumption:
                     {
-                        // TODO
-                        // fuelBurnedTotal = 0;
-                        // fuelDistance = 0;
+                        Data::resetAvgFuelConsumption();
                         break;
                     }
                     case DisplayState::TripOdometer:
                     {
-                        // TODO
-                        // odometer += trip_odometer;
-                        // trip_odometer = 0;
+                        Data::resetTripOdometer();
                         break;
                     }
                     }
-                    // tripleDigitMutex.unlock();
                 }
                 last_ResetStatButtonState = des_ResetStatButtonState;
             }
@@ -101,9 +96,7 @@ namespace IO::Buttons
             {
                 if (last_ExtremelyGayButtonState == 0)
                 {
-                    // tripleDigitMutex.lock();
-                    //  GayUnits = !GayUnits; //TODO: fix
-                    // tripleDigitMutex.unlock();
+                    IO::toggleUnits();
                 }
                 last_ExtremelyGayButtonState = des_ExtremelyGayButtonState;
             }
@@ -111,9 +104,9 @@ namespace IO::Buttons
         }
     }
 
-    std::thread *startScreenScrollLeftButtonThread()
+    std::thread *startScreenScrollLeftButtonThread(DisplayState &displayStateRef, std::mutex &displayStateMutex)
     {
-        return new std::thread(doScreenScrollLeftButtonWork);
+        return new std::thread(doScreenScrollLeftButtonWork, std::ref(displayStateRef), std::ref(displayStateMutex));
     }
 
     std::thread *startScreenScrollRightButtonThread(DisplayState &displayStateRef, std::mutex &displayStateMutex)

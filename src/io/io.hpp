@@ -4,7 +4,7 @@
 namespace IO
 {
 
-    const int DISPLAY_STATE_COUNT = 15;
+    const int DISPLAY_STATE_COUNT = 8;
 
     enum class DisplayState
     {
@@ -16,6 +16,8 @@ namespace IO
         Odometer,
         EngineTemp,
         OilTemp,
+
+        // TODO: Not yet implemented
         ZeroTo100,
         ZeroTo200,
         ZeroTo300,
@@ -26,6 +28,10 @@ namespace IO
     };
 
     void initialize();
+
+    DisplayState getDisplayState();
+
+    void toggleUnits();
 
 }
 
