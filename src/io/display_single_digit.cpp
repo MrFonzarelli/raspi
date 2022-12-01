@@ -4,7 +4,7 @@
 #include <chrono>
 #include <wiringPi.h>
 
-namespace Display::SingleDigit
+namespace IO::SingleDigit
 {
 
     int reverseHandler(void)

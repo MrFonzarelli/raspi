@@ -1,5 +1,6 @@
-#include "display.hpp"
-#include "display_animations.hpp"
+#include "io.hpp"
+#include "animations.hpp"
+#include "buttons.hpp"
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
 #include "pins.hpp"
@@ -12,6 +13,15 @@ namespace Display
 {
     std::unique_ptr<std::thread> g_SingleDigitThread;
     std::unique_ptr<std::thread> g_TripleDigitThread;
+    std::unique_ptr<std::thread> g_ScreenScrollRightButtonThread;
+    // std::unique_ptr<std::thread> g_ScreenScrollLeftButtonThread;
+    // std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
+    // std::unique_ptr<std::thread> g_ResetStatButtonThread;
+
+    bool g_GayUnits = false;
+    std::mutex g_GayUnitsMutex;
+    DisplayState g_DisplayState = DisplayState::Speed;
+    std::mutex g_DisplayStateMutex;
 
     void initialize()
     {
@@ -43,7 +53,11 @@ namespace Display
         Animations::welcome();
 
         g_SingleDigitThread.reset(SingleDigit::startThread());
-        g_TripleDigitThread.reset(TripleDigit::startThread());
+        g_TripleDigitThread.reset(TripleDigit::startThread(g_DisplayState, g_DisplayStateMutex, g_GayUnits, g_GayUnitsMutex));
+        g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread(g_DisplayState, g_DisplayStateMutex));
+        // g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
+        // g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
+        // g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
     }
 
 }

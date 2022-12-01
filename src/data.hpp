@@ -2,7 +2,7 @@
 #define DATA_HPP
 
 #include "outgauge.hpp"
-#include "display.hpp"
+#include "io/io.hpp"
 
 namespace Data
 {
@@ -17,8 +17,6 @@ namespace Data
         double odometer;
         double fuelCons;
         double fuelConsAvg;
-        bool impUnits;
-        Display::DisplayState displayState;
     };
 
     void set(const Tick &tick);

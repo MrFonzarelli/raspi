@@ -3,7 +3,7 @@
 
 #include <thread>
 
-namespace Display::SingleDigit
+namespace IO::SingleDigit
 {
 
     std::thread *startThread();

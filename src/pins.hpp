@@ -17,9 +17,9 @@
 #define PIN14 28                   // 3 digit -- F
 #define PIN15 21                   // 3 digit -- G
 #define PIN16 23                   // 3 digit -- DP
-#define PIN_SCROLL_RIGHT_BUTTON 12 // Scroll display right button
+#define PIN_SCROLL_RIGHT_BUTTON 24 // Scroll display right button
 #define PIN_SCROLL_LEFT_BUTTON 12  // Scroll display left button
-#define PIN_RESET_STAT 8           // Reset odometer button
+#define PIN_RESET_STAT 23          // Reset odometer button
 #define PIN_CHANGE_UNITS_BUTTON 99 // Change units button
 #define PIN_DIG1 0                 // 3 digit -- dig1
 #define PIN_DIG2 2                 // 3 digit -- dig2

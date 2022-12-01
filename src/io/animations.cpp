@@ -1,10 +1,10 @@
-#include "display_animations.hpp"
+#include "animations.hpp"
 #include "pins.hpp"
 #include <chrono>
 #include <thread>
 #include <wiringPi.h>
 
-namespace Display::Animations
+namespace IO::Animations
 {
 
     void welcome()

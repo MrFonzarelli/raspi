@@ -1,8 +1,8 @@
 // includes
 #include "data.hpp"
-#include "display.hpp"
-#include "display_single_digit.hpp"
-#include "display_triple_digit.hpp"
+#include "io/io.hpp"
+#include "io/display_single_digit.hpp"
+#include "io/display_triple_digit.hpp"
 #include "outgauge.hpp"
 #include "pins.hpp"
 #include <stdio.h>
@@ -44,10 +44,9 @@ double fuelBurned;
 double displayFuelCons;
 double displayFuelConsAvg;
 double fuel_old;
-bool GayUnits = false;
 long long tick_counter = 0;
 
-Display::DisplayState displayState = Display::DisplayState::Speed;
+IO::DisplayState displayState = IO::DisplayState::Speed;
 
 void read_odometer()
 {
@@ -68,104 +67,6 @@ void write_odometer()
     std::ofstream odo_file(ODOMETER_FILENAME);
     odo_file << trip_odometer + odometer;
     odo_file.close();
-}
-
-void doScreenScrollRightButtonWork()
-{
-    int des_RightbuttonState = 0;
-    int last_RightbuttonState = 0;
-    while (true)
-    {
-        des_RightbuttonState = digitalRead(PIN_SCROLL_RIGHT_BUTTON);
-        if (last_RightbuttonState != des_RightbuttonState)
-        {
-            if (last_RightbuttonState == 0)
-            {
-                tripleDigitMutex.lock();
-                displayState = (Display::DisplayState)(((int)displayState + 1) % Display::DISPLAY_STATE_COUNT);
-                tripleDigitMutex.unlock();
-            }
-            last_RightbuttonState = des_RightbuttonState;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
-
-void doScreenScrollLeftButtonWork()
-{
-    int des_LeftbuttonState = 0;
-    int last_LeftbuttonState = 0;
-    while (true)
-    {
-        des_LeftbuttonState = digitalRead(PIN_SCROLL_LEFT_BUTTON);
-        if (last_LeftbuttonState != des_LeftbuttonState)
-        {
-            if (last_LeftbuttonState == 0)
-            {
-                tripleDigitMutex.lock();
-                displayState = (Display::DisplayState)(((int)displayState + Display::DISPLAY_STATE_COUNT - 1) % Display::DISPLAY_STATE_COUNT);
-                tripleDigitMutex.unlock();
-            }
-            last_LeftbuttonState = des_LeftbuttonState;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
-
-void doResetStatButtonWork()
-{
-    int des_ResetStatButtonState = 0;
-    int last_ResetStatButtonState = 0;
-    while (true)
-    {
-        des_ResetStatButtonState = digitalRead(PIN_RESET_STAT);
-        if (last_ResetStatButtonState != des_ResetStatButtonState)
-        {
-            if (last_ResetStatButtonState == 0)
-            {
-                tripleDigitMutex.lock();
-                switch (displayState)
-                {
-                case Display::DisplayState::AverageFuelConsumption:
-                {
-                    fuelBurnedTotal = 0;
-                    fuelDistance = 0;
-                    break;
-                }
-                case Display::DisplayState::TripOdometer:
-                {
-                    odometer += trip_odometer;
-                    trip_odometer = 0;
-                    break;
-                }
-                }
-                tripleDigitMutex.unlock();
-            }
-            last_ResetStatButtonState = des_ResetStatButtonState;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
-
-void doExtremelyGayButtonWork()
-{
-    int des_ExtremelyGayButtonState = 0;
-    int last_ExtremelyGayButtonState = 0;
-    while (true)
-    {
-        des_ExtremelyGayButtonState = digitalRead(PIN_CHANGE_UNITS_BUTTON);
-        if (last_ExtremelyGayButtonState != des_ExtremelyGayButtonState)
-        {
-            if (last_ExtremelyGayButtonState == 0)
-            {
-                tripleDigitMutex.lock();
-                GayUnits = !GayUnits;
-                tripleDigitMutex.unlock();
-            }
-            last_ExtremelyGayButtonState = des_ExtremelyGayButtonState;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
 }
 
 double calcFuelConsumption(double fuelBurnedCalc, double distance)
@@ -200,12 +101,7 @@ int main(int argc, char **argv)
     char buffer[128];
     memset(buffer, 0, sizeof(buffer));
 
-    Display::initialize();
-
-    std::thread screenScrollRightButtonThread(doScreenScrollRightButtonWork);
-    // std::thread screenScrollLeftButtonThread(doScreenScrollLeftButtonWork);
-    // std::thread changeUnitsToGayButton(doExtremelyGayButtonWork);
-    // std::thread resetStatButtonThread(doResetStatButtonWork);
+    IO::initialize();
 
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
@@ -292,7 +188,6 @@ int main(int argc, char **argv)
                 tickData.tickCounter = tick_counter;
                 tickData.tickTime = (new_time - old_time).count();
                 tickData.displayState = displayState;
-                tickData.impUnits = GayUnits;
                 tickData.fuelCons = fuelConsumption;
                 tickData.fuelConsAvg = displayFuelCons;
                 tickData.odometer = odometer;

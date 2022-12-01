@@ -1,12 +1,13 @@
 #include "display_triple_digit.hpp"
-#include "display.hpp"
+#include "io.hpp"
 #include "data.hpp"
 #include "pins.hpp"
 #include <chrono>
 #include <cmath>
+#include <mutex>
 #include <wiringPi.h>
 
-namespace Display::TripleDigit
+namespace IO::TripleDigit
 {
 
     int firstHandlerTri(void)
@@ -209,14 +210,14 @@ namespace Display::TripleDigit
         return num;
     }
 
-    int digParser(int num, Data::Tick tick)
+    int digParser(int num, Data::Tick tick, DisplayState displayState, bool impUnits)
     {
         int dig;
-        switch (tick.displayState)
+        switch (displayState)
         {
         case DisplayState::Speed:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.outGauge.speed * 3.6); // km/h
             }
@@ -228,7 +229,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::TurboPressure:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.outGauge.turbo * 10); // bar
             }
@@ -240,7 +241,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::TripOdometer:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.tripOdometer * 10); // km
             }
@@ -252,7 +253,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::Odometer:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround((tick.odometer + tick.tripOdometer) * 10); // km
             }
@@ -264,7 +265,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::EngineTemp:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.outGauge.engTemp); // °C
             }
@@ -276,7 +277,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::OilTemp:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.outGauge.oilTemp); // °C
             }
@@ -288,7 +289,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::CurrentFuelConsumption:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.fuelCons * 10); // l/100km
             }
@@ -300,7 +301,7 @@ namespace Display::TripleDigit
         }
         case DisplayState::AverageFuelConsumption:
         {
-            if (tick.impUnits == false)
+            if (impUnits == false)
             {
                 dig = lround(tick.fuelConsAvg * 10); // l/100km
             }
@@ -339,18 +340,25 @@ namespace Display::TripleDigit
         return 0;
     }
 
-    void tripleDigitOutput()
+    void tripleDigitOutput(DisplayState &displayStateRef, std::mutex &displayStateMutex, bool &gayUnitsRef, std::mutex &gayUnitsMutex)
     {
         Data::Tick tick = Data::get();
         int dig1;
         int dig2;
         int dig3;
 
-        dig1 = digParser(1, tick);
-        dig2 = digParser(2, tick);
-        dig3 = digParser(3, tick);
+        displayStateMutex.lock();
+        DisplayState displayState = displayStateRef;
+        displayStateMutex.unlock();
+        gayUnitsMutex.lock();
+        bool gayUnits = gayUnitsRef;
+        gayUnitsMutex.unlock();
 
-        switch (tick.displayState)
+        dig1 = digParser(1, tick, displayState, gayUnits);
+        dig2 = digParser(2, tick, displayState, gayUnits);
+        dig3 = digParser(3, tick, displayState, gayUnits);
+
+        switch (displayState)
         {                                 // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
         case DisplayState::TurboPressure: // These describe the specific behaviour i.e. if the first digit going from the left is 0 skip displaying that digit
         {
@@ -491,18 +499,18 @@ namespace Display::TripleDigit
         }
     }
 
-    void doTripleDigitWork()
+    void doTripleDigitWork(DisplayState &displayState, std::mutex &displayStateMutex, bool &gayUnits, std::mutex &gayUnitsMutex)
     {
         while (true)
         {
-            tripleDigitOutput();
+            tripleDigitOutput(displayState, displayStateMutex, gayUnits, gayUnitsMutex);
             std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
         }
     }
 
-    std::thread *startThread()
+    std::thread *startThread(DisplayState &displayState, std::mutex &displayStateMutex, bool &gayUnits, std::mutex &gayUnitsMutex)
     {
-        return new std::thread(doTripleDigitWork);
+        return new std::thread(doTripleDigitWork, std::ref(displayState), std::ref(displayStateMutex), std::ref(gayUnits), std::ref(gayUnitsMutex));
     }
 
 }
