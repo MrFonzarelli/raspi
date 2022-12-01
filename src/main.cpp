@@ -23,11 +23,11 @@ void readOdometer()
     {
         double odoValue;
         odoFile >> odoValue;
-        Data::setOdometer(odoValue);
+        Data::setTotalOdometer(odoValue);
     }
     else
     {
-        Data::setOdometer(0);
+        Data::setTotalOdometer(0);
     }
     odoFile.close();
 }

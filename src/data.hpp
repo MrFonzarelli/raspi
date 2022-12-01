@@ -13,7 +13,7 @@ namespace Data
     {
         double trip;
         double total; // Only stores the previous (loaded from file) total value and only updated when trip odo is reset
-    }
+    };
 
     struct Tick
     {
