@@ -9,7 +9,7 @@
 #include <thread>
 #include <wiringPi.h>
 
-namespace Display
+namespace IO
 {
     std::unique_ptr<std::thread> g_SingleDigitThread;
     std::unique_ptr<std::thread> g_TripleDigitThread;
