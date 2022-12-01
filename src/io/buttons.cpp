@@ -55,7 +55,7 @@ namespace IO::Buttons
 
     void doResetStatButtonWork()
     {
-        DisplayState displayState = Data::getDisplayState();
+        DisplayState displayState = IO::getDisplayState();
         int des_ResetStatButtonState = 0;
         int last_ResetStatButtonState = 0;
         while (true)
