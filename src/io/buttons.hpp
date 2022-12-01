@@ -8,7 +8,7 @@
 namespace IO::Buttons
 {
 
-    std::thread *startScreenScrollLeftButtonThread();
+    std::thread *startScreenScrollLeftButtonThread(DisplayState &displayStateRef, std::mutex &displayStateMutex);
     std::thread *startScreenScrollRightButtonThread(DisplayState &displayStateRef, std::mutex &displayStateMutex);
     std::thread *startChangeUnitsToGayThread();
     std::thread *startResetStatButtonThread();
