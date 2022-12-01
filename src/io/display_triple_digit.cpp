@@ -243,11 +243,11 @@ namespace IO::TripleDigit
         {
             if (impUnits == false)
             {
-                dig = lround(tick.tripOdometer * 10); // km
+                dig = lround(tick.odometer.trip * 10); // km
             }
             else
             {
-                dig = lround(tick.tripOdometer * 6.21371); // m
+                dig = lround(tick.odometer.trip * 6.21371); // m
             }
             break;
         }
@@ -255,11 +255,11 @@ namespace IO::TripleDigit
         {
             if (impUnits == false)
             {
-                dig = lround((tick.odometer + tick.tripOdometer) * 10); // km
+                dig = lround((tick.odometer.total + tick.odometer.trip) * 10); // km
             }
             else
             {
-                dig = lround((tick.odometer + tick.tripOdometer) * 6.21371); // m
+                dig = lround((tick.odometer.total + tick.odometer.trip) * 6.21371); // m
             }
             break;
         }
