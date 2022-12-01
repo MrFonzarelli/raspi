@@ -31,31 +31,16 @@ using namespace boost::accumulators;
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
-std::mutex tripleDigitMutex;
-
-float odometer;
-float dist;
-double trip_odometer;
-double fuelDistance;
-double fuelBurnedTotal;
-double fuelConsumption;
-double fuelConsumption_avg;
-double fuelBurned;
-double displayFuelCons;
-double displayFuelConsAvg;
-double fuel_old;
-long long tick_counter = 0;
-
 void read_odometer()
 {
     std::ifstream odo_file(ODOMETER_FILENAME);
     if (odo_file.good())
     {
-        odo_file >> odometer;
+        // odo_file >> odometer; TODO
     }
     else
     {
-        odometer = 0;
+        // odometer = 0; TODO
     }
     odo_file.close();
 }
@@ -63,20 +48,8 @@ void read_odometer()
 void write_odometer()
 {
     std::ofstream odo_file(ODOMETER_FILENAME);
-    odo_file << trip_odometer + odometer;
+    // odo_file << trip_odometer + odometer; TODO
     odo_file.close();
-}
-
-double calcFuelConsumption(double fuelBurnedCalc, double distance)
-{
-    if (fuelBurnedCalc < 1e-4 || distance < 1e-4)
-    {
-        return 0;
-    }
-    else
-    {
-        return ((100 / distance) * fuelBurnedCalc);
-    }
 }
 
 void odo_signal_handler(int)
@@ -117,10 +90,7 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    accumulator_set<double, stats<tag::rolling_mean>> accumulatorFuelConsumption(tag::rolling_window::window_size = 20);
-    accumulator_set<double, stats<tag::rolling_sum>> accumulatorDistDelta(tag::rolling_window::window_size = 25);
-    accumulator_set<double, stats<tag::rolling_sum>> accumulatorFuelAmount(tag::rolling_window::window_size = 25);
-
+    long long tick_counter = 0;
     auto old_time = std::chrono::high_resolution_clock::now();
 
     while (true)
@@ -135,62 +105,12 @@ int main(int argc, char **argv)
         {
             auto new_time = std::chrono::high_resolution_clock::now();
 
-            Data::Tick tick = Data::get();
-
-            tripleDigitMutex.lock(); // Mutex start
-            double speed_to_count = tick.outGauge.speed;
-
-            if (speed_to_count < 0.5)
-            {
-                speed_to_count = 0;
-            }
-            if (fuel_old < 1e-6)
-            {
-                fuelBurned = 0;
-                fuel_old = tick.outGauge.fuel_remaining;
-            }
-            else
-            {
-                fuelBurned = fuel_old - tick.outGauge.fuel_remaining;
-                fuel_old = tick.outGauge.fuel_remaining;
-            }
-            if (fuelBurned > 1e-6)
-            {
-                fuelBurnedTotal += fuelBurned;
-            }
-
-            double distDelta = tick.tickTime * speed_to_count / 1000;
-            trip_odometer += distDelta;
-            fuelDistance += distDelta;
-            accumulatorFuelAmount(fuelBurned);
-            accumulatorDistDelta(distDelta);
-            fuelConsumption = calcFuelConsumption(rolling_sum(accumulatorFuelAmount), rolling_sum(accumulatorDistDelta));
-            accumulatorFuelConsumption(fuelConsumption);
-
-            if (tick_counter % 5 == 0)
-            {
-                fuelConsumption_avg = calcFuelConsumption(fuelBurnedTotal, fuelDistance);
-                if (tick_counter % 20 == 0)
-                {
-                    displayFuelCons = rolling_mean(accumulatorFuelConsumption);
-                }
-            }
-
-            dist = trip_odometer;
-            tripleDigitMutex.unlock(); // Mutex end
-
-            {
-                OutGauge *s = (OutGauge *)buffer;
-                Data::Tick tickData;
-                tickData.outGauge = *s;
-                tickData.tickCounter = tick_counter;
-                tickData.tickTime = (new_time - old_time).count();
-                tickData.fuelCons = fuelConsumption;
-                tickData.fuelConsAvg = displayFuelCons;
-                tickData.odometer = odometer;
-                tickData.tripOdometer = trip_odometer;
-                Data::set(tickData);
-            }
+            OutGauge *s = (OutGauge *)buffer;
+            Data::Tick tickData;
+            tickData.outGauge = *s;
+            tickData.tickCounter = tick_counter;
+            tickData.tickTime = (new_time - old_time).count();
+            Data::set(tickData);
 
             old_time = new_time;
         }
