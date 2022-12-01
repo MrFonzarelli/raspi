@@ -14,9 +14,9 @@ namespace IO
     std::unique_ptr<std::thread> g_SingleDigitThread;
     std::unique_ptr<std::thread> g_TripleDigitThread;
     std::unique_ptr<std::thread> g_ScreenScrollRightButtonThread;
-    // std::unique_ptr<std::thread> g_ScreenScrollLeftButtonThread;
-    // std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
-    // std::unique_ptr<std::thread> g_ResetStatButtonThread;
+    std::unique_ptr<std::thread> g_ScreenScrollLeftButtonThread;
+    std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
+    std::unique_ptr<std::thread> g_ResetStatButtonThread;
 
     bool g_GayUnits = false;
     std::mutex g_GayUnitsMutex;
@@ -60,7 +60,7 @@ namespace IO
         g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
     }
 
-    void getDisplayState()
+    DisplayState getDisplayState()
     {
         g_DisplayStateMutex.lock();
         DisplayState result = g_DisplayState;
