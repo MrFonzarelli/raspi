@@ -46,8 +46,6 @@ double displayFuelConsAvg;
 double fuel_old;
 long long tick_counter = 0;
 
-IO::DisplayState displayState = IO::DisplayState::Speed;
-
 void read_odometer()
 {
     std::ifstream odo_file(ODOMETER_FILENAME);
@@ -187,7 +185,6 @@ int main(int argc, char **argv)
                 tickData.outGauge = *s;
                 tickData.tickCounter = tick_counter;
                 tickData.tickTime = (new_time - old_time).count();
-                tickData.displayState = displayState;
                 tickData.fuelCons = fuelConsumption;
                 tickData.fuelConsAvg = displayFuelCons;
                 tickData.odometer = odometer;
