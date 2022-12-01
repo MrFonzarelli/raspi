@@ -1,11 +1,10 @@
 #include "data.hpp"
 #include <mutex>
 #include <boost/accumulators/accumulators.hpp>
-#include <boost/accumulators/statistics.hpp>
+//#include <boost/accumulators/statistics.hpp>
 #include <boost/accumulators/statistics/rolling_sum.hpp>
 #include <boost/accumulators/statistics/rolling_count.hpp>
 #include <boost/accumulators/statistics/rolling_mean.hpp>
-#include <boost/accumulators/statistics/rolling_window.hpp>
 
 using namespace boost::accumulators;
 
