@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         Data::Tick tick = connection.getTickData();
         if (connection.Ok())
         {
-            printf("Speed: %d\n", tick.outGauge.airspeed);
+            printf("Speed: %f\n", tick.outGauge.airspeed);
             Data::set(tick);
         }
         else
