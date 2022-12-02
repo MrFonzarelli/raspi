@@ -15,10 +15,8 @@ Network::Network(int port)
     struct sockaddr_in myaddr, clientaddr;
     memset(&myaddr, 0, sizeof(struct sockaddr_in));
     memset(&clientaddr, 0, sizeof(struct sockaddr_in));
-    socklen_t addrLen = sizeof(struct sockaddr_in);
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(port);
-    addrLen = sizeof(myaddr);
     m_SocketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (m_SocketFd == -1)
     {
@@ -43,7 +41,7 @@ Data::Tick Network::getTickData()
     memset(&clientaddr, 0, sizeof(struct sockaddr_in));
 
     static char buffer[128];
-    socklen_t addrLen;
+    socklen_t addrLen = sizeof(clientaddr);
     int res = recvfrom(m_SocketFd, buffer, sizeof(buffer), 0, (struct sockaddr *)&clientaddr, (socklen_t *)&addrLen);
     if (res == -1)
     {
