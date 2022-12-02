@@ -6,14 +6,14 @@
 
 class Network
 {
-    bool isOk;
-    int socketFd;
-    long long tickCounter;
-    std::chrono::time_point<std::chrono::steady_clock> prevTime;
+    bool m_IsOk;
+    int m_SocketFd;
+    long long m_TickCounter;
+    std::chrono::high_resolution_clock::time_point m_PrevTime;
 
 public:
     Network(int port);
-    OutGauge getOutGaugeData();
+    Data::Tick getTickData();
     bool Ok();
 };
 

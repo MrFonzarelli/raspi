@@ -64,49 +64,23 @@ int main(int argc, char **argv)
     IO::initialize();
 
     Network connection(4444);
-
-    myaddr.sin_family = AF_INET;
-    myaddr.sin_port = htons(4444);
-    addrLen = sizeof(myaddr);
-    int sfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (sfd == -1)
+    if (!connection.Ok())
     {
-        printf("socket err \n");
-        return 0;
+        return EXIT_FAILURE;
     }
-    int resu = bind(sfd, (struct sockaddr *)&myaddr, sizeof(struct sockaddr));
-    if (resu == -1)
-    {
-        printf("bind err \n");
-        return 0;
-    }
-
-    long long tickCounter = 0;
-    auto oldTime = std::chrono::high_resolution_clock::now();
 
     while (true)
     {
-        int res = recvfrom(sfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&clientaddr, (socklen_t *)&addrLen);
-        if (res == -1)
+        Data::Tick tick = connection.getTickData();
+        if (connection.Ok())
         {
-            printf("recv err \n");
-            return 0;
+            Data::set(tick);
         }
         else
         {
-            auto newTime = std::chrono::high_resolution_clock::now();
-
-            OutGauge *s = (OutGauge *)buffer;
-            Data::Tick tickData;
-            tickData.outGauge = *s;
-            tickData.tickCounter = tickCounter;
-            tickData.tickTime = (newTime - oldTime).count();
-            Data::set(tickData);
-
-            oldTime = newTime;
+            return EXIT_FAILURE;
         }
-        tickCounter++;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
