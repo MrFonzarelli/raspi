@@ -5,12 +5,7 @@
 #include "outgauge.hpp"
 #include <cstdio>
 #include <cstdlib>
-#include <cstring>
 #include <unistd.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <chrono>
 #include <fstream>
 #include <signal.h>
@@ -53,13 +48,6 @@ int main(int argc, char **argv)
     signal(SIGTERM, odoSignalHandler);
     signal(SIGHUP, odoSignalHandler);
     readOdometer();
-
-    struct sockaddr_in myaddr, clientaddr;
-    memset(&myaddr, 0, sizeof(struct sockaddr_in));
-    memset(&clientaddr, 0, sizeof(struct sockaddr_in));
-    socklen_t addrLen = sizeof(struct sockaddr_in);
-    char buffer[128];
-    memset(buffer, 0, sizeof(buffer));
 
     IO::initialize();
 
