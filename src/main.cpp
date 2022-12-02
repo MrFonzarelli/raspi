@@ -1,6 +1,7 @@
 // includes
 #include "data.hpp"
 #include "io/io.hpp"
+#include "network.hpp"
 #include "outgauge.hpp"
 #include <cstdio>
 #include <cstdlib>
@@ -61,6 +62,8 @@ int main(int argc, char **argv)
     memset(buffer, 0, sizeof(buffer));
 
     IO::initialize();
+
+    Network connection(4444);
 
     myaddr.sin_family = AF_INET;
     myaddr.sin_port = htons(4444);
