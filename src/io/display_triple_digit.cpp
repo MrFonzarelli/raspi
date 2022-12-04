@@ -440,18 +440,18 @@ namespace IO::TripleDigit
         }
     }
 
-    void doTripleDigitWork(DisplayState &displayState, std::mutex &displayStateMutex, bool &gayUnits, std::mutex &gayUnitsMutex)
+    void doTripleDigitWork(DisplayState &displayState, std::mutex &displayStateMutex)
     {
         while (true)
         {
-            tripleDigitOutput(displayState, displayStateMutex, gayUnits, gayUnitsMutex);
+            tripleDigitOutput(displayState, displayStateMutex);
             std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
         }
     }
 
-    std::thread *startThread(DisplayState &displayState, std::mutex &displayStateMutex, bool &gayUnits, std::mutex &gayUnitsMutex)
+    std::thread *startThread(DisplayState &displayState, std::mutex &displayStateMutex)
     {
-        return new std::thread(doTripleDigitWork, std::ref(displayState), std::ref(displayStateMutex), std::ref(gayUnits), std::ref(gayUnitsMutex));
+        return new std::thread(doTripleDigitWork, std::ref(displayState), std::ref(displayStateMutex));
     }
 
 }
