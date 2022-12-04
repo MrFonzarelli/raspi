@@ -96,7 +96,7 @@ namespace IO::Buttons
             {
                 if (last_ExtremelyGayButtonState == 0)
                 {
-                    IO::toggleUnits();
+                    Data::toggleUnits();
                 }
                 last_ExtremelyGayButtonState = des_ExtremelyGayButtonState;
             }

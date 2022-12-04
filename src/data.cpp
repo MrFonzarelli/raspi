@@ -10,6 +10,8 @@ using namespace boost::accumulators;
 
 namespace Data
 {
+    bool g_GayUnits = false;
+    std::mutex g_GayUnitsMutex;
     std::mutex g_DataMutex;
     Tick g_CurrentTick;
 
@@ -29,6 +31,22 @@ namespace Data
         }
 
         return ((100 / distance) * fuelBurnedCalc);
+    }
+
+    void adjustForUnits(Tick &tick)
+    {
+        if (g_GayUnits)
+        {
+            tick.outGauge.airspeed *= 0.621371;
+            tick.outGauge.turbo *= 14.5038;
+            tick.outGauge.engTemp = tick.outGauge.engTemp * 1.8 + 32;
+            tick.fuelCons = 235.21 / tick.fuelCons;
+            tick.fuelConsAvg = 235.21 / tick.fuelConsAvg;
+            tick.outGauge.speed *= 0.621371;
+            tick.outGauge.oilTemp *= tick.outGauge.oilTemp * 1.8 + 32;
+            tick.odometer.total *= 0.621371;
+            tick.odometer.trip *= 0.621371;
+        }
     }
 
     void set(const Tick &tick)
@@ -75,6 +93,7 @@ namespace Data
         g_DataMutex.lock();
         Tick tick = g_CurrentTick;
         g_DataMutex.unlock();
+        adjustForUnits(tick);
         return tick;
     }
 
@@ -107,5 +126,12 @@ namespace Data
         g_FuelBurnedSinceFuelReset = 0;
         g_DistanceSinceFuelReset = 0;
         g_DataMutex.unlock();
+    }
+
+    void toggleUnits()
+    {
+        g_GayUnitsMutex.lock();
+        g_GayUnits = !g_GayUnits;
+        g_GayUnitsMutex.unlock();
     }
 }

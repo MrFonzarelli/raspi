@@ -18,8 +18,6 @@ namespace IO
     std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
     std::unique_ptr<std::thread> g_ResetStatButtonThread;
 
-    bool g_GayUnits = false;
-    std::mutex g_GayUnitsMutex;
     DisplayState g_DisplayState = DisplayState::Speed;
     std::mutex g_DisplayStateMutex;
 
@@ -53,7 +51,7 @@ namespace IO
         Animations::welcome();
 
         g_SingleDigitThread.reset(SingleDigit::startThread());
-        g_TripleDigitThread.reset(TripleDigit::startThread(g_DisplayState, g_DisplayStateMutex, g_GayUnits, g_GayUnitsMutex));
+        g_TripleDigitThread.reset(TripleDigit::startThread(g_DisplayState, g_DisplayStateMutex));
         g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread(g_DisplayState, g_DisplayStateMutex));
         g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread(g_DisplayState, g_DisplayStateMutex));
         g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
@@ -66,13 +64,6 @@ namespace IO
         DisplayState result = g_DisplayState;
         g_DisplayStateMutex.unlock();
         return result;
-    }
-
-    void toggleUnits()
-    {
-        g_GayUnitsMutex.lock();
-        g_GayUnits = !g_GayUnits;
-        g_GayUnitsMutex.unlock();
     }
 
 }

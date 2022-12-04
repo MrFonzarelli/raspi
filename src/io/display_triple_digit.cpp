@@ -210,105 +210,49 @@ namespace IO::TripleDigit
         return num;
     }
 
-    int digParser(int num, Data::Tick tick, DisplayState displayState, bool impUnits)
+    int digParser(int num, Data::Tick tick, DisplayState displayState)
     {
         int dig;
         switch (displayState)
         {
         case DisplayState::Speed:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.outGauge.speed * 3.6); // km/h
-            }
-            else
-            {
-                dig = lround(tick.outGauge.speed * 3.6 * 0.621371); // mph
-            }
+            dig = lround(tick.outGauge.speed * 3.6); // km/h
             break;
         }
         case DisplayState::TurboPressure:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.outGauge.turbo * 10); // bar
-            }
-            else
-            {
-                dig = lround(tick.outGauge.turbo * 145.038); // psi
-            }
+            dig = lround(tick.outGauge.turbo * 10); // bar
             break;
         }
         case DisplayState::TripOdometer:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.odometer.trip * 10); // km
-            }
-            else
-            {
-                dig = lround(tick.odometer.trip * 6.21371); // m
-            }
+            dig = lround(tick.odometer.trip * 10); // km
             break;
         }
         case DisplayState::Odometer:
         {
-            if (impUnits == false)
-            {
-                dig = lround((tick.odometer.total + tick.odometer.trip) * 10); // km
-            }
-            else
-            {
-                dig = lround((tick.odometer.total + tick.odometer.trip) * 6.21371); // m
-            }
+            dig = lround((tick.odometer.total + tick.odometer.trip) * 10);
             break;
         }
         case DisplayState::EngineTemp:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.outGauge.engTemp); // °C
-            }
-            else
-            {
-                dig = lround(tick.outGauge.engTemp * 1.8) + 32; // °F
-            }
+            dig = lround(tick.outGauge.engTemp);
             break;
         }
         case DisplayState::OilTemp:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.outGauge.oilTemp); // °C
-            }
-            else
-            {
-                dig = lround(tick.outGauge.oilTemp * 1.8) + 32; // °F
-            }
+            dig = lround(tick.outGauge.oilTemp);
             break;
         }
         case DisplayState::CurrentFuelConsumption:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.fuelCons * 10); // l/100km
-            }
-            else
-            {
-                dig = lround(235.21 / (tick.fuelCons / 10)); // mpg
-            }
+            dig = lround(tick.fuelCons * 10);
             break;
         }
         case DisplayState::AverageFuelConsumption:
         {
-            if (impUnits == false)
-            {
-                dig = lround(tick.fuelConsAvg * 10); // l/100km
-            }
-            else
-            {
-                dig = lround(235.21 / (tick.fuelConsAvg / 10)); // mpg
-            }
+            dig = lround(tick.fuelConsAvg * 10);
             break;
         }
         }
@@ -340,7 +284,7 @@ namespace IO::TripleDigit
         return 0;
     }
 
-    void tripleDigitOutput(DisplayState &displayStateRef, std::mutex &displayStateMutex, bool &gayUnitsRef, std::mutex &gayUnitsMutex)
+    void tripleDigitOutput(DisplayState &displayStateRef, std::mutex &displayStateMutex)
     {
         Data::Tick tick = Data::get();
         int dig1;
@@ -350,13 +294,10 @@ namespace IO::TripleDigit
         displayStateMutex.lock();
         DisplayState displayState = displayStateRef;
         displayStateMutex.unlock();
-        gayUnitsMutex.lock();
-        bool gayUnits = gayUnitsRef;
-        gayUnitsMutex.unlock();
 
-        dig1 = digParser(1, tick, displayState, gayUnits);
-        dig2 = digParser(2, tick, displayState, gayUnits);
-        dig3 = digParser(3, tick, displayState, gayUnits);
+        dig1 = digParser(1, tick, displayState);
+        dig2 = digParser(2, tick, displayState);
+        dig3 = digParser(3, tick, displayState);
 
         switch (displayState)
         {                                 // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)

@@ -31,8 +31,6 @@ namespace IO
 
     DisplayState getDisplayState();
 
-    void toggleUnits();
-
 }
 
 #endif
