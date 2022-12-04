@@ -69,15 +69,15 @@ namespace IO
     void nextDisplayState()
     {
         g_DisplayStateMutex.lock();
-        g_DisplayState = (DisplayState)(((int)g_DisplayState + 1) % IO::DISPLAY_STATE_COUNT)
-                             g_DisplayStateMutex.unlock();
+        g_DisplayState = (DisplayState)(((int)g_DisplayState + 1) % IO::DISPLAY_STATE_COUNT);
+        g_DisplayStateMutex.unlock();
     }
 
     void previousDisplayState()
     {
         g_DisplayStateMutex.lock();
-        g_DisplayState = (DisplayState)(((int)g_DisplayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT)
-                             g_DisplayStateMutex.unlock();
+        g_DisplayState = (DisplayState)(((int)g_DisplayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT);
+        g_DisplayStateMutex.unlock();
     }
 
 }
