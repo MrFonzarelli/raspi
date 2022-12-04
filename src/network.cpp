@@ -56,7 +56,7 @@ Data::Tick Network::getTickData()
         OutGauge *s = (OutGauge *)buffer;
         tickData.outGauge = *s;
         tickData.tickCounter = m_TickCounter;
-        tickData.tickTime = (newTime - m_PrevTime).count() / 1e6;
+        tickData.tickTime = (newTime - m_PrevTime).count() * 1e-6;
         Data::set(tickData);
 
         m_PrevTime = newTime;
