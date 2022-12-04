@@ -51,9 +51,9 @@ namespace IO
         Animations::welcome();
 
         g_SingleDigitThread.reset(SingleDigit::startThread());
-        g_TripleDigitThread.reset(TripleDigit::startThread(g_DisplayState, g_DisplayStateMutex));
-        g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread(g_DisplayState, g_DisplayStateMutex));
-        g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread(g_DisplayState, g_DisplayStateMutex));
+        g_TripleDigitThread.reset(TripleDigit::startThread());
+        g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread());
+        g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
         g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
         g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
     }
@@ -64,6 +64,20 @@ namespace IO
         DisplayState result = g_DisplayState;
         g_DisplayStateMutex.unlock();
         return result;
+    }
+
+    void nextDisplayState()
+    {
+        g_DisplayStateMutex.lock();
+        g_DisplayState = (DisplayState)(((int)g_DisplayState + 1) % IO::DISPLAY_STATE_COUNT)
+                             g_DisplayStateMutex.unlock();
+    }
+
+    void previousDisplayState()
+    {
+        g_DisplayStateMutex.lock();
+        g_DisplayState = (DisplayState)(((int)g_DisplayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT)
+                             g_DisplayStateMutex.unlock();
     }
 
 }

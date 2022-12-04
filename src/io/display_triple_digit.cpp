@@ -284,16 +284,14 @@ namespace IO::TripleDigit
         return 0;
     }
 
-    void tripleDigitOutput(DisplayState &displayStateRef, std::mutex &displayStateMutex)
+    void tripleDigitOutput()
     {
         Data::Tick tick = Data::get();
         int dig1;
         int dig2;
         int dig3;
 
-        displayStateMutex.lock();
-        DisplayState displayState = displayStateRef;
-        displayStateMutex.unlock();
+        DisplayState displayState = IO::getDisplayState();
 
         dig1 = digParser(1, tick, displayState);
         dig2 = digParser(2, tick, displayState);
@@ -440,18 +438,18 @@ namespace IO::TripleDigit
         }
     }
 
-    void doTripleDigitWork(DisplayState &displayState, std::mutex &displayStateMutex)
+    void doTripleDigitWork()
     {
         while (true)
         {
-            tripleDigitOutput(displayState, displayStateMutex);
+            tripleDigitOutput();
             std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
         }
     }
 
-    std::thread *startThread(DisplayState &displayState, std::mutex &displayStateMutex)
+    std::thread *startThread()
     {
-        return new std::thread(doTripleDigitWork, std::ref(displayState), std::ref(displayStateMutex));
+        return new std::thread(doTripleDigitWork);
     }
 
 }

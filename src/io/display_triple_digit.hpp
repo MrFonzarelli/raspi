@@ -11,7 +11,7 @@ namespace IO::TripleDigit
 {
     const int DISPLAY_RENDER_WAIT = 3;
 
-    std::thread *startThread(DisplayState &displayState, std::mutex &displayStateMutex);
+    std::thread *startThread();
 }
 
 #endif

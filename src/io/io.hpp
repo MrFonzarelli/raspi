@@ -31,6 +31,9 @@ namespace IO
 
     DisplayState getDisplayState();
 
+    void nextDisplayState();
+    void previousDisplayState();
+
 }
 
 #endif

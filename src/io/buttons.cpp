@@ -9,7 +9,7 @@
 namespace IO::Buttons
 {
 
-    void doScreenScrollRightButtonWork(DisplayState &displayStateRef, std::mutex &displayStateMutex)
+    void doScreenScrollRightButtonWork()
     {
         int des_RightbuttonState = 0;
         int last_RightbuttonState = 0;
@@ -20,10 +20,7 @@ namespace IO::Buttons
             {
                 if (last_RightbuttonState == 0)
                 {
-                    displayStateMutex.lock();
-                    DisplayState displayState = displayStateRef;
-                    displayStateRef = (DisplayState)(((int)displayState + 1) % DISPLAY_STATE_COUNT);
-                    displayStateMutex.unlock();
+                    IO::nextDisplayState();
                 }
                 last_RightbuttonState = des_RightbuttonState;
             }
@@ -31,7 +28,7 @@ namespace IO::Buttons
         }
     }
 
-    void doScreenScrollLeftButtonWork(DisplayState &displayStateRef, std::mutex &displayStateMutex)
+    void doScreenScrollLeftButtonWork()
     {
         int des_LeftbuttonState = 0;
         int last_LeftbuttonState = 0;
@@ -42,10 +39,7 @@ namespace IO::Buttons
             {
                 if (last_LeftbuttonState == 0)
                 {
-                    displayStateMutex.lock();
-                    DisplayState displayState = displayStateRef;
-                    displayStateRef = (DisplayState)(((int)displayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT);
-                    displayStateMutex.unlock();
+                    IO::previousDisplayState();
                 }
                 last_LeftbuttonState = des_LeftbuttonState;
             }
@@ -104,14 +98,14 @@ namespace IO::Buttons
         }
     }
 
-    std::thread *startScreenScrollLeftButtonThread(DisplayState &displayStateRef, std::mutex &displayStateMutex)
+    std::thread *startScreenScrollLeftButtonThread()
     {
-        return new std::thread(doScreenScrollLeftButtonWork, std::ref(displayStateRef), std::ref(displayStateMutex));
+        return new std::thread(doScreenScrollLeftButtonWork);
     }
 
-    std::thread *startScreenScrollRightButtonThread(DisplayState &displayStateRef, std::mutex &displayStateMutex)
+    std::thread *startScreenScrollRightButtonThread()
     {
-        return new std::thread(doScreenScrollRightButtonWork, std::ref(displayStateRef), std::ref(displayStateMutex));
+        return new std::thread(doScreenScrollRightButtonWork);
     }
 
     std::thread *startChangeUnitsToGayThread()
