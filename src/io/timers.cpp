@@ -51,6 +51,7 @@ namespace IO::Timers
                 if (!g_Timer0to100Finished)
                 {
                     g_Timer0to100 += timeDelta.count();
+                    printf("0-100: %.3fs\n", g_Timer0to100);
                 }
 
                 if (!g_Timer0to200Finished)
