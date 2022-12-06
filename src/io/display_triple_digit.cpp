@@ -2,6 +2,7 @@
 #include "io.hpp"
 #include "data.hpp"
 #include "pins.hpp"
+#include "timers.hpp"
 #include <chrono>
 #include <cmath>
 #include <mutex>
@@ -210,92 +211,50 @@ namespace IO::TripleDigit
         return num;
     }
 
-    int digParser(int num, Data::Tick tick, DisplayState displayState)
+    int getValueToDisplay(Data::Tick tick, DisplayState displayState)
     {
-        int dig;
         switch (displayState)
         {
         case DisplayState::Speed:
-        {
-            dig = lround(tick.outGauge.speed * 3.6); // km/h
-            break;
-        }
+            return lround(tick.outGauge.speed * 3.6);
         case DisplayState::TurboPressure:
-        {
-            dig = lround(tick.outGauge.turbo * 10); // bar
-            break;
-        }
+            return lround(tick.outGauge.turbo * 10);
         case DisplayState::TripOdometer:
-        {
-            dig = lround(tick.odometer.trip * 10); // km
-            break;
-        }
+            return lround(tick.odometer.trip * 10);
         case DisplayState::Odometer:
-        {
-            dig = lround((tick.odometer.total + tick.odometer.trip) * 10);
-            break;
-        }
+            return lround((tick.odometer.total + tick.odometer.trip) * 10);
         case DisplayState::EngineTemp:
-        {
-            dig = lround(tick.outGauge.engTemp);
-            break;
-        }
+            return lround(tick.outGauge.engTemp);
         case DisplayState::OilTemp:
-        {
-            dig = lround(tick.outGauge.oilTemp);
-            break;
-        }
+            return lround(tick.outGauge.oilTemp);
         case DisplayState::CurrentFuelConsumption:
-        {
-            dig = lround(tick.fuelCons * 10);
-            break;
-        }
+            returnlround(tick.fuelCons * 10);
         case DisplayState::AverageFuelConsumption:
-        {
-            dig = lround(tick.fuelConsAvg * 10);
-            break;
-        }
+            return lround(tick.fuelConsAvg * 10);
+        case DisplayState::ZeroTo100:
+        case DisplayState::ZeroTo200:
+        case DisplayState::ZeroTo300:
+        case DisplayState::QuarterMile:
+        case DisplayState::HundredTo200:
+        case DisplayState::HundredTo300:
+        case DisplayState::TwoHundredTo300:
+            return lround(IO::Timers::getTime(displayState));
         }
 
-        switch (num)
-        {
-        case 1:
-        {
-            int dig1;
-            dig1 = abs(dig) / 100 % 10;
-            return dig1;
-            break;
-        }
-        case 2:
-        {
-            int dig2;
-            dig2 = abs(dig) / 10 % 10;
-            return dig2;
-            break;
-        }
-        case 3:
-        {
-            int dig3;
-            dig3 = abs(dig) % 10;
-            return dig3;
-            break;
-        }
-        }
         return 0;
     }
 
     void tripleDigitOutput()
     {
         Data::Tick tick = Data::get();
-        int dig1;
-        int dig2;
-        int dig3;
 
-        DisplayState displayState = IO::getDisplayState();
+        DisplayState displayState = getDisplayState();
 
-        dig1 = digParser(1, tick, displayState);
-        dig2 = digParser(2, tick, displayState);
-        dig3 = digParser(3, tick, displayState);
+        int numberToDisplay = getValueToDisplay(displayState);
+
+        int dig1 = numberToDisplay / 100 % 10;
+        int dig2 = numberToDisplay / 10 % 10;
+        int dig3 = numberToDisplay % 10;
 
         switch (displayState)
         {                                 // This decribes how to display each different displayState i.e. whether or not to use pin16(DP)
