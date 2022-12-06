@@ -131,25 +131,25 @@ namespace IO::Timers
         switch (displayState)
         {
         case DisplayState::ZeroTo100:
-            result = g_Timer0to100;
+            result = g_Timer0to100 * 100;
             break;
         case DisplayState::ZeroTo200:
-            result = g_Timer0to200;
+            result = g_Timer0to200 * 100;
             break;
         case DisplayState::ZeroTo300:
-            result = g_Timer0to300;
+            result = g_Timer0to300 * 100;
             break;
         case DisplayState::QuarterMile:
-            result = g_TimerQuarterMile;
+            result = g_TimerQuarterMile * 100;
             break;
         case DisplayState::HundredTo200:
-            result = g_Timer100to200;
+            result = g_Timer100to200 * 100;
             break;
         case DisplayState::HundredTo300:
-            result = g_Timer100to300;
+            result = g_Timer100to300 * 100;
             break;
         case DisplayState::TwoHundredTo300:
-            result = g_Timer200to300;
+            result = g_Timer200to300 * 100;
             break;
         default:
             result = 420.69;
