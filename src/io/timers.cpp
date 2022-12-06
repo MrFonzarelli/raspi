@@ -51,7 +51,6 @@ namespace IO::Timers
                 if (!g_Timer0to100Finished)
                 {
                     g_Timer0to100 += timeDelta.count();
-                    printf("0-100: %.3fs\n", g_Timer0to100);
                 }
 
                 if (!g_Timer0to200Finished)
@@ -72,20 +71,20 @@ namespace IO::Timers
                     g_TimerQuarterMile += timeDelta.count();
                 }
 
-                if (tick.outGauge.airspeed >= 100)
+                if (tick.outGauge.airspeed * 3.6 > 100)
                 {
                     g_Timer0to100Finished = true;
                     printf("0-100: %.3fs\n", g_Timer0to100);
                 }
 
-                if (tick.outGauge.airspeed >= 200)
+                if (tick.outGauge.airspeed * 3.6 > 200)
                 {
                     g_Timer0to200Finished = true;
                     printf("0-200: %.3fs\n", g_Timer0to200);
                     printf("100-200: %.3fs\n", g_Timer100to200);
                 }
 
-                if (tick.outGauge.airspeed >= 300)
+                if (tick.outGauge.airspeed * 3.6 > 300)
                 {
                     g_Timer0to100Finished = true;
                     printf("0-300: %.3fs\n", g_Timer0to300);
@@ -93,7 +92,7 @@ namespace IO::Timers
                     printf("200-300: %.3fs\n", g_Timer200to300);
                 }
 
-                g_Distance += timeDelta.count() * (tick.outGauge.airspeed / 3.6);
+                g_Distance += timeDelta.count() * tick.outGauge.airspeed;
                 if (g_Distance > 402.336)
                 {
                     g_TimerQuarterMileFinished = true;

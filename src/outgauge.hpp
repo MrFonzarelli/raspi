@@ -8,8 +8,8 @@ struct OutGauge
     unsigned short flags;
     char gear;
     char plid;
-    float speed;
-    float airspeed;
+    float speed;    // m/s or a thousandth of a mile/s
+    float airspeed; // m/s or a thousandth of a mile/s
     float rpm;
     float turbo;
     float engTemp;
