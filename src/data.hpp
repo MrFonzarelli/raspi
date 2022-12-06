@@ -28,8 +28,7 @@ namespace Data
         double fuelConsAvg;
     };
 
-    void
-    set(const Tick &tick);
+    void set(const Tick &tick);
     Tick get();
 
     Odometer getOdometer();

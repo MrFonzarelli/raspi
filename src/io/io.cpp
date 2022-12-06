@@ -4,6 +4,7 @@
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
 #include "pins.hpp"
+#include "timers.hpp"
 #include <chrono>
 #include <memory>
 #include <thread>
@@ -17,8 +18,9 @@ namespace IO
     std::unique_ptr<std::thread> g_ScreenScrollLeftButtonThread;
     std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
     std::unique_ptr<std::thread> g_ResetStatButtonThread;
+    std::unique_ptr<std::thread> g_TimerThread;
 
-    DisplayState g_DisplayState = DisplayState::Speed;
+    DisplayState g_DisplayState = DisplayState::HundredTo200;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -56,6 +58,7 @@ namespace IO
         g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
         g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
         g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
+        g_TimerThread.reset(Timers::startThread());
     }
 
     DisplayState getDisplayState()

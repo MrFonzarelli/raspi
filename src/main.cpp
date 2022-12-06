@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         Data::Tick tick = connection.getTickData();
         if (connection.Ok())
         {
-            printf("Tick time: %f\n", tick.tickTime);
+            // printf("Tick time: %f\n", tick.tickTime);
             Data::set(tick);
         }
         else
