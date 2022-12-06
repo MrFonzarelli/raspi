@@ -4,6 +4,7 @@
 #include <chrono>
 #include <mutex>
 #include <thread>
+#include <cstdio>
 
 namespace IO::Timers
 {
