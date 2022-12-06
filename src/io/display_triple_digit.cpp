@@ -211,7 +211,7 @@ namespace IO::TripleDigit
         return num;
     }
 
-    int getValueToDisplay(Data::Tick tick, DisplayState displayState)
+    int getValueToDisplay(const Data::Tick &tick, DisplayState displayState)
     {
         switch (displayState)
         {
@@ -228,7 +228,7 @@ namespace IO::TripleDigit
         case DisplayState::OilTemp:
             return lround(tick.outGauge.oilTemp);
         case DisplayState::CurrentFuelConsumption:
-            returnlround(tick.fuelCons * 10);
+            return lround(tick.fuelCons * 10);
         case DisplayState::AverageFuelConsumption:
             return lround(tick.fuelConsAvg * 10);
         case DisplayState::ZeroTo100:
@@ -250,7 +250,7 @@ namespace IO::TripleDigit
 
         DisplayState displayState = getDisplayState();
 
-        int numberToDisplay = getValueToDisplay(displayState);
+        int numberToDisplay = getValueToDisplay(tick, displayState);
 
         int dig1 = numberToDisplay / 100 % 10;
         int dig2 = numberToDisplay / 10 % 10;
