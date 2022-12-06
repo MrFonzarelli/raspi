@@ -1,7 +1,8 @@
 #include "buttons.hpp"
-#include "pins.hpp"
 #include "data.hpp"
 #include "io.hpp"
+#include "pins.hpp"
+#include "timers.hpp"
 #include <chrono>
 #include <mutex>
 #include <wiringPi.h>
@@ -69,6 +70,18 @@ namespace IO::Buttons
                     case DisplayState::TripOdometer:
                     {
                         Data::resetTripOdometer();
+                        break;
+                    }
+                    case DisplayState::ZeroTo100:
+                    case DisplayState::ZeroTo200:
+                    case DisplayState::ZeroTo300:
+                    case DisplayState::QuarterMile:
+                    case DisplayState::HundredTo200:
+                    case DisplayState::HundredTo300:
+                    case DisplayState::TwoHundredTo300:
+                    {
+                        printf("--- NEW PULL ---\n");
+                        Timers::reset();
                         break;
                     }
                     }
