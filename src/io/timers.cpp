@@ -112,6 +112,7 @@ namespace IO::Timers
     void reset()
     {
         g_IsReset = true;
+        g_IsRunning = false;
         g_Timer0to100 = 0;
         g_Timer0to200 = 0;
         g_Timer0to300 = 0;
