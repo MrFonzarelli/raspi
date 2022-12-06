@@ -20,7 +20,7 @@ namespace IO
     std::unique_ptr<std::thread> g_ResetStatButtonThread;
     std::unique_ptr<std::thread> g_TimerThread;
 
-    DisplayState g_DisplayState = DisplayState::HundredTo200;
+    DisplayState g_DisplayState = DisplayState::Speed;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
