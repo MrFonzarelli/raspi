@@ -275,9 +275,9 @@ namespace IO::TripleDigit
                 if (val / 100 >= 600) // True for times longer than 10 minutes
                 {
                     val /= 100;
-                    int dig1 = (val / 60) / 10 % 10;
-                    int dig2 = val / 60 % 10;
-                    int dig2 = (val - (val / 60)) / 10 % 10;
+                    int dig1 = (int(val) / 60) / 10 % 10;
+                    int dig2 = int(val) / 60 % 10;
+                    int dig2 = (int(val) % 60) / 10 % 10;
                     printf("Time : %i%im %is\n", dig1, dig2, dig3);
                     digitalWrite(PIN_DIG3, LOW);
                     digitSelect(dig3);
@@ -297,9 +297,9 @@ namespace IO::TripleDigit
                 else
                 {
                     val /= 100;
-                    int dig1 = val / 60 % 10;
-                    int dig2 = (val - (val % 60)) / 10 % 10;
-                    int dig3 = (val - ((val % 60) * ) % 10;
+                    int dig1 = int(val) / 60 % 10;
+                    int dig2 = (int(val) % 60) / 10 % 10;
+                    int dig3 = (int(val) % 60) % 10;
                     printf("Time : %im %i%is\n", dig1, dig2, dig3);
                     digitalWrite(PIN_DIG3, LOW);
                     digitSelect(dig3);
@@ -320,9 +320,9 @@ namespace IO::TripleDigit
             else
             {
                 val /= 10;
-                int dig1 = val / 100 % 10;
-                int dig2 = val / 10 % 10;
-                int dig3 = val % 10;
+                int dig1 = int(val) / 100 % 10;
+                int dig2 = int(val) / 10 % 10;
+                int dig3 = int(val) % 10;
                 printf("Time : %i%i.%is\n", dig1, dig2, dig3);
                 digitalWrite(PIN_DIG3, LOW);
                 digitSelect(dig3);
@@ -342,9 +342,9 @@ namespace IO::TripleDigit
         }
         else
         {
-            int dig1 = val / 100 % 10;
-            int dig2 = val / 10 % 10;
-            int dig3 = val % 10;
+            int dig1 = int(val) / 100 % 10;
+            int dig2 = int(val) / 10 % 10;
+            int dig3 = int(val) % 10;
             printf("Time : %i.%i%is\n", dig1, dig2, dig3);
             digitalWrite(PIN_DIG3, LOW);
             digitSelect(dig3);
