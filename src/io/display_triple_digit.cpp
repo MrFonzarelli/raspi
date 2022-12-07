@@ -299,13 +299,15 @@ namespace IO::TripleDigit
                         {
                             digitalWrite(PIN_DIG3, LOW);
                             digitSelect(dig3);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT * 2));
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                             digitalWrite(PIN_DIG3, HIGH);
 
                             digitalWrite(PIN_DIG2, LOW);
                             digitSelect(10);
                             std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                             digitalWrite(PIN_DIG2, HIGH);
+
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                         }
                         else
                         {
@@ -316,7 +318,7 @@ namespace IO::TripleDigit
 
                             digitalWrite(PIN_DIG2, LOW);
                             digitSelect(dig2);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT * 2));
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                             digitalWrite(PIN_DIG2, HIGH);
 
                             digitalWrite(PIN_DIG3, LOW);
@@ -392,9 +394,11 @@ namespace IO::TripleDigit
                         digitalWrite(PIN_DIG2, LOW);
                         digitSelect(dig2);
                         digitalWrite(PIN16, HIGH);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT * 2));
+                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                         digitalWrite(PIN_DIG2, HIGH);
                         digitalWrite(PIN16, LOW);
+
+                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                     }
                     else
                     {
@@ -423,8 +427,10 @@ namespace IO::TripleDigit
                         {
                             digitalWrite(PIN_DIG2, LOW);
                             digitSelect(dig2);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT * 2));
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                             digitalWrite(PIN_DIG2, HIGH);
+
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
                         }
                     }
                     else
@@ -549,34 +555,34 @@ namespace IO::TripleDigit
                     if (numberToDisplay / 100 >= 600) // True for times longer than 10 minutes
                     {
                         numberToDisplay /= 100;
-                        dig1 = (int(numberToDisplay) / 60) / 10 % 10;
-                        dig2 = int(numberToDisplay) / 60 % 10;
-                        dig3 = (int(numberToDisplay) % 60) / 10 % 10;
+                        dig1 = (numberToDisplay / 60) / 10 % 10;
+                        dig2 = numberToDisplay / 60 % 10;
+                        dig3 = (numberToDisplay % 60) / 10 % 10;
                         dp2 = true;
                     }
                     else
                     {
                         numberToDisplay /= 100;
-                        dig1 = int(numberToDisplay) / 60 % 10;
-                        dig2 = (int(numberToDisplay) % 60) / 10 % 10;
-                        dig3 = (int(numberToDisplay) % 60) % 10;
+                        dig1 = numberToDisplay / 60 % 10;
+                        dig2 = (numberToDisplay % 60) / 10 % 10;
+                        dig3 = (numberToDisplay % 60) % 10;
                         dp1 = true;
                     }
                 }
                 else
                 {
                     numberToDisplay /= 10;
-                    dig1 = int(numberToDisplay) / 100 % 10;
-                    dig2 = int(numberToDisplay) / 10 % 10;
-                    dig3 = int(numberToDisplay) % 10;
+                    dig1 = numberToDisplay / 100 % 10;
+                    dig2 = numberToDisplay / 10 % 10;
+                    dig3 = numberToDisplay % 10;
                     dp2 = true;
                 }
             }
             else
             {
-                dig1 = int(numberToDisplay) / 100 % 10;
-                dig2 = int(numberToDisplay) / 10 % 10;
-                dig3 = int(numberToDisplay) % 10;
+                dig1 = numberToDisplay / 100 % 10;
+                dig2 = numberToDisplay / 10 % 10;
+                dig3 = numberToDisplay % 10;
                 dp1 = true;
             }
             break;
