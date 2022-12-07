@@ -270,7 +270,7 @@ namespace IO::TripleDigit
     {
         int dig1;
         int dig2;
-        int dig2;
+        int dig3;
         if (val / 100 >= 10) // True for times longer than 10s
         {
             if (val / 100 >= 60) // True for times longer than 1 minute
@@ -280,7 +280,7 @@ namespace IO::TripleDigit
                     val /= 100;
                     dig1 = (int(val) / 60) / 10 % 10;
                     dig2 = int(val) / 60 % 10;
-                    dig2 = (int(val) % 60) / 10 % 10;
+                    dig3 = (int(val) % 60) / 10 % 10;
                     printf("Time : %i%im %is\n", dig1, dig2, dig3);
                     digitalWrite(PIN_DIG3, LOW);
                     digitSelect(dig3);
