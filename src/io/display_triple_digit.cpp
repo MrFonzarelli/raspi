@@ -524,6 +524,8 @@ namespace IO::TripleDigit
         int dig1;
         int dig2;
         int dig3;
+        bool dp1 = false;
+        bool dp2 = false;
         Data::Tick tick = Data::get();
 
         DisplayState displayState = getDisplayState();
@@ -540,8 +542,6 @@ namespace IO::TripleDigit
         case DisplayState::HundredTo300:    //
         case DisplayState::TwoHundredTo300: // Times
         {
-            bool dp1 = false;
-            bool dp2 = false;
             if (numberToDisplay / 100 >= 10) // True for times longer than 10s
             {
                 if (numberToDisplay / 100 >= 60) // True for times longer than 1 minute
