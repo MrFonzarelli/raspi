@@ -9,145 +9,145 @@ namespace IO::SingleDigit
 
     int reverseHandler(void)
     {
-        digitalWrite(PIN1, LOW);
-        digitalWrite(PIN2, LOW);
-        digitalWrite(PIN3, LOW);
-        digitalWrite(PIN4, LOW);
-        digitalWrite(PIN5, HIGH);
-        digitalWrite(PIN6, LOW);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_B, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_C, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_D, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_E, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 0;
     }
 
     int neutralHandler(void)
     {
-        digitalWrite(PIN1, LOW);
-        digitalWrite(PIN2, LOW);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, LOW);
-        digitalWrite(PIN5, HIGH);
-        digitalWrite(PIN6, LOW);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_B, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_E, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 1;
     }
 
     int firstHandler(void)
     {
-        digitalWrite(PIN1, LOW);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, LOW);
-        digitalWrite(PIN5, LOW);
-        digitalWrite(PIN6, LOW);
-        digitalWrite(PIN7, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_A, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, LOW);
         return 2;
     }
 
     int secondHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, LOW);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, HIGH);
-        digitalWrite(PIN6, LOW);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 3;
     }
 
     int thirdHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, LOW);
-        digitalWrite(PIN6, LOW);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 4;
     }
 
     int fourthHandler(void)
     {
-        digitalWrite(PIN1, LOW);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, LOW);
-        digitalWrite(PIN5, LOW);
-        digitalWrite(PIN6, HIGH);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 5;
     }
 
     int fifthHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, LOW);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, LOW);
-        digitalWrite(PIN6, HIGH);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 6;
     }
 
     int sixthHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, LOW);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, HIGH);
-        digitalWrite(PIN6, HIGH);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_F, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 7;
     }
 
     int seventhHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, LOW);
-        digitalWrite(PIN5, LOW);
-        digitalWrite(PIN6, LOW);
-        digitalWrite(PIN7, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, LOW);
         return 8;
     }
 
     int eighthHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, HIGH);
-        digitalWrite(PIN6, HIGH);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_F, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 9;
     }
 
     int ninethHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, LOW);
-        digitalWrite(PIN6, HIGH);
-        digitalWrite(PIN7, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_G, HIGH);
         return 10;
     }
 
     int zeroHandler(void)
     {
-        digitalWrite(PIN1, HIGH);
-        digitalWrite(PIN2, HIGH);
-        digitalWrite(PIN3, HIGH);
-        digitalWrite(PIN4, HIGH);
-        digitalWrite(PIN5, HIGH);
-        digitalWrite(PIN6, HIGH);
-        digitalWrite(PIN7, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_A, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_B, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_C, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_D, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_E, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_F, HIGH);
+        digitalWrite(PIN_SINGLE_DIGIT_G, LOW);
         return 11;
     }
 

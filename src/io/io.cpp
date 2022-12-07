@@ -26,25 +26,25 @@ namespace IO
     void initialize()
     {
         wiringPiSetup();
-        pinMode(PIN1, OUTPUT);
-        pinMode(PIN2, OUTPUT);
-        pinMode(PIN3, OUTPUT);
-        pinMode(PIN4, OUTPUT);
-        pinMode(PIN5, OUTPUT);
-        pinMode(PIN6, OUTPUT);
-        pinMode(PIN7, OUTPUT);
-        pinMode(PIN8, OUTPUT);
-        pinMode(PIN9, OUTPUT);
-        pinMode(PIN10, OUTPUT);
-        pinMode(PIN11, OUTPUT);
-        pinMode(PIN12, OUTPUT);
-        pinMode(PIN13, OUTPUT);
-        pinMode(PIN14, OUTPUT);
-        pinMode(PIN15, OUTPUT);
-        pinMode(PIN16, OUTPUT);
-        pinMode(PIN_DIG1, OUTPUT);
-        pinMode(PIN_DIG2, OUTPUT);
-        pinMode(PIN_DIG3, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_A, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_B, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_C, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_D, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_E, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_F, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_G, OUTPUT);
+        pinMode(PIN_SINGLE_DIGIT_DP, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_A, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_B, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_C, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_D, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_E, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_F, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_G, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DP, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DIG1, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DIG2, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DIG3, OUTPUT);
         pinMode(PIN_SCROLL_RIGHT_BUTTON, INPUT);
         pinMode(PIN_SCROLL_LEFT_BUTTON, INPUT);
         pinMode(PIN_CHANGE_UNITS_BUTTON, INPUT);
@@ -81,6 +81,29 @@ namespace IO
         g_DisplayStateMutex.lock();
         g_DisplayState = (DisplayState)(((int)g_DisplayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT);
         g_DisplayStateMutex.unlock();
+    }
+
+    DisplayStateType displayTypeOf(DisplayState displayState)
+    {
+        switch (displayState)
+        {
+        case DisplayState::ZeroTo100:
+        case DisplayState::ZeroTo200:
+        case DisplayState::ZeroTo300:
+        case DisplayState::QuarterMile:
+        case DisplayState::HundredTo200:
+        case DisplayState::HundredTo300:
+        case DisplayState::TwoHundredTo300:
+            return DisplayStateType::Time;
+        case DisplayState::TripOdometer:
+        case DisplayState::Odometer:
+        case DisplayState::CurrentFuelConsumption:
+        case DisplayState::AverageFuelConsumption:
+        case DisplayState::TurboPressure:
+            return DisplayStateType::Decimal_OnePlace;
+        default:
+            return DisplayStateType::Integer;
+        }
     }
 
 }
