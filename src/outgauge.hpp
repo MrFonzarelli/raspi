@@ -3,6 +3,22 @@
 
 struct OutGauge
 {
+    struct DashLights
+    {
+        bool shiftLight;
+        bool lowBeam;
+        bool highBeam;
+        bool parkBrake;
+        bool fogLight;
+        bool tractionControl;
+        bool signalLeft;
+        bool signalRight;
+        bool oilWarning;
+        bool engineRunning;
+        bool abs;
+        bool hazardLight;
+    };
+
     unsigned time;
     char car[4];
     unsigned short flags;
@@ -25,6 +41,8 @@ struct OutGauge
     char display1[16];
     char display2[16];
     int id;
+
+    DashLights getDashLights();
 };
 
 #endif

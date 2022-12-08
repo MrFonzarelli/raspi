@@ -3,6 +3,7 @@
 #include "buttons.hpp"
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
+#include "lights.hpp"
 #include "pins.hpp"
 #include "timers.hpp"
 #include <chrono>
@@ -19,6 +20,7 @@ namespace IO
     std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
     std::unique_ptr<std::thread> g_ResetStatButtonThread;
     std::unique_ptr<std::thread> g_TimerThread;
+    std::unique_ptr<std::thread> g_LightsThread;
 
     DisplayState g_DisplayState = DisplayState::ZeroTo300;
     std::mutex g_DisplayStateMutex;
@@ -59,6 +61,7 @@ namespace IO
         g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
         g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
         g_TimerThread.reset(Timers::startThread());
+        g_LightsThread.reset(IO::Lights::startThread());
     }
 
     DisplayState getDisplayState()
