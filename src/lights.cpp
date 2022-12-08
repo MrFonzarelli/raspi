@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <iostream>
+#include "pins.hpp"
 #include <wiringPi.h>
 
 namespace IO::Lights
