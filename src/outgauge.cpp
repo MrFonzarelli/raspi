@@ -2,7 +2,7 @@
 
 OutGauge::DashLights OutGauge::getDashLights()
 {
-    showLights result;
+    DashLights result;
     result.shiftLight = showLights & 0b0000000000001;
     result.lowBeam = showLights & 0b0000000000010;
     result.highBeam = showLights & 0b0000000000100;
