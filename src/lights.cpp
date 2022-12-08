@@ -23,7 +23,7 @@ namespace IO::Lights
         while (true)
         {
             Data::Tick tick;
-            if (tickCounter % 1000)
+            if (tickCounter % 1000 == 0)
             {
                 tick = Data::get();
             }
