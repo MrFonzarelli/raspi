@@ -9,7 +9,7 @@
 #define PIN_SINGLE_DIGIT_E 5   // E
 #define PIN_SINGLE_DIGIT_F 6   // F
 #define PIN_SINGLE_DIGIT_G 10  // G
-#define PIN_SINGLE_DIGIT_DP 11 // DP
+#define PIN_SINGLE_DIGIT_DP 99 // DP
 #define PIN_TRIPLE_DIG_A 29    // 3 digit -- A
 #define PIN_TRIPLE_DIG_B 27    // 3 digit -- B
 #define PIN_TRIPLE_DIG_C 22    // 3 digit -- C
@@ -22,10 +22,10 @@
 #define PIN_TRIPLE_DIG_DIG2 2  // 3 digit -- dig2
 #define PIN_TRIPLE_DIG_DIG3 3  // 3 digit -- dig3
 
-#define PIN_SCROLL_RIGHT_BUTTON 24 // Scroll display right button
-#define PIN_SCROLL_LEFT_BUTTON 99  // Scroll display left button
-#define PIN_RESET_STAT 23          // Reset odometer button
-#define PIN_CHANGE_UNITS_BUTTON 99 // Change units button
+#define PIN_SCROLL_RIGHT_BUTTON 11 // Scroll display right button
+#define PIN_SCROLL_LEFT_BUTTON 31  // Scroll display left button
+#define PIN_RESET_STAT 26          // Reset odometer button
+#define PIN_CHANGE_UNITS_BUTTON 7  // Change units button
 
 #define PIN_DASHLIGHT_LED1 12 // Pins controlling the charlieplexed LEDs
 #define PIN_DASHLIGHT_LED2 13 //
