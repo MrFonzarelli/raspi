@@ -25,12 +25,22 @@ namespace IO
         QuarterMile
     };
 
+    enum class DisplayStateType
+    {
+        Integer,           // Integers without the DP
+        Decimal_OnePlace,  // Decimals with 1 decimal place of precision
+        Decimal_TwoPlaces, // Decimals with 2 decimal places of precision
+        Time               // Time numbers needing conversion to render with max precision
+    };
+
     void initialize();
 
     DisplayState getDisplayState();
 
     void nextDisplayState();
     void previousDisplayState();
+
+    DisplayStateType displayTypeOf(DisplayState displayState);
 
 }
 
