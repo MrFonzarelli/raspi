@@ -500,7 +500,7 @@ void ssd1306_drawFastHLineInternal(int x, int y, int w, unsigned int color)
 		return;
 	}
 	// set up the pointer for movement through the buffer
-	unsigned int *pBuf = buffer;
+	unsigned int *pBuf = (unsigned int*)&buffer;
 	// adjust the buffer pointer for the current row
 	pBuf += ((y / 8) * SSD1306_LCDWIDTH);
 	// and offset x columns in
