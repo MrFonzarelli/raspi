@@ -4,14 +4,14 @@ PROG = raspi
 SRCDIR = src
 OBJDIR = obj
 DATADIR = data
-CXX = g++ src/ssd1306_i2c.c
+CXX = g++
 INCDIRS = $(shell find $(SRCDIR) -type d)
 INCFLAGS = $(addprefix -I,$(INCDIRS))
 LDFLAGS = -lwiringPi -lpthread 
 CXXFLAGS = -O2 -pipe -pthread $(INCFLAGS)
 DEPFLAGS = -MMD -MP
 SRCS = $(shell find $(SRCDIR) -name *.cpp)
-OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
+OBJS = src/ssd1306_i2c.c $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS = $(OBJS:.o=.d)
 
 # Default target
