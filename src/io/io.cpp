@@ -24,7 +24,7 @@ namespace IO
     std::unique_ptr<std::thread> g_LightsThread;
     std::unique_ptr<std::thread> g_OLEDThread;
 
-    DisplayState g_DisplayState = DisplayState::Odometer;
+    DisplayState g_DisplayState = DisplayState::Speed;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
