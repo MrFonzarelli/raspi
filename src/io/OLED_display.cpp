@@ -76,7 +76,7 @@ namespace IO::OLED
             }
             case DisplayState::CurrentFuelConsumption:
             {
-                text = "InstFuel";
+                text = "IstFuel";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -96,7 +96,7 @@ namespace IO::OLED
             {
                 text = "0-100";
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
+                ssd1306_setTextSize(4);
                 ssd1306_drawString(text);
                 ssd1306_display();
                 break;
@@ -105,7 +105,7 @@ namespace IO::OLED
             {
                 text = "0-200";
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
+                ssd1306_setTextSize(4);
                 ssd1306_drawString(text);
                 ssd1306_display();
                 break;
@@ -114,14 +114,14 @@ namespace IO::OLED
             {
                 text = "0-300";
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
+                ssd1306_setTextSize(4);
                 ssd1306_drawString(text);
                 ssd1306_display();
                 break;
             }
             case DisplayState::QuarterMile:
             {
-                text = "1/4m";
+                text = "1/4mi";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(4);
                 ssd1306_drawString(text);
