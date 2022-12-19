@@ -813,7 +813,7 @@ void ssd1306_write(int c)
 
 	if (c == '\n')
 	{
-		cursor_y += textsize * 17;
+		cursor_y += textsize * 8;
 		cursor_x = 0;
 	}
 	else if (c == '\r')
@@ -823,10 +823,10 @@ void ssd1306_write(int c)
 	else
 	{
 		ssd1306_drawChar(cursor_x, cursor_y, c, WHITE, textsize);
-		cursor_x += textsize * 9;
-		if (wrap && (cursor_x > (WIDTH - textsize * 9)))
+		cursor_x += textsize * 6;
+		if (wrap && (cursor_x > (WIDTH - textsize * 6)))
 		{
-			cursor_y += textsize * 17;
+			cursor_y += textsize * 8;
 			cursor_x = 0;
 		}
 	}
@@ -846,19 +846,19 @@ void ssd1306_drawChar(int x, int y, unsigned char c, int color, int size)
 
 	if ((x >= WIDTH) ||				// Clip right
 		(y >= HEIGHT) ||			// Clip bottom
-		((x + 9 * size - 1) < 0) || // Clip left
-		((y + 17 * size - 1) < 0))	// Clip top
+		((x + 6 * size - 1) < 0) || // Clip left
+		((y + 8 * size - 1) < 0))	// Clip top
 		return;
 	int i;
 	int j;
-	for (i = 0; i < 9; i++)
+	for (i = 0; i < 6; i++)
 	{
 		int line;
-		if (i == 8)
+		if (i == 5)
 			line = 0x0;
 		else
-			line = pgm_read_byte(font + (c * 8) + i);
-		for (j = 0; j < 17; j++)
+			line = pgm_read_byte(font + (c * 5) + i);
+		for (j = 0; j < 8; j++)
 		{
 			if (line & 0x1)
 			{
@@ -873,6 +873,5 @@ void ssd1306_drawChar(int x, int y, unsigned char c, int color, int size)
 			}
 			line >>= 1;
 		}
-		// lol
 	}
 }
