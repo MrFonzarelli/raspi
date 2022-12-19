@@ -1,4 +1,4 @@
-#include "IO.hpp"
+#include "io.hpp"
 #include "ssd1306_i2c.h"
 #include "OLED_display.hpp"
 
