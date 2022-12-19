@@ -27,7 +27,7 @@ All text above, and the splash screen below must be included in any redistributi
 #include <stdio.h>
 #include <string.h>
 
-#include "ssd1306_i2c.hpp"
+#include "ssd1306_i2c.h"
 
 #include <wiringPiI2C.h>
 
