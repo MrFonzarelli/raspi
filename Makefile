@@ -7,7 +7,7 @@ DATADIR = data
 CXX = g++
 INCDIRS = $(shell find $(SRCDIR) -type d)
 INCFLAGS = $(addprefix -I,$(INCDIRS))
-LDFLAGS = -lwiringPi -lpthread 
+LDFLAGS = ssd1306_i2c.c -lwiringPi -lpthread 
 CXXFLAGS = -O2 -pipe -pthread $(INCFLAGS)
 DEPFLAGS = -MMD -MP
 SRCS = $(shell find $(SRCDIR) -name *.cpp)
@@ -19,7 +19,7 @@ all: $(PROG)
 
 # Program target
 $(PROG): $(OBJS) $(DATADIR)
-	$(CXX) -o $(PROG) $(OBJS) $(LDFLAGS)
+	$(CXX) -o $(PROG) $(OBJS)  $(LDFLAGS)
 
 $(OBJDIR) $(DATADIR):
 	@mkdir -p $@
