@@ -49,7 +49,7 @@ namespace IO::OLED
             }
             case DisplayState::Odometer:
             {
-                text = "Odometer";
+                text = " Odomtr";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -58,7 +58,7 @@ namespace IO::OLED
             }
             case DisplayState::EngineTemp:
             {
-                text = "EngTmp";
+                text = " EngTmp";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -67,7 +67,7 @@ namespace IO::OLED
             }
             case DisplayState::OilTemp:
             {
-                text = "OilTmp";
+                text = " OilTmp";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -85,7 +85,7 @@ namespace IO::OLED
             }
             case DisplayState::AverageFuelConsumption:
             {
-                text = "AvgFuel";
+                text = " AvgFuel";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -94,7 +94,7 @@ namespace IO::OLED
             }
             case DisplayState::ZeroTo100:
             {
-                text = "0-100";
+                text = " 0-100";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -103,7 +103,7 @@ namespace IO::OLED
             }
             case DisplayState::ZeroTo200:
             {
-                text = "0-200";
+                text = " 0-200";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -112,7 +112,7 @@ namespace IO::OLED
             }
             case DisplayState::ZeroTo300:
             {
-                text = "0-300";
+                text = " 0-300";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
@@ -123,7 +123,7 @@ namespace IO::OLED
             {
                 text = "1/4m";
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
+                ssd1306_setTextSize(4);
                 ssd1306_drawString(text);
                 ssd1306_display();
                 break;
