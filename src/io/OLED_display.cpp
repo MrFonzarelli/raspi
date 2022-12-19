@@ -1,5 +1,5 @@
 #include "io.hpp"
-#include "ssd1306_i2c.h"
+#include "src/ssd1306_i2c.hpp"
 #include "OLED_display.hpp"
 
 namespace IO::OLED
