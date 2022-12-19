@@ -123,7 +123,7 @@ namespace IO::OLED
             {
                 text = "1/4mi";
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
+                ssd1306_setTextSize(4);
                 ssd1306_drawString(text);
                 ssd1306_display();
                 break;
