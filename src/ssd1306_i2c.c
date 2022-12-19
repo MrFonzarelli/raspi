@@ -783,7 +783,7 @@ void ssd1306_fillRect(int x, int y, int w, int h, int fillcolor)
 	switch (rotation)
 	{
 	case 1:
-		swap_values(x, y);
+		ssd1306_swap(x, y);
 		x = WIDTH - x - 1;
 		break;
 	case 2:
@@ -791,7 +791,7 @@ void ssd1306_fillRect(int x, int y, int w, int h, int fillcolor)
 		y = HEIGHT - y - 1;
 		break;
 	case 3:
-		swap_values(x, y);
+		ssd1306_swap(x, y);
 		y = HEIGHT - y - 1;
 		break;
 	}
