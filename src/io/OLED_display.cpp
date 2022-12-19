@@ -10,7 +10,7 @@ namespace IO::OLED
         ssd1306_clearDisplay();
         int ch = 65;
         unsigned char text = ch;
-        ssd1306_drawChar(0, 0, ch, 1, 5);
+        ssd1306_drawChar(0, 0, ch, 1, 3);
         ssd1306_display();
         while (true)
         {
