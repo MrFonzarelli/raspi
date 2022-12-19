@@ -813,7 +813,7 @@ void ssd1306_write(int c)
 
 	if (c == '\n')
 	{
-		cursor_y += textsize * 8;
+		cursor_y += textsize * 17;
 		cursor_x = 0;
 	}
 	else if (c == '\r')
@@ -823,10 +823,10 @@ void ssd1306_write(int c)
 	else
 	{
 		ssd1306_drawChar(cursor_x, cursor_y, c, WHITE, textsize);
-		cursor_x += textsize * 6;
-		if (wrap && (cursor_x > (WIDTH - textsize * 6)))
+		cursor_x += textsize * 9;
+		if (wrap && (cursor_x > (WIDTH - textsize * 9)))
 		{
-			cursor_y += textsize * 8;
+			cursor_y += textsize * 17;
 			cursor_x = 0;
 		}
 	}
@@ -851,14 +851,14 @@ void ssd1306_drawChar(int x, int y, unsigned char c, int color, int size)
 		return;
 	int i;
 	int j;
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 9; i++)
 	{
 		int line;
-		if (i == 5)
+		if (i == 8)
 			line = 0x0;
 		else
-			line = pgm_read_byte(font + (c * 5) + i);
-		for (j = 0; j < 8; j++)
+			line = pgm_read_byte(font + (c * 8) + i);
+		for (j = 0; j < 17; j++)
 		{
 			if (line & 0x1)
 			{
