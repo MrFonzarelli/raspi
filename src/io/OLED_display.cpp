@@ -49,7 +49,7 @@ namespace IO::OLED
             }
             case DisplayState::Odometer:
             {
-                text = "Odomtr";
+                text = "Odometer";
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(3);
                 ssd1306_drawString(text);
