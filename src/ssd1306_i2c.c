@@ -846,8 +846,8 @@ void ssd1306_drawChar(int x, int y, unsigned char c, int color, int size)
 
 	if ((x >= WIDTH) ||				// Clip right
 		(y >= HEIGHT) ||			// Clip bottom
-		((x + 6 * size - 1) < 0) || // Clip left
-		((y + 8 * size - 1) < 0))	// Clip top
+		((x + 9 * size - 1) < 0) || // Clip left
+		((y + 17 * size - 1) < 0))	// Clip top
 		return;
 	int i;
 	int j;
