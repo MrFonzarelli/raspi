@@ -564,7 +564,7 @@ void ssd1306_drawFastVLineInternal(int x, int __y, int __h, unsigned int color)
 	unsigned int h = __h;
 
 	// set up the pointer for fast movement through the buffer
-	unsigned int *pBuf = (unsigned int)&buffer;
+	unsigned int *pBuf = (unsigned int*)&buffer;
 	// adjust the buffer pointer for the current row
 	pBuf += ((y / 8) * SSD1306_LCDWIDTH);
 	// and offset x columns in
