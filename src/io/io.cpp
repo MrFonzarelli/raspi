@@ -3,6 +3,7 @@
 #include "buttons.hpp"
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
+#include "OLED_display.hpp"
 #include "lights.hpp"
 #include "pins.hpp"
 #include "timers.hpp"
@@ -21,8 +22,9 @@ namespace IO
     std::unique_ptr<std::thread> g_ResetStatButtonThread;
     std::unique_ptr<std::thread> g_TimerThread;
     std::unique_ptr<std::thread> g_LightsThread;
+    std::unique_ptr<std::thread> g_OLEDThread;
 
-    DisplayState g_DisplayState = DisplayState::ZeroTo300;
+    DisplayState g_DisplayState = DisplayState::Speed;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -65,7 +67,8 @@ namespace IO
         g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
         g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
         g_TimerThread.reset(Timers::startThread());
-        g_LightsThread.reset(IO::Lights::startThread());
+        g_LightsThread.reset(Lights::startThread());
+        g_OLEDThread.reset(OLED::startThread());
     }
 
     DisplayState getDisplayState()

@@ -32,8 +32,4 @@
 #define PIN_DASHLIGHT_LED3 14 //
 #define PIN_DASHLIGHT_LED4 30 //
 
-// Pins related to analog control
-#define PIN_SDA 8
-#define PIN_SCL 9
-
 #endif
