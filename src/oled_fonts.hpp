@@ -106,6 +106,5 @@ static const unsigned char font[] PROGMEM = {
 	 0x00, 0x00, 0x00, 0x00,
      // FONT REQUIRES 859 BYTES
  };
-};
 
 #endif
