@@ -8,6 +8,7 @@ namespace IO::OLED
     {
         DisplayState displayState_old;
         ssd1306_begin(SSD1306_SWITCHCAPVCC, SSD1306_I2C_ADDRESS);
+        char *text = "";
         ssd1306_clearDisplay();
         ssd1306_display();
         while (true)
