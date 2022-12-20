@@ -9,9 +9,6 @@ namespace IO::OLED
         DisplayState displayState_old;
         ssd1306_begin(SSD1306_SWITCHCAPVCC, SSD1306_I2C_ADDRESS);
         ssd1306_clearDisplay();
-        char *text = "Speed";
-        ssd1306_setTextSize(4);
-        ssd1306_drawString(text);
         ssd1306_display();
         while (true)
         {

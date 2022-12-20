@@ -3,6 +3,7 @@
 #include "io/io.hpp"
 #include "network.hpp"
 #include "outgauge.hpp"
+#include "ssd1306_i2c.h"
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
@@ -38,6 +39,8 @@ void writeOdometer()
 
 void odoSignalHandler(int)
 {
+    ssd1306_clearDisplay();
+    ssd1306_display();
     writeOdometer();
     exit(EXIT_SUCCESS);
 }
