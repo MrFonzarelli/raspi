@@ -41,7 +41,7 @@ void writeOdometer()
 void odoSignalHandler(int)
 {
     ssd1306_clearDisplay();
-    ssd1306_display();
+    // ssd1306_display();
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     writeOdometer();
     exit(EXIT_SUCCESS);
