@@ -3,7 +3,7 @@
 #include "buttons.hpp"
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
-#include "OLED_display.hpp"
+#include "oled_display.hpp"
 #include "lights.hpp"
 #include "pins.hpp"
 #include "timers.hpp"
