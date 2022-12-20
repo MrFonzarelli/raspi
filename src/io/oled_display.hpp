@@ -8,6 +8,8 @@ namespace IO::OLED
 
     std::thread *startThread();
 
+    void clearAndStop();
+
 }
 
 #endif

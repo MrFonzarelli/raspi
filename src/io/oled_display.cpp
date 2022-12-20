@@ -1,9 +1,19 @@
 #include "io.hpp"
 #include "ssd1306_i2c.h"
 #include "oled_display.hpp"
+#include <mutex>
 
 namespace IO::OLED
 {
+    std::mutex g_isStoppedMutex;
+    bool g_isStopped = false;
+
+    bool isStopped()
+    {
+        std::lock_guard lock(g_isStoppedMutex);
+        return g_isStopped;
+    }
+
     void doOLEDWork()
     {
         DisplayState displayState_old;
@@ -11,7 +21,7 @@ namespace IO::OLED
         char *text = "";
         ssd1306_clearDisplay();
         ssd1306_display();
-        while (true)
+        while (!isStopped())
         {
             DisplayState displayState = getDisplayState();
             // if (displayState != displayState_old)
@@ -163,5 +173,14 @@ namespace IO::OLED
     std::thread *startThread()
     {
         return new std::thread(doOLEDWork);
+    }
+
+    void clearAndStop()
+    {
+        g_isStoppedMutex.lock();
+        g_isStopped = true;
+        g_isStoppedMutex.unlock();
+        ssd1306_clearDisplay();
+        ssd1306_display();
     }
 }

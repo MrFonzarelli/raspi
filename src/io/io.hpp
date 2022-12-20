@@ -35,6 +35,8 @@ namespace IO
 
     void initialize();
 
+    void terminate();
+
     DisplayState getDisplayState();
 
     void nextDisplayState();

@@ -71,6 +71,11 @@ namespace IO
         g_OLEDThread.reset(OLED::startThread());
     }
 
+    void terminate()
+    {
+        OLED::clearAndStop();
+    }
+
     DisplayState getDisplayState()
     {
         g_DisplayStateMutex.lock();
