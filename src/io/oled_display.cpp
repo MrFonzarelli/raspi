@@ -10,7 +10,7 @@ namespace IO::OLED
 
     bool isStopped()
     {
-        std::lock_guard lock(g_isStoppedMutex);
+        std::lock_guard<std::mutex> lock(g_isStoppedMutex);
         return g_isStopped;
     }
 
