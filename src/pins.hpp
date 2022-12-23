@@ -18,9 +18,9 @@
 #define PIN_TRIPLE_DIG_F 27    // 3 digit -- F
 #define PIN_TRIPLE_DIG_G 21    // 3 digit -- G
 #define PIN_TRIPLE_DIG_DP 22   // 3 digit -- DP
-#define PIN_TRIPLE_DIG_DIG1 0  // 3 digit -- dig1
+#define PIN_TRIPLE_DIG_DIG1 3  // 3 digit -- dig1
 #define PIN_TRIPLE_DIG_DIG2 2  // 3 digit -- dig2
-#define PIN_TRIPLE_DIG_DIG3 3  // 3 digit -- dig3
+#define PIN_TRIPLE_DIG_DIG3 0  // 3 digit -- dig3
 
 #define PIN_SCROLL_RIGHT_BUTTON 11 // Scroll display right button
 #define PIN_SCROLL_LEFT_BUTTON 31  // Scroll display left button
