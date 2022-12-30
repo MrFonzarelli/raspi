@@ -10,12 +10,12 @@
 #define PIN_SINGLE_DIGIT_F 6   // F
 #define PIN_SINGLE_DIGIT_G 10  // G
 #define PIN_SINGLE_DIGIT_DP 99 // DP
-#define PIN_TRIPLE_DIG_A 29    // 3 digit -- A
+#define PIN_TRIPLE_DIG_A 27    // 3 digit -- A
 #define PIN_TRIPLE_DIG_B 28    // 3 digit -- B
 #define PIN_TRIPLE_DIG_C 23    // 3 digit -- C
 #define PIN_TRIPLE_DIG_D 24    // 3 digit -- D
 #define PIN_TRIPLE_DIG_E 25    // 3 digit -- E
-#define PIN_TRIPLE_DIG_F 27    // 3 digit -- F
+#define PIN_TRIPLE_DIG_F 29    // 3 digit -- F
 #define PIN_TRIPLE_DIG_G 21    // 3 digit -- G
 #define PIN_TRIPLE_DIG_DP 22   // 3 digit -- DP
 #define PIN_TRIPLE_DIG_DIG1 3  // 3 digit -- dig1
