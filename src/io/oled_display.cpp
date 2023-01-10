@@ -5,6 +5,7 @@
 
 namespace IO::OLED
 {
+
     std::mutex g_isStoppedMutex;
     bool g_isStopped = false;
 
@@ -94,24 +95,24 @@ namespace IO::OLED
             case DisplayState::ZeroTo100:
             {
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
-                ssd1306_drawString("0-100");
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("0-100kmh");
                 ssd1306_display();
                 break;
             }
             case DisplayState::ZeroTo200:
             {
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
-                ssd1306_drawString("0-200");
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("0-200kmh");
                 ssd1306_display();
                 break;
             }
             case DisplayState::ZeroTo300:
             {
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
-                ssd1306_drawString("0-300");
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("0-300kmh");
                 ssd1306_display();
                 break;
             }
@@ -126,27 +127,41 @@ namespace IO::OLED
             case DisplayState::HundredTo200:
             {
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
-                ssd1306_drawString("100-200");
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("100-200km");
                 ssd1306_display();
                 break;
             }
             case DisplayState::HundredTo300:
             {
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
-                ssd1306_drawString("100-300");
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("100-300km");
                 ssd1306_display();
                 break;
             }
             case DisplayState::TwoHundredTo300:
             {
                 ssd1306_clearDisplay();
-                ssd1306_setTextSize(3);
-                ssd1306_drawString("200-300");
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("200-300kmh");
                 ssd1306_display();
                 break;
             }
+            case DisplayState::CustomTimer:
+            {
+                ssd1306_clearDisplay();
+                ssd1306_setTextSize(3);
+                ssd1306_drawString("CustTmr");
+                ssd1306_display();
+                break;
+            }
+            case DisplayState::RPM:
+                ssd1306_clearDisplay();
+                ssd1306_setTextSize(4);
+                ssd1306_drawString("RPM");
+                ssd1306_display();
+                break;
             }
             // displayState_old = displayState;
             //}
@@ -167,4 +182,5 @@ namespace IO::OLED
         ssd1306_clearDisplay();
         ssd1306_display();
     }
+
 }

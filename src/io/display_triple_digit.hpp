@@ -9,9 +9,13 @@
 
 namespace IO::TripleDigit
 {
-    const int DISPLAY_RENDER_WAIT = 3;
+
+    const int DISPLAY_RENDER_WAIT = 1;
 
     std::thread *startThread();
+
+    void clearAndStop();
+
 }
 
 #endif

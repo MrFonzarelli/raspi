@@ -3,9 +3,19 @@
 #include "pins.hpp"
 #include <chrono>
 #include <wiringPi.h>
+#include <mutex>
 
 namespace IO::SingleDigit
 {
+
+    std::mutex g_isStoppedMutex;
+    bool g_isStopped = false;
+
+    bool isStopped()
+    {
+        std::lock_guard<std::mutex> lock(g_isStoppedMutex);
+        return g_isStopped;
+    }
 
     int reverseHandler(void)
     {
@@ -220,7 +230,7 @@ namespace IO::SingleDigit
 
     void doSingleDigitWork()
     {
-        while (true)
+        while (!isStopped())
         {
             Data::Tick tick = Data::get();
             singleDigitOutput(tick.outGauge.gear);
@@ -231,6 +241,21 @@ namespace IO::SingleDigit
     std::thread *startThread()
     {
         return new std::thread(doSingleDigitWork);
+    }
+
+    void clearAndStop()
+    {
+        g_isStoppedMutex.lock();
+        g_isStopped = true;
+        g_isStoppedMutex.unlock();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        digitalWrite(PIN_SINGLE_DIGIT_A, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_B, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_C, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_D, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_E, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_F, LOW);
+        digitalWrite(PIN_SINGLE_DIGIT_G, LOW);
     }
 
 }
