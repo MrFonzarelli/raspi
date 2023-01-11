@@ -3,6 +3,7 @@
 #include "io/io.hpp"
 #include "network.hpp"
 #include "outgauge.hpp"
+#include "settings.hpp"
 #include "ssd1306_i2c.h"
 #include <cstdio>
 #include <cstdlib>
@@ -16,7 +17,8 @@
 
 void readOdometer()
 {
-    std::ifstream odoFile(ODOMETER_FILENAME);
+    auto filename = Settings::getGeneralSettings().odometerFileName;
+    std::ifstream odoFile(filename);
     if (odoFile.good())
     {
         double odoValue;
@@ -32,7 +34,8 @@ void readOdometer()
 
 void writeOdometer()
 {
-    std::ofstream odoFile(ODOMETER_FILENAME);
+    auto filename = Settings::getGeneralSettings().odometerFileName;
+    std::ofstream odoFile(filename);
     Data::Odometer odometer = Data::getOdometer();
     odoFile << odometer.trip + odometer.total;
     odoFile.close();
@@ -50,6 +53,8 @@ int main(int argc, char **argv)
     signal(SIGINT, odoSignalHandler);
     signal(SIGTERM, odoSignalHandler);
     signal(SIGHUP, odoSignalHandler);
+    
+    Settings::loadSettings();
     readOdometer();
 
     IO::initialize();
