@@ -8,21 +8,25 @@ CXX = g++
 INCDIRS = $(shell find $(SRCDIR) -type d)
 INCFLAGS = $(addprefix -I,$(INCDIRS))
 LDFLAGS = -lwiringPi -lpthread 
-CXXFLAGS = -O2 -pipe -pthread $(INCFLAGS)
+CXXFLAGS = -O2 -pipe -pthread -std=c++14 $(INCFLAGS)
 DEPFLAGS = -MMD -MP
 SRCS = $(shell find $(SRCDIR) -name *.cpp)
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
+STATICOBJS = $(addprefix $(OBJDIR)/,ssd1306_i2c.o)
 DEPS = $(OBJS:.o=.d)
 
 # Default target
 all: $(PROG)
 
 # Program target
-$(PROG): $(OBJS) $(DATADIR)
-	$(CXX) src/ssd1306_i2c.c -o $(PROG) $(OBJS)  $(LDFLAGS)
+$(PROG): $(OBJS) $(DATADIR) $(STATICOBJS)
+	$(CXX) -o $(PROG) $(OBJS) $(STATICOBJS) $(LDFLAGS)
 
 $(OBJDIR) $(DATADIR):
 	@mkdir -p $@
+
+$(OBJDIR)/ssd1306_i2c.o: src/ssd1306_i2c.c | $(OBJDIR)
+	$(CXX) -c $< -o $@
 
 %.o: %.cpp
 

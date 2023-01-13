@@ -86,12 +86,17 @@ namespace Settings
             errors << invalidValueMessage("IO.DefaultDisplayState", defaultDisplayStateString);
         }
 
+        // SingleDigitDisplay
+        g_IOSettings.singleDigitDisplaySettings.enabled = options.get<bool>("SingleDigitDisplay.Enabled", true);
+
         auto errorMessage = errors.str();
         if (!errorMessage.empty())
         {
             std::cout << errorMessage;
             return false;
         }
+
+        // Sijngle
 
         return true;
     }

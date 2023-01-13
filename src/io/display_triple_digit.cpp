@@ -611,32 +611,29 @@ namespace IO::TripleDigit
             digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
             std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
         }
+        else if (dp2)
+        {
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
+            digitSelect(dig5);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
+            digitSelect(dig4);
+            digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
+        }
         else if (dig4 != 0)
         {
-            if (dp2)
-            {
-                digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                digitSelect(dig5);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                digitSelect(dig4);
-                digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-            }
-            else
-            {
-                digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                digitSelect(dig5);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                digitSelect(dig4);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-            }
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
+            digitSelect(dig5);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
+            digitSelect(dig4);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
         }
         else if (dig5 != 0)
         {
@@ -798,5 +795,4 @@ namespace IO::TripleDigit
         digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
         digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
     }
-
 }
