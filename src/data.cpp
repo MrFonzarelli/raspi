@@ -134,10 +134,10 @@ namespace Data
         g_DataMutex.unlock();
     }
 
-    void toggleUnits()
+    void setImperialUnits(bool value)
     {
         g_GayUnitsMutex.lock();
-        g_GayUnits = !g_GayUnits;
+        g_GayUnits = value;
         g_GayUnitsMutex.unlock();
     }
 }

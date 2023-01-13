@@ -28,7 +28,7 @@
 #define PIN_SCROLL_RIGHT_BUTTON 99 // Scroll display right button
 #define PIN_SCROLL_LEFT_BUTTON 99  // Scroll display left button
 #define PIN_RESET_STAT 99          // Reset odometer button
-#define PIN_CHANGE_UNITS_BUTTON 26 // Change units button
+#define PIN_MULTI_BUTTON 26 // Change units button
 
 #define PIN_DASHLIGHT_LED1 99 // Pins controlling the charlieplexed LEDs
 #define PIN_DASHLIGHT_LED2 99 //
