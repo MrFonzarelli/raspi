@@ -11,6 +11,7 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+#include <iostream>
 #include <signal.h>
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
@@ -53,23 +54,27 @@ int main(int argc, char **argv)
     signal(SIGINT, odoSignalHandler);
     signal(SIGTERM, odoSignalHandler);
     signal(SIGHUP, odoSignalHandler);
-    
+
     Settings::loadSettings();
     readOdometer();
 
     IO::initialize();
 
-    Network connection(4444);
-    if (!connection.Ok())
-    {
-        return EXIT_FAILURE;
-    }
+    int port = Settings::getGeneralSettings().networkListenPort;
+    std::cout << "Listening on port " << port << "..." << std::endl;
+    Network connection(port);
 
+    bool printConnectionIp = true;
     while (true)
     {
         Data::Tick tick = connection.getTickData();
         if (connection.Ok())
         {
+            if (printConnectionIp)
+            {
+                printConnectionIp = false;
+                std::cout << "Received connection from " << connection.getClientIpAsString() << "." << std::endl;
+            }
             // printf("Tick time: %f\n", tick.tickTime);
             Data::set(tick);
         }

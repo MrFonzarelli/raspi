@@ -36,7 +36,7 @@ namespace Data
 
     void resetTripOdometer();
     void resetAvgFuelConsumption();
-    void toggleUnits();
+    void setImperialUnits(bool value);
 
 }
 

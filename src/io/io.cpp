@@ -55,7 +55,7 @@ namespace IO
         pinMode(PIN_TRIPLE_DIG_DIG6, OUTPUT);
         pinMode(PIN_SCROLL_RIGHT_BUTTON, INPUT);
         pinMode(PIN_SCROLL_LEFT_BUTTON, INPUT);
-        pinMode(PIN_CHANGE_UNITS_BUTTON, INPUT);
+        pinMode(PIN_MULTI_BUTTON, INPUT);
         pinMode(PIN_RESET_STAT, INPUT);
         pinMode(PIN_DASHLIGHT_LED1, INPUT);
         pinMode(PIN_DASHLIGHT_LED2, INPUT);

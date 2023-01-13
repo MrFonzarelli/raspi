@@ -1,4 +1,5 @@
 #include "settings.hpp"
+#include "data.hpp"
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <fstream>
@@ -16,7 +17,13 @@ namespace Settings
         // General
         g_GeneralSettings.imperialUnits = options.get<bool>("General.UseImperialUnits", false);
         g_GeneralSettings.odometerFileName = options.get<std::string>("General.OdometerFileName", "delete-to-reset-odometer");
+        g_GeneralSettings.networkListenPort = options.get<int>("General.NetworkListenPort", 4444);
         // TODO
+    }
+
+    void doPostInitializations()
+    {
+        Data::setImperialUnits(g_GeneralSettings.imperialUnits);
     }
 
     // PUBLIC ------------------------------------------
@@ -31,6 +38,7 @@ namespace Settings
         }
         ifs.close();
         extractOptions(options);
+        doPostInitializations();
     }
 
     const GeneralSettings &getGeneralSettings()

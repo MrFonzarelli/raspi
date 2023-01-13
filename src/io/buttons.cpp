@@ -102,7 +102,7 @@ namespace IO::Buttons
         int last_MultiButtonState = 0;
         while (true)
         {
-            des_MultiButtonState = digitalRead(PIN_CHANGE_UNITS_BUTTON);
+            des_MultiButtonState = digitalRead(PIN_MULTI_BUTTON);
             if (last_MultiButtonState != des_MultiButtonState)
             {
                 if (last_MultiButtonState == 0)
@@ -117,13 +117,14 @@ namespace IO::Buttons
                         }
                         else
                         {
+                            IO::Timers::resetTimerCustom();
                             IO::Timers::startTimerCustom();
                         }
 
                         break;
                     }
                     default:
-                        Data::toggleUnits();
+                        break;
                     }
                 }
                 last_MultiButtonState = des_MultiButtonState;

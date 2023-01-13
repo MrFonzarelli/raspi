@@ -87,29 +87,22 @@ namespace IO::Timers
                 if (tick.outGauge.airspeed * 3.6 > 100 && !g_Timer0to100Finished)
                 {
                     g_Timer0to100Finished = true;
-                    printf("0-100: %.3fs\n", g_Timer0to100);
                 }
 
                 if (tick.outGauge.airspeed * 3.6 > 200 && !g_Timer0to200Finished)
                 {
                     g_Timer0to200Finished = true;
-                    printf("0-200: %.3fs\n", g_Timer0to200);
-                    printf("100-200: %.3fs\n", g_Timer100to200);
                 }
 
                 if (tick.outGauge.airspeed * 3.6 > 300 && !g_Timer0to300Finished)
                 {
                     g_Timer0to300Finished = true;
-                    printf("0-300: %.3fs\n", g_Timer0to300);
-                    printf("100-300: %.3fs\n", g_Timer100to300);
-                    printf("200-300: %.3fs\n", g_Timer200to300);
                 }
 
                 g_Distance += timeDelta.count() * tick.outGauge.airspeed;
                 if (g_Distance > 402.336 && !g_TimerQuarterMileFinished)
                 {
                     g_TimerQuarterMileFinished = true;
-                    printf("1/4 mile: %.3fs\n", g_TimerQuarterMile);
                 }
             }
             oldTime = currentTime;
