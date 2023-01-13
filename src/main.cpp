@@ -55,9 +55,14 @@ int main(int argc, char **argv)
     signal(SIGTERM, odoSignalHandler);
     signal(SIGHUP, odoSignalHandler);
 
-    Settings::loadSettings();
-    readOdometer();
+    bool loadSettingsSuccess = Settings::loadSettings();
+    if (!loadSettingsSuccess)
+    {
+        std::cout << "Error reading settings, terminating." << std::endl;
+        return EXIT_FAILURE;
+    }
 
+    readOdometer();
     IO::initialize();
 
     auto settings = Settings::getGeneralSettings();

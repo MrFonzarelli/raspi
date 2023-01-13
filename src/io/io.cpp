@@ -26,7 +26,7 @@ namespace IO
     std::unique_ptr<std::thread> g_LightsThread;
     std::unique_ptr<std::thread> g_OLEDThread;
 
-    DisplayState g_DisplayState = DisplayState::CustomTimer;
+    DisplayState g_DisplayState;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -63,9 +63,13 @@ namespace IO
         pinMode(PIN_DASHLIGHT_LED3, INPUT);
         pinMode(PIN_DASHLIGHT_LED4, INPUT);
 
-        Animations::welcome();
-
         auto ioSettings = Settings::getIOSettings();
+
+        if (ioSettings.doWelcomeAnimation)
+            Animations::welcome();
+
+        g_DisplayState = ioSettings.defaultDisplayState;
+
         if (ioSettings.singleDigitDisplaySettings.enabled)
         {
             g_SingleDigitThread.reset(SingleDigit::startThread());

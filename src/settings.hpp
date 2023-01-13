@@ -1,6 +1,7 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
+#include "io/io.hpp"
 #include <string>
 
 namespace Settings
@@ -57,9 +58,12 @@ namespace Settings
         SingleDigitDisplaySettings singleDigitDisplaySettings;
         TripleDigitDisplaySettings tripleDigitDisplaySettings;
         ButtonSettings buttonSettings;
+
+        IO::DisplayState defaultDisplayState;
+        bool doWelcomeAnimation;
     };
 
-    void loadSettings();
+    bool loadSettings();
 
     const GeneralSettings &getGeneralSettings();
 
