@@ -18,7 +18,16 @@ namespace Settings
         g_GeneralSettings.imperialUnits = options.get<bool>("General.UseImperialUnits", false);
         g_GeneralSettings.odometerFileName = options.get<std::string>("General.OdometerFileName", "delete-to-reset-odometer");
         g_GeneralSettings.networkListenPort = options.get<int>("General.NetworkListenPort", 4444);
-        // TODO
+
+        auto gameTypeString = options.get<std::string>("General.GameType", "beamng");
+        if (gameTypeString == "beamng")
+        {
+            g_GeneralSettings.gameType = Settings::GameType::BEAMNG;
+        }
+        else if (gameTypeString == "assetto")
+        {
+            g_GeneralSettings.gameType = Settings::GameType::ASSETTO;
+        }
     }
 
     void doPostInitializations()

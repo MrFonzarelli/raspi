@@ -60,9 +60,9 @@ int main(int argc, char **argv)
 
     IO::initialize();
 
-    int port = Settings::getGeneralSettings().networkListenPort;
-    std::cout << "Listening on port " << port << "..." << std::endl;
-    Network connection(port);
+    auto settings = Settings::getGeneralSettings();
+    std::cout << "Listening on port " << settings.networkListenPort << "..." << std::endl;
+    Network connection(settings.networkListenPort);
 
     bool printConnectionIp = true;
     while (true)
