@@ -57,6 +57,12 @@ namespace Data
         g_CurrentTick = tick;
 
         // Additional calculations and statistics
+        // g_CurrentTick.outGauge.speed *= 1.609344;
+        // g_CurrentTick.outGauge.airspeed *= 1.609344;
+        // g_CurrentTick.outGauge.turbo *= 0.069;
+        // g_CurrentTick.outGauge.engTemp = (g_CurrentTick.outGauge.engTemp - 32) * (5 / 9);
+        // g_CurrentTick.outGauge.oilTemp = (g_CurrentTick.outGauge.oilTemp - 32) * (5 / 9);
+
         double speedToCount = g_CurrentTick.outGauge.speed > 0.5 ? g_CurrentTick.outGauge.speed : 0;
 
         double fuelBurned = prevTick.outGauge.fuel_remaining < 1e-6
@@ -128,10 +134,10 @@ namespace Data
         g_DataMutex.unlock();
     }
 
-    void toggleUnits()
+    void setImperialUnits(bool value)
     {
         g_GayUnitsMutex.lock();
-        g_GayUnits = !g_GayUnits;
+        g_GayUnits = value;
         g_GayUnitsMutex.unlock();
     }
 }

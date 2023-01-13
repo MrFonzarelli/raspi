@@ -9,9 +9,13 @@
 namespace IO::Timers
 {
 
-    std::chrono::steady_clock::time_point g_StartTime;
-    bool g_IsRunning = false;
-    bool g_IsReset = true;
+    std::chrono::steady_clock::time_point g_Tmr1StartTime;
+    std::chrono::steady_clock::time_point g_Tmr2StartTime;
+    bool g_Tmr1IsRunning = false;
+    bool g_Tmr1IsReset = true;
+    bool g_Tmr2IsRunning = false;
+    bool g_Tmr2IsReset = true;
+    double g_TimerCustom = 0;
     double g_Timer0to100 = 0;
     double g_Timer0to200 = 0;
     double g_Timer0to300 = 0;
@@ -24,7 +28,8 @@ namespace IO::Timers
     bool g_Timer0to200Finished = false;
     bool g_Timer0to300Finished = false;
     bool g_TimerQuarterMileFinished = false;
-    std::mutex g_TimerMutex;
+    std::mutex g_Timer1Mutex;
+    std::mutex g_Timer2Mutex;
 
     void doTimerWork()
     {
@@ -34,18 +39,26 @@ namespace IO::Timers
             std::this_thread::sleep_for(std::chrono::microseconds(1000));
             Data::Tick tick = Data::get();
             auto currentTime = std::chrono::steady_clock::now();
-            g_TimerMutex.lock();
-            if (g_IsReset && tick.outGauge.airspeed > 0.5)
+            g_Timer1Mutex.lock();
+            if (g_Tmr1IsReset && tick.outGauge.airspeed > 0.5)
             {
-                if (!g_IsRunning)
+                if (!g_Tmr1IsRunning)
                 {
-                    g_StartTime = std::chrono::steady_clock::now();
+                    g_Tmr1StartTime = std::chrono::steady_clock::now();
                 }
-                g_IsReset = false;
-                g_IsRunning = true;
+                g_Tmr1IsReset = false;
+                g_Tmr1IsRunning = true;
             }
 
-            if (g_IsRunning)
+            g_Timer2Mutex.lock();
+            if (g_Tmr2IsRunning)
+            {
+                std::chrono::duration<double> timeDelta = currentTime - oldTime;
+                g_TimerCustom += timeDelta.count();
+            }
+            g_Timer2Mutex.unlock();
+
+            if (g_Tmr1IsRunning)
             {
                 std::chrono::duration<double> timeDelta = currentTime - oldTime;
                 if (!g_Timer0to100Finished)
@@ -74,33 +87,26 @@ namespace IO::Timers
                 if (tick.outGauge.airspeed * 3.6 > 100 && !g_Timer0to100Finished)
                 {
                     g_Timer0to100Finished = true;
-                    printf("0-100: %.3fs\n", g_Timer0to100);
                 }
 
                 if (tick.outGauge.airspeed * 3.6 > 200 && !g_Timer0to200Finished)
                 {
                     g_Timer0to200Finished = true;
-                    printf("0-200: %.3fs\n", g_Timer0to200);
-                    printf("100-200: %.3fs\n", g_Timer100to200);
                 }
 
                 if (tick.outGauge.airspeed * 3.6 > 300 && !g_Timer0to300Finished)
                 {
                     g_Timer0to300Finished = true;
-                    printf("0-300: %.3fs\n", g_Timer0to300);
-                    printf("100-300: %.3fs\n", g_Timer100to300);
-                    printf("200-300: %.3fs\n", g_Timer200to300);
                 }
 
                 g_Distance += timeDelta.count() * tick.outGauge.airspeed;
                 if (g_Distance > 402.336 && !g_TimerQuarterMileFinished)
                 {
                     g_TimerQuarterMileFinished = true;
-                    printf("1/4 mile: %.3fs\n", g_TimerQuarterMile);
                 }
             }
             oldTime = currentTime;
-            g_TimerMutex.unlock();
+            g_Timer1Mutex.unlock();
         }
     }
 
@@ -111,11 +117,14 @@ namespace IO::Timers
 
     void reset()
     {
-        g_IsReset = true;
-        g_IsRunning = false;
+        g_Tmr1IsReset = true;
+        g_Tmr1IsRunning = false;
         g_Timer0to100 = 0;
         g_Timer0to200 = 0;
         g_Timer0to300 = 0;
+        g_Timer100to200 = 0;
+        g_Timer100to300 = 0;
+        g_Timer200to300 = 0;
         g_TimerQuarterMile = 0;
         g_Timer0to100Finished = false;
         g_Timer0to200Finished = false;
@@ -124,37 +133,92 @@ namespace IO::Timers
         g_Distance = 0;
     }
 
+    void startTimerCustom()
+    {
+        g_Timer2Mutex.lock();
+        g_Tmr2IsRunning = true;
+        if (g_Tmr2IsReset)
+        {
+            g_Tmr2StartTime = std::chrono::steady_clock::now();
+            g_Tmr2IsReset = false;
+        }
+        g_Timer2Mutex.unlock();
+    }
+
+    void stopTimerCustom()
+    {
+        g_Timer2Mutex.lock();
+        g_Tmr2IsRunning = false;
+        g_Timer2Mutex.unlock();
+    }
+
+    void resetTimerCustom()
+    {
+        g_Timer2Mutex.lock();
+        g_Tmr2IsRunning = false;
+        g_TimerCustom = 0;
+        g_Tmr2IsReset = true;
+        g_Timer2Mutex.unlock();
+    }
+
+    bool timerCustomIsRunning()
+    {
+        g_Timer2Mutex.lock();
+        bool isRunning = g_Tmr2IsRunning;
+        g_Timer2Mutex.unlock();
+        return isRunning;
+    }
+
     double getTime(DisplayState displayState)
     {
-        g_TimerMutex.lock();
+
         double result;
         switch (displayState)
         {
         case DisplayState::ZeroTo100:
-            result = g_Timer0to100 * 100;
+            g_Timer1Mutex.lock();
+            result = g_Timer0to100 * 1000;
+            g_Timer1Mutex.unlock();
             break;
         case DisplayState::ZeroTo200:
-            result = g_Timer0to200 * 100;
+            g_Timer1Mutex.lock();
+            result = g_Timer0to200 * 1000;
+            g_Timer1Mutex.unlock();
             break;
         case DisplayState::ZeroTo300:
-            result = g_Timer0to300 * 100;
+            g_Timer1Mutex.lock();
+            result = g_Timer0to300 * 1000;
+            g_Timer1Mutex.unlock();
             break;
         case DisplayState::QuarterMile:
-            result = g_TimerQuarterMile * 100;
+            g_Timer1Mutex.lock();
+            result = g_TimerQuarterMile * 1000;
+            g_Timer1Mutex.unlock();
             break;
         case DisplayState::HundredTo200:
-            result = g_Timer100to200 * 100;
+            g_Timer1Mutex.lock();
+            result = g_Timer100to200 * 1000;
+            g_Timer1Mutex.unlock();
             break;
         case DisplayState::HundredTo300:
-            result = g_Timer100to300 * 100;
+            g_Timer1Mutex.lock();
+            result = g_Timer100to300 * 1000;
+            g_Timer1Mutex.unlock();
             break;
         case DisplayState::TwoHundredTo300:
-            result = g_Timer200to300 * 100;
+            g_Timer1Mutex.lock();
+            result = g_Timer200to300 * 1000;
+            g_Timer1Mutex.unlock();
+            break;
+        case DisplayState::CustomTimer:
+            g_Timer2Mutex.lock();
+            result = g_TimerCustom * 1000;
+            g_Timer2Mutex.unlock();
             break;
         default:
             result = 420.69;
         }
-        g_TimerMutex.unlock();
+
         return result;
     }
 

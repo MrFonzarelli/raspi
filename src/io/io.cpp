@@ -3,6 +3,7 @@
 #include "buttons.hpp"
 #include "display_single_digit.hpp"
 #include "display_triple_digit.hpp"
+#include "oled_display.hpp"
 #include "lights.hpp"
 #include "pins.hpp"
 #include "timers.hpp"
@@ -13,16 +14,18 @@
 
 namespace IO
 {
+
     std::unique_ptr<std::thread> g_SingleDigitThread;
     std::unique_ptr<std::thread> g_TripleDigitThread;
     std::unique_ptr<std::thread> g_ScreenScrollRightButtonThread;
     std::unique_ptr<std::thread> g_ScreenScrollLeftButtonThread;
-    std::unique_ptr<std::thread> g_ChangeUnitsToGayButton;
+    std::unique_ptr<std::thread> g_MultiButtonThread;
     std::unique_ptr<std::thread> g_ResetStatButtonThread;
     std::unique_ptr<std::thread> g_TimerThread;
     std::unique_ptr<std::thread> g_LightsThread;
+    std::unique_ptr<std::thread> g_OLEDThread;
 
-    DisplayState g_DisplayState = DisplayState::ZeroTo300;
+    DisplayState g_DisplayState = DisplayState::CustomTimer;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -47,9 +50,12 @@ namespace IO
         pinMode(PIN_TRIPLE_DIG_DIG1, OUTPUT);
         pinMode(PIN_TRIPLE_DIG_DIG2, OUTPUT);
         pinMode(PIN_TRIPLE_DIG_DIG3, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DIG4, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DIG5, OUTPUT);
+        pinMode(PIN_TRIPLE_DIG_DIG6, OUTPUT);
         pinMode(PIN_SCROLL_RIGHT_BUTTON, INPUT);
         pinMode(PIN_SCROLL_LEFT_BUTTON, INPUT);
-        pinMode(PIN_CHANGE_UNITS_BUTTON, INPUT);
+        pinMode(PIN_MULTI_BUTTON, INPUT);
         pinMode(PIN_RESET_STAT, INPUT);
         pinMode(PIN_DASHLIGHT_LED1, INPUT);
         pinMode(PIN_DASHLIGHT_LED2, INPUT);
@@ -62,10 +68,18 @@ namespace IO
         g_TripleDigitThread.reset(TripleDigit::startThread());
         g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread());
         g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
-        g_ChangeUnitsToGayButton.reset(Buttons::startChangeUnitsToGayThread());
+        g_MultiButtonThread.reset(Buttons::startMultiButtonThread());
         g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
         g_TimerThread.reset(Timers::startThread());
-        g_LightsThread.reset(IO::Lights::startThread());
+        g_LightsThread.reset(Lights::startThread());
+        g_OLEDThread.reset(OLED::startThread());
+    }
+
+    void terminate()
+    {
+        OLED::clearAndStop();
+        TripleDigit::clearAndStop();
+        SingleDigit::clearAndStop();
     }
 
     DisplayState getDisplayState()
@@ -101,6 +115,7 @@ namespace IO
         case DisplayState::HundredTo200:
         case DisplayState::HundredTo300:
         case DisplayState::TwoHundredTo300:
+        case DisplayState::CustomTimer:
             return DisplayStateType::Time;
         case DisplayState::TripOdometer:
         case DisplayState::Odometer:

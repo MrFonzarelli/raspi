@@ -4,7 +4,7 @@
 namespace IO
 {
 
-    const int DISPLAY_STATE_COUNT = 15;
+    const int DISPLAY_STATE_COUNT = 17;
 
     enum class DisplayState
     {
@@ -22,7 +22,9 @@ namespace IO
         HundredTo200,
         HundredTo300,
         TwoHundredTo300,
-        QuarterMile
+        QuarterMile,
+        CustomTimer,
+        RPM
     };
 
     enum class DisplayStateType
@@ -34,6 +36,8 @@ namespace IO
     };
 
     void initialize();
+
+    void terminate();
 
     DisplayState getDisplayState();
 

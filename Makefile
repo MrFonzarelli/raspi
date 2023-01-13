@@ -19,7 +19,7 @@ all: $(PROG)
 
 # Program target
 $(PROG): $(OBJS) $(DATADIR)
-	$(CXX) -o $(PROG) $(OBJS) $(LDFLAGS)
+	$(CXX) src/ssd1306_i2c.c -o $(PROG) $(OBJS)  $(LDFLAGS)
 
 $(OBJDIR) $(DATADIR):
 	@mkdir -p $@

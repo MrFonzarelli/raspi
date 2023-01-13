@@ -50,7 +50,6 @@ namespace IO::Buttons
 
     void doResetStatButtonWork()
     {
-        DisplayState displayState = IO::getDisplayState();
         int des_ResetStatButtonState = 0;
         int last_ResetStatButtonState = 0;
         while (true)
@@ -60,7 +59,7 @@ namespace IO::Buttons
             {
                 if (last_ResetStatButtonState == 0)
                 {
-                    switch (displayState)
+                    switch (IO::getDisplayState())
                     {
                     case DisplayState::AverageFuelConsumption:
                     {
@@ -84,6 +83,11 @@ namespace IO::Buttons
                         Timers::reset();
                         break;
                     }
+                    case DisplayState::CustomTimer:
+                    {
+                        Timers::resetTimerCustom();
+                        break;
+                    }
                     }
                 }
                 last_ResetStatButtonState = des_ResetStatButtonState;
@@ -92,20 +96,38 @@ namespace IO::Buttons
         }
     }
 
-    void doExtremelyGayButtonWork()
+    void doMultiButtonWork()
     {
-        int des_ExtremelyGayButtonState = 0;
-        int last_ExtremelyGayButtonState = 0;
+        int des_MultiButtonState = 0;
+        int last_MultiButtonState = 0;
         while (true)
         {
-            des_ExtremelyGayButtonState = digitalRead(PIN_CHANGE_UNITS_BUTTON);
-            if (last_ExtremelyGayButtonState != des_ExtremelyGayButtonState)
+            des_MultiButtonState = digitalRead(PIN_MULTI_BUTTON);
+            if (last_MultiButtonState != des_MultiButtonState)
             {
-                if (last_ExtremelyGayButtonState == 0)
+                if (last_MultiButtonState == 0)
                 {
-                    Data::toggleUnits();
+                    switch (IO::getDisplayState())
+                    {
+                    case DisplayState::CustomTimer:
+                    {
+                        if (IO::Timers::timerCustomIsRunning())
+                        {
+                            IO::Timers::stopTimerCustom();
+                        }
+                        else
+                        {
+                            IO::Timers::resetTimerCustom();
+                            IO::Timers::startTimerCustom();
+                        }
+
+                        break;
+                    }
+                    default:
+                        break;
+                    }
                 }
-                last_ExtremelyGayButtonState = des_ExtremelyGayButtonState;
+                last_MultiButtonState = des_MultiButtonState;
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
@@ -121,9 +143,9 @@ namespace IO::Buttons
         return new std::thread(doScreenScrollRightButtonWork);
     }
 
-    std::thread *startChangeUnitsToGayThread()
+    std::thread *startMultiButtonThread()
     {
-        return new std::thread(doExtremelyGayButtonWork);
+        return new std::thread(doMultiButtonWork);
     }
 
     std::thread *startResetStatButtonThread()

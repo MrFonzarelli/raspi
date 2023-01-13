@@ -8,6 +8,8 @@ namespace IO::SingleDigit
 
     std::thread *startThread();
 
+    void clearAndStop();
+
 }
 
 #endif

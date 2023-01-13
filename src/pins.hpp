@@ -10,30 +10,29 @@
 #define PIN_SINGLE_DIGIT_F 6   // F
 #define PIN_SINGLE_DIGIT_G 10  // G
 #define PIN_SINGLE_DIGIT_DP 99 // DP
-#define PIN_TRIPLE_DIG_A 29    // 3 digit -- A
-#define PIN_TRIPLE_DIG_B 27    // 3 digit -- B
-#define PIN_TRIPLE_DIG_C 22    // 3 digit -- C
-#define PIN_TRIPLE_DIG_D 24    // 3 digit -- D
-#define PIN_TRIPLE_DIG_E 25    // 3 digit -- E
-#define PIN_TRIPLE_DIG_F 28    // 3 digit -- F
-#define PIN_TRIPLE_DIG_G 21    // 3 digit -- G
-#define PIN_TRIPLE_DIG_DP 23   // 3 digit -- DP
+#define PIN_TRIPLE_DIG_A 27    // 3 digit -- A
+#define PIN_TRIPLE_DIG_B 28    // 3 digit -- B
+#define PIN_TRIPLE_DIG_C 29    // 3 digit -- C
+#define PIN_TRIPLE_DIG_D 21    // 3 digit -- D
+#define PIN_TRIPLE_DIG_E 22    // 3 digit -- E
+#define PIN_TRIPLE_DIG_F 23    // 3 digit -- F
+#define PIN_TRIPLE_DIG_G 24    // 3 digit -- G
+#define PIN_TRIPLE_DIG_DP 25   // 3 digit -- DP
 #define PIN_TRIPLE_DIG_DIG1 0  // 3 digit -- dig1
 #define PIN_TRIPLE_DIG_DIG2 2  // 3 digit -- dig2
 #define PIN_TRIPLE_DIG_DIG3 3  // 3 digit -- dig3
+#define PIN_TRIPLE_DIG_DIG4 12 // 3 digit -- dig4
+#define PIN_TRIPLE_DIG_DIG5 13 // 3 digit -- dig5
+#define PIN_TRIPLE_DIG_DIG6 14 // 3 digit -- dig6
 
-#define PIN_SCROLL_RIGHT_BUTTON 11 // Scroll display right button
-#define PIN_SCROLL_LEFT_BUTTON 31  // Scroll display left button
-#define PIN_RESET_STAT 26          // Reset odometer button
-#define PIN_CHANGE_UNITS_BUTTON 7  // Change units button
+#define PIN_SCROLL_RIGHT_BUTTON 99 // Scroll display right button
+#define PIN_SCROLL_LEFT_BUTTON 99  // Scroll display left button
+#define PIN_RESET_STAT 99          // Reset odometer button
+#define PIN_MULTI_BUTTON 26 // Change units button
 
-#define PIN_DASHLIGHT_LED1 12 // Pins controlling the charlieplexed LEDs
-#define PIN_DASHLIGHT_LED2 13 //
-#define PIN_DASHLIGHT_LED3 14 //
-#define PIN_DASHLIGHT_LED4 30 //
-
-// Pins related to analog control
-#define PIN_SDA 8
-#define PIN_SCL 9
+#define PIN_DASHLIGHT_LED1 99 // Pins controlling the charlieplexed LEDs
+#define PIN_DASHLIGHT_LED2 99 //
+#define PIN_DASHLIGHT_LED3 99 //
+#define PIN_DASHLIGHT_LED4 99 //
 
 #endif

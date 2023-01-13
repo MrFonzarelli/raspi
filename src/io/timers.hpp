@@ -11,6 +11,11 @@ namespace IO::Timers
 
     void reset();
 
+    void startTimerCustom();
+    void stopTimerCustom();
+    void resetTimerCustom();
+    bool timerCustomIsRunning();
+
     double getTime(DisplayState displayState);
 
 }

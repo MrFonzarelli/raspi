@@ -3,18 +3,23 @@
 #include "io/io.hpp"
 #include "network.hpp"
 #include "outgauge.hpp"
+#include "settings.hpp"
+#include "ssd1306_i2c.h"
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
 #include <chrono>
+#include <thread>
 #include <fstream>
+#include <iostream>
 #include <signal.h>
 
 #define ODOMETER_FILENAME "delete-to-reset-odometer"
 
 void readOdometer()
 {
-    std::ifstream odoFile(ODOMETER_FILENAME);
+    auto filename = Settings::getGeneralSettings().odometerFileName;
+    std::ifstream odoFile(filename);
     if (odoFile.good())
     {
         double odoValue;
@@ -30,7 +35,8 @@ void readOdometer()
 
 void writeOdometer()
 {
-    std::ofstream odoFile(ODOMETER_FILENAME);
+    auto filename = Settings::getGeneralSettings().odometerFileName;
+    std::ofstream odoFile(filename);
     Data::Odometer odometer = Data::getOdometer();
     odoFile << odometer.trip + odometer.total;
     odoFile.close();
@@ -38,6 +44,7 @@ void writeOdometer()
 
 void odoSignalHandler(int)
 {
+    IO::terminate();
     writeOdometer();
     exit(EXIT_SUCCESS);
 }
@@ -47,21 +54,27 @@ int main(int argc, char **argv)
     signal(SIGINT, odoSignalHandler);
     signal(SIGTERM, odoSignalHandler);
     signal(SIGHUP, odoSignalHandler);
+
+    Settings::loadSettings();
     readOdometer();
 
     IO::initialize();
 
-    Network connection(4444);
-    if (!connection.Ok())
-    {
-        return EXIT_FAILURE;
-    }
+    int port = Settings::getGeneralSettings().networkListenPort;
+    std::cout << "Listening on port " << port << "..." << std::endl;
+    Network connection(port);
 
+    bool printConnectionIp = true;
     while (true)
     {
         Data::Tick tick = connection.getTickData();
         if (connection.Ok())
         {
+            if (printConnectionIp)
+            {
+                printConnectionIp = false;
+                std::cout << "Received connection from " << connection.getClientIpAsString() << "." << std::endl;
+            }
             // printf("Tick time: %f\n", tick.tickTime);
             Data::set(tick);
         }
