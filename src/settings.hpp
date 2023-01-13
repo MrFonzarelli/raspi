@@ -20,9 +20,60 @@ namespace Settings
         // TODO add more
     };
 
+    struct LightsSettings
+    {
+        bool enabled;
+        // TODO
+    };
+
+    struct OLEDSettings
+    {
+        bool enabled;
+        // TODO
+    };
+
+    struct SingleDigitDisplaySettings
+    {
+        bool enabled;
+        // TODO
+    };
+
+    struct TripleDigitDisplaySettings
+    {
+        bool enabled;
+        // TODO
+    };
+
+    struct ButtonSettings
+    {
+        bool enabled;
+        // TODO
+    };
+
+    struct IOSettings
+    {
+        LightsSettings lightsSettings;
+        OLEDSettings oledSettings;
+        SingleDigitDisplaySettings singleDigitDisplaySettings;
+        TripleDigitDisplaySettings tripleDigitDisplaySettings;
+        ButtonSettings buttonSettings;
+    };
+
     void loadSettings();
 
     const GeneralSettings &getGeneralSettings();
+
+    const IOSettings &getIOSettings();
+
+    const LightsSettings &getLightsSettings();
+
+    const OLEDSettings &getOLEDSettings();
+
+    const SingleDigitDisplaySettings &getSingleDigitDisplaySettings();
+
+    const TripleDigitDisplaySettings &getTripleDigitDisplaySettings();
+
+    const ButtonSettings &getButtonSettings();
 }
 
 #endif

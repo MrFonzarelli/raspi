@@ -6,6 +6,7 @@
 #include "oled_display.hpp"
 #include "lights.hpp"
 #include "pins.hpp"
+#include "settings.hpp"
 #include "timers.hpp"
 #include <chrono>
 #include <memory>
@@ -64,7 +65,11 @@ namespace IO
 
         Animations::welcome();
 
-        g_SingleDigitThread.reset(SingleDigit::startThread());
+        auto ioSettings = Settings::getIOSettings();
+        if (ioSettings.singleDigitDisplaySettings.enabled)
+        {
+            g_SingleDigitThread.reset(SingleDigit::startThread());
+        }
         g_TripleDigitThread.reset(TripleDigit::startThread());
         g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread());
         g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());

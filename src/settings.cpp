@@ -11,6 +11,7 @@ namespace bpt = boost::property_tree;
 namespace Settings
 {
     GeneralSettings g_GeneralSettings;
+    IOSettings g_IOSettings;
 
     void extractOptions(bpt::ptree &options)
     {
@@ -18,6 +19,8 @@ namespace Settings
         g_GeneralSettings.imperialUnits = options.get<bool>("General.UseImperialUnits", false);
         g_GeneralSettings.odometerFileName = options.get<std::string>("General.OdometerFileName", "delete-to-reset-odometer");
         g_GeneralSettings.networkListenPort = options.get<int>("General.NetworkListenPort", 4444);
+
+        g_IOSettings.singleDigitDisplaySettings.enabled = options.get<bool>("SingleDigitDisplay.Enabled", true);
 
         auto gameTypeString = options.get<std::string>("General.GameType", "beamng");
         if (gameTypeString == "beamng")
@@ -53,5 +56,35 @@ namespace Settings
     const GeneralSettings &getGeneralSettings()
     {
         return g_GeneralSettings;
+    }
+
+    const IOSettings &getIOSettings()
+    {
+        return g_IOSettings;
+    }
+
+    const LightsSettings &getLightsSettings()
+    {
+        return g_IOSettings.lightsSettings;
+    }
+
+    const OLEDSettings &getOLEDSettings()
+    {
+        return g_IOSettings.oledSettings;
+    }
+
+    const SingleDigitDisplaySettings &getSingleDigitDisplaySettings()
+    {
+        return g_IOSettings.singleDigitDisplaySettings;
+    }
+
+    const TripleDigitDisplaySettings &getTripleDigitDisplaySettings()
+    {
+        return g_IOSettings.tripleDigitDisplaySettings;
+    }
+
+    const ButtonSettings &getButtonSettings()
+    {
+        return g_IOSettings.buttonSettings;
     }
 }
