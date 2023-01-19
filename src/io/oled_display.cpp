@@ -157,11 +157,37 @@ namespace IO::OLED
                 break;
             }
             case DisplayState::RPM:
+            {
                 ssd1306_clearDisplay();
                 ssd1306_setTextSize(4);
                 ssd1306_drawString("RPM");
                 ssd1306_display();
                 break;
+            }
+            case DisplayState::RPMandSpeed:
+            {
+                ssd1306_clearDisplay();
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("RPM x 10 &Speed");
+                ssd1306_display();
+                break;
+            }
+            case DisplayState::RPMandSpeedSep:
+            {
+                ssd1306_clearDisplay();
+                ssd1306_setTextSize(2);
+                ssd1306_drawString("RPM x 1k &Speed");
+                ssd1306_display();
+                break;
+            }
+            default:
+            {
+                ssd1306_clearDisplay();
+                ssd1306_setTextSize(3);
+                ssd1306_drawString("Error");
+                ssd1306_display();
+                break;
+            }
             }
             // displayState_old = displayState;
             //}

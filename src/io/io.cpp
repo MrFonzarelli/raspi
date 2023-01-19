@@ -132,6 +132,10 @@ namespace IO
         case DisplayState::AverageFuelConsumption:
         case DisplayState::TurboPressure:
             return DisplayStateType::Decimal_OnePlace;
+        case DisplayState::RPMandSpeed:
+            return DisplayStateType::TwoIntegers;
+        case DisplayState::RPMandSpeedSep:
+            return DisplayStateType::TwoIntegersSeparated;
         default:
             return DisplayStateType::Integer;
         }

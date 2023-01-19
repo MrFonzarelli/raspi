@@ -81,6 +81,10 @@ namespace Settings
             g_IOSettings.defaultDisplayState = IO::DisplayState::CustomTimer;
         else if (defaultDisplayStateString == "rpm")
             g_IOSettings.defaultDisplayState = IO::DisplayState::RPM;
+        else if (defaultDisplayStateString == "rpmandspeed")
+            g_IOSettings.defaultDisplayState = IO::DisplayState::RPMandSpeed;
+        else if (defaultDisplayStateString == "rpmandspeed_sep")
+            g_IOSettings.defaultDisplayState = IO::DisplayState::RPMandSpeedSep;
         else
         {
             errors << invalidValueMessage("IO.DefaultDisplayState", defaultDisplayStateString);
@@ -95,8 +99,6 @@ namespace Settings
             std::cout << errorMessage;
             return false;
         }
-
-        // Sijngle
 
         return true;
     }

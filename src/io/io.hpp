@@ -4,7 +4,7 @@
 namespace IO
 {
 
-    const int DISPLAY_STATE_COUNT = 17;
+    const int DISPLAY_STATE_COUNT = 19;
 
     enum class DisplayState
     {
@@ -24,15 +24,20 @@ namespace IO
         TwoHundredTo300,
         QuarterMile,
         CustomTimer,
-        RPM
+        RPM,
+        RPMandSpeed,   // RPM and Speed without an empty digit between them (RPM / 10)
+        RPMandSpeedSep // RPM and Speed with a "separator" consisting of an empty digit
+
     };
 
     enum class DisplayStateType
     {
-        Integer,           // Integers without the DP
-        Decimal_OnePlace,  // Decimals with 1 decimal place of precision
-        Decimal_TwoPlaces, // Decimals with 2 decimal places of precision
-        Time               // Time numbers needing conversion to render with max precision
+        Integer,              // Integers without the DP
+        TwoIntegers,          // Two integers each on one of the two Triple Digit Displays
+        TwoIntegersSeparated, // Two integers separated by an empty digit
+        Decimal_OnePlace,     // Decimals with 1 decimal place of precision
+        Decimal_TwoPlaces,    // Decimals with 2 decimal places of precision
+        Time                  // Time numbers needing conversion to render with max precision
     };
 
     void initialize();
