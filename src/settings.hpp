@@ -14,6 +14,7 @@ namespace Settings
 
     struct GeneralSettings
     {
+        bool printConnectionIP;
         bool imperialUnits;
         std::string odometerFileName;
         int networkListenPort;

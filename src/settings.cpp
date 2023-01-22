@@ -24,6 +24,7 @@ namespace Settings
     bool extractOptions(bpt::ptree &options)
     {
         // General
+        g_GeneralSettings.printConnectionIP = options.get<bool>("General.PrintConnectionIP", false);
         g_GeneralSettings.imperialUnits = options.get<bool>("General.UseImperialUnits", false);
         g_GeneralSettings.odometerFileName = options.get<std::string>("General.OdometerFileName", "delete-to-reset-odometer");
         g_GeneralSettings.networkListenPort = options.get<int>("General.NetworkListenPort", 4444);

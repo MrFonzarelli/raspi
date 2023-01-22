@@ -1,6 +1,7 @@
 // includes
 #include "data.hpp"
 #include "io/io.hpp"
+#include "io/oled_display.hpp"
 #include "network.hpp"
 #include "outgauge.hpp"
 #include "settings.hpp"
@@ -63,22 +64,28 @@ int main(int argc, char **argv)
     }
 
     readOdometer();
+
     IO::initialize();
 
     auto settings = Settings::getGeneralSettings();
     std::cout << "Listening on port " << settings.networkListenPort << "..." << std::endl;
     Network connection(settings.networkListenPort);
 
-    bool printConnectionIp = true;
+    bool connIPPrinted = false;
+
     while (true)
     {
         Data::Tick tick = connection.getTickData();
         if (connection.Ok())
         {
-            if (printConnectionIp)
+            if (!connIPPrinted)
             {
-                printConnectionIp = false;
+                connIPPrinted = true;
                 std::cout << "Received connection from " << connection.getClientIpAsString() << "." << std::endl;
+                if (settings.printConnectionIP)
+                {
+                    IO::OLED::staticMessageOLED("Received conn from : " + connection.getClientIpAsString(), 1, 2500);
+                }
             }
             // printf("Tick time: %f\n", tick.tickTime);
             Data::set(tick);

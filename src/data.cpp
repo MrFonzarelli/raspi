@@ -65,7 +65,7 @@ namespace Data
 
         double speedToCount = g_CurrentTick.outGauge.speed > 0.5 ? g_CurrentTick.outGauge.speed : 0;
 
-        double fuelBurned = prevTick.outGauge.fuel_remaining < 1e-6
+        double fuelBurned = prevTick.outGauge.fuel_remaining < g_CurrentTick.outGauge.fuel_remaining
                                 ? 0
                                 : prevTick.outGauge.fuel_remaining - g_CurrentTick.outGauge.fuel_remaining;
 

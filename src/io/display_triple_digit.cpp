@@ -11,13 +11,13 @@
 namespace IO::TripleDigit
 {
 
-    std::mutex g_isStoppedMutex;
-    bool g_isStopped = false;
+    std::mutex g_IsStoppedMutex;
+    bool g_IsStopped = false;
 
     bool isStopped()
     {
-        std::lock_guard<std::mutex> lock(g_isStoppedMutex);
-        return g_isStopped;
+        std::lock_guard<std::mutex> lock(g_IsStoppedMutex);
+        return g_IsStopped;
     }
 
     int firstHandlerTri(void)
@@ -934,9 +934,9 @@ namespace IO::TripleDigit
 
     void clearAndStop()
     {
-        g_isStoppedMutex.lock();
-        g_isStopped = true;
-        g_isStoppedMutex.unlock();
+        g_IsStoppedMutex.lock();
+        g_IsStopped = true;
+        g_IsStoppedMutex.unlock();
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
         digitalWrite(PIN_TRIPLE_DIG_A, LOW);
         digitalWrite(PIN_TRIPLE_DIG_B, LOW);
