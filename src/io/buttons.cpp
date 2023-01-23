@@ -134,6 +134,7 @@ namespace IO::Buttons
                         break;
                     }
                     default:
+                        previousDisplayState();
                         break;
                     }
                 }
