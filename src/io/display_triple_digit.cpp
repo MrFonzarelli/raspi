@@ -6,6 +6,7 @@
 #include <chrono>
 #include <cmath>
 #include <mutex>
+#include <vector>
 #include <wiringPi.h>
 
 namespace IO::TripleDigit
@@ -152,317 +153,148 @@ namespace IO::TripleDigit
         return 0;
     }
 
-    int digitSelect(int num)
+    void digitSelect(int num)
     {
         switch (num)
         {
         case 0:
         {
-            num = zeroHandlerTri();
+            zeroHandlerTri();
             break;
         }
         case 1:
         {
-            num = firstHandlerTri();
+            firstHandlerTri();
             break;
         }
         case 2:
         {
-            num = secondHandlerTri();
+            secondHandlerTri();
             break;
         }
         case 3:
         {
-            num = thirdHandlerTri();
+            thirdHandlerTri();
             break;
         }
         case 4:
         {
-            num = fourthHandlerTri();
+            fourthHandlerTri();
             break;
         }
         case 5:
         {
-            num = fifthHandlerTri();
+            fifthHandlerTri();
             break;
         }
         case 6:
         {
-            num = sixthHandlerTri();
+            sixthHandlerTri();
             break;
         }
         case 7:
         {
-            num = seventhHandlerTri();
+            seventhHandlerTri();
             break;
         }
         case 8:
         {
-            num = eighthHandlerTri();
+            eighthHandlerTri();
             break;
         }
         case 9:
         {
-            num = ninethHandlerTri();
+            ninethHandlerTri();
             break;
         }
-        case 10:
+        case -1:
         {
-            num = minusHandlerTri();
+            minusHandlerTri();
             break;
         }
         default:
         {
-            num = ninethHandlerTri();
+            ninethHandlerTri();
             break;
         }
         }
-        return num;
     }
 
-    void renderTripleDigitFrame(int dig1, int dig2, int dig3, bool dp1, bool dp2, bool neg) // Frame with disappearing zeros
+    void renderTwoIntegers(int dig1, int dig2, int dig3, int dig4, int dig5, int dig6)
     {
-        if (neg)
+        if (dig1 != 0)
         {
-            if (dp1)
-            {
-                digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-                if (dp2)
-                {
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                    digitSelect(dig2);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
+            digitSelect(dig3);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
+            digitSelect(dig2);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG2, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG1, HIGH);
+            digitSelect(dig1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG1, LOW);
+        }
+        else if (dig2 != 0)
+        {
+            digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
+            digitSelect(dig3);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
+            digitSelect(dig2);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG2, LOW);
+        }
+        else
+        {
+            digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
+            digitSelect(dig3);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
+        }
 
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                    digitSelect(dig1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-                }
-                else
-                {
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                    digitSelect(dig2);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                    digitSelect(dig1);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-                }
-            }
-            else
-            {
-                if (dp2)
-                {
-                    if (dig1 == 0)
-                    {
-                        digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                        digitSelect(dig3);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                        digitSelect(dig2);
-                        digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-                        digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                        digitSelect(10);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    }
-                    else
-                    {
-                        digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                        digitSelect(dig2);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                        digitSelect(dig1);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                        digitSelect(10);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    }
-                }
-                else
-                {
-                    if (dig1 == 0)
-                    {
-                        if (dig2 == 0)
-                        {
-                            digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                            digitSelect(dig3);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                            digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-
-                            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                            digitSelect(10);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        }
-                        else
-                        {
-                            digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                            digitSelect(dig3);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                            digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-
-                            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                            digitSelect(dig2);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                            digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                            digitSelect(10);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                            digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-                        }
-                    }
-                    else
-                    {
-                        digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-                        digitSelect(dig2);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                        digitSelect(dig1);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                        digitSelect(10);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    }
-                }
-            }
+        if (dig4 != 0)
+        {
+            digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
+            digitSelect(dig6);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
+            digitSelect(dig5);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
+            digitSelect(dig4);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
+        }
+        else if (dig5 != 0)
+        {
+            digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
+            digitSelect(dig6);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
+            digitSelect(dig5);
+            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
+            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
         }
         else
         {
             digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-            digitSelect(dig3);
+            digitSelect(dig6);
             std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
             digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
-
-            if (dp1)
-            {
-                if (dp2)
-                {
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                    digitSelect(dig2);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                    digitSelect(dig1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-                }
-                else
-                {
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                    digitSelect(dig2);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                    digitSelect(dig1);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-                }
-            }
-            else
-            {
-                if (dp2)
-                {
-                    if (dig1 == 0)
-                    {
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                        digitSelect(dig2);
-                        digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-                        digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                    }
-                    else
-                    {
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                        digitSelect(dig2);
-                        digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-                        digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                        digitSelect(dig1);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    }
-                }
-                else
-                {
-                    if (dig1 == 0)
-                    {
-                        if (dig2 == 0)
-                        {
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT * 2));
-                        }
-                        else
-                        {
-                            digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                            digitSelect(dig2);
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                            digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        }
-                    }
-                    else
-                    {
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, HIGH);
-                        digitSelect(dig2);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG5, LOW);
-
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, HIGH);
-                        digitSelect(dig1);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                        digitalWrite(PIN_TRIPLE_DIG_DIG4, LOW);
-                    }
-                }
-            }
         }
     }
 
-    void renderTripleDigitTwoDPFrame(int dig1, int dig2, int dig3, int dig4, int dig5, int dig6, bool dp1, bool dp2) // Frame with non disappearing zeros
+    void renderTwoIntegersSeparated(int dig1, int dig2, int dig3, int dig4, int dig5, int dig6)
     {
-        digitalWrite(PIN_TRIPLE_DIG_DIG6, HIGH);
-        digitSelect(dig6);
+        digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
+        digitSelect(dig2);
         std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
         digitalWrite(PIN_TRIPLE_DIG_DIG6, LOW);
 
@@ -494,38 +326,16 @@ namespace IO::TripleDigit
             }
             if (dp1)
             {
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
-                digitSelect(dig2);
-                digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG1, HIGH);
-                digitSelect(dig1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG1, LOW);
+                digitsToDisplay.erase(digitsToDisplay.begin() + i);
+                i--;
             }
             else
             {
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
-                digitSelect(dig2);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG1, HIGH);
-                digitSelect(dig1);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG1, LOW);
+                break; // break when we hit a non-zero
             }
         }
-        else if (dig2 != 0)
+
+        if (decimalPoints > 0) // This block only runs when we're supposed to display a decimal point
         {
             if (dp2)
             {
@@ -553,32 +363,36 @@ namespace IO::TripleDigit
             }
             if (dp1)
             {
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
-                digitSelect(dig2);
-                digitalWrite(PIN_TRIPLE_DIG_DP, HIGH);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DP, LOW);
+                if (decimalSpaces + 1 > digitsToDisplay.size())
+                {
+                    int diff = (decimalSpaces + 1) - digitsToDisplay.size();
+                    digitsToDisplay.insert(digitsToDisplay.begin(), diff, 0);
+                }
             }
             else
             {
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, HIGH);
-                digitSelect(dig3);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG3, LOW);
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, HIGH);
-                digitSelect(dig2);
-                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_RENDER_WAIT));
-                digitalWrite(PIN_TRIPLE_DIG_DIG2, LOW);
+                if (decimalPoints * decimalSpaces + 1 > digitsToDisplay.size())              // This condition makes sure all the decimal points are rendered by comparing the number of elements
+                {                                                                            // in a vector with the minimum number of digits neccessary to display all decimal points fixing the
+                    int diff = (decimalPoints * decimalSpaces + 1) - digitsToDisplay.size(); // difference by adding zeros to the beginning of the digitsToDisplay vector
+                    digitsToDisplay.insert(digitsToDisplay.begin(), diff, 0);
+                }
+            }
+
+            int dpCount = 0;
+            for (int i = 1; i < digitsToDisplay.size() + 1; i++)                         // This adds the decimal points to the decimalPointsToDisplay vector accounting for the fact that
+            {                                                                            // the decimal points are hardwarewise connected to the digits themselves
+                if ((i + dpCount) % (decimalSpaces + 1) == 0 && dpCount < decimalPoints) // It checks whether or not its supposed to place a decimal point at this location and whether or
+                {                                                                        // not it has already placed all decimal points
+                    decimalPointsToDisplay.insert(decimalPointsToDisplay.begin(), 1, true);
+                    dpCount += 1;
+                }
+                else
+                {
+                    decimalPointsToDisplay.insert(decimalPointsToDisplay.begin(), 1, false);
+                }
             }
         }
-        else if (dig3 != 0)
+        else // If no decimal points are to be displayed the decimalPointsToDisplay vector gets filled with all elements being false
         {
             if (dp2)
             {
@@ -887,21 +701,23 @@ namespace IO::TripleDigit
         }
         }
 
+        std::vector<int> vec{dig1, dig2, dig3, dig4, dig5, dig6};
+
         switch (displayTypeOf(displayState)) // Render frame on the display
         {
         case DisplayStateType::Decimal_OnePlace:
         {
-            renderTripleDigitFrame(dig4, dig5, dig6, false, true, negativeCheck1);
+            renderFrame(vec, 1, 1, false, negativeCheck1);
             break;
         }
         case DisplayStateType::Decimal_TwoPlaces:
         {
-            renderTripleDigitFrame(dig4, dig5, dig6, true, false, negativeCheck1);
+            renderFrame(vec, 2, 1, false, negativeCheck1);
             break;
         }
         case DisplayStateType::Time:
         {
-            renderTripleDigitTwoDPFrame(dig1, dig2, dig3, dig4, dig5, dig6, true, true);
+            renderFrame(vec, 2, 2, true, false);
             break;
         }
         case DisplayStateType::TwoIntegers:
@@ -912,7 +728,7 @@ namespace IO::TripleDigit
             break;
         default:
         {
-            renderTripleDigitTwoDPFrame(dig1, dig2, dig3, dig4, dig5, dig6, false, false);
+            renderFrame(vec, 0, 0, false, negativeCheck1);
             break;
         }
         }
