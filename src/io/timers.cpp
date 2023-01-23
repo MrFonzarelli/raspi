@@ -15,7 +15,9 @@ namespace IO::Timers
     bool g_Tmr1IsReset = true;
     bool g_Tmr2IsRunning = false;
     bool g_Tmr2IsReset = true;
+    bool g_Tmr2Split = false;
     double g_TimerCustom = 0;
+    double g_TimerCustomSplitOffset = 0;
     double g_Timer0to100 = 0;
     double g_Timer0to200 = 0;
     double g_Timer0to300 = 0;
@@ -53,8 +55,18 @@ namespace IO::Timers
             g_Timer2Mutex.lock();
             if (g_Tmr2IsRunning)
             {
-                std::chrono::duration<double> timeDelta = currentTime - oldTime;
-                g_TimerCustom += timeDelta.count();
+                if (!g_Tmr2Split)
+                {
+                    g_TimerCustom += g_TimerCustomSplitOffset;
+                    g_TimerCustomSplitOffset = 0;
+                    std::chrono::duration<double> timeDelta = currentTime - oldTime;
+                    g_TimerCustom += timeDelta.count();
+                }
+                else
+                {
+                    std::chrono::duration<double> timeDelta = currentTime - oldTime;
+                    g_TimerCustomSplitOffset += timeDelta.count();
+                }
             }
             g_Timer2Mutex.unlock();
 
@@ -158,6 +170,20 @@ namespace IO::Timers
         g_Tmr2IsRunning = false;
         g_TimerCustom = 0;
         g_Tmr2IsReset = true;
+        g_Timer2Mutex.unlock();
+    }
+
+    void splitTimerCustom()
+    {
+        g_Timer2Mutex.lock();
+        g_Tmr2Split = true;
+        g_Timer2Mutex.unlock();
+    }
+
+    void unsplitTimerCustom()
+    {
+        g_Timer2Mutex.lock();
+        g_Tmr2Split = false;
         g_Timer2Mutex.unlock();
     }
 

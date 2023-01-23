@@ -3,6 +3,7 @@
 #include "io.hpp"
 #include "pins.hpp"
 #include "timers.hpp"
+#include "oled_display.hpp"
 #include <chrono>
 #include <mutex>
 #include <wiringPi.h>
@@ -21,7 +22,8 @@ namespace IO::Buttons
             {
                 if (last_RightbuttonState == 0)
                 {
-                    IO::nextDisplayState();
+                    nextDisplayState();
+                    // OLED::scrollOLEDRight();
                 }
                 last_RightbuttonState = des_RightbuttonState;
             }
@@ -40,7 +42,8 @@ namespace IO::Buttons
             {
                 if (last_LeftbuttonState == 0)
                 {
-                    IO::previousDisplayState();
+                    previousDisplayState();
+                    // OLED::scrollOLEDLeft();
                 }
                 last_LeftbuttonState = des_LeftbuttonState;
             }
@@ -85,7 +88,17 @@ namespace IO::Buttons
                     }
                     case DisplayState::CustomTimer:
                     {
-                        Timers::resetTimerCustom();
+                        if (IO::Timers::timerCustomIsRunning())
+                        {
+                            IO::OLED::staticMessageOLED("Finish", 3, 500);
+                            IO::Timers::stopTimerCustom();
+                        }
+                        else
+                        {
+                            IO::OLED::staticMessageOLED("Reset", 3, 500);
+                            IO::Timers::resetTimerCustom();
+                            IO::Timers::startTimerCustom();
+                        }
                         break;
                     }
                     }
@@ -113,17 +126,15 @@ namespace IO::Buttons
                     {
                         if (IO::Timers::timerCustomIsRunning())
                         {
-                            IO::Timers::stopTimerCustom();
+                            IO::Timers::splitTimerCustom();
+                            IO::OLED::staticMessageOLED("Split", 3, 2500);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+                            IO::Timers::unsplitTimerCustom();
                         }
-                        else
-                        {
-                            IO::Timers::resetTimerCustom();
-                            IO::Timers::startTimerCustom();
-                        }
-
                         break;
                     }
                     default:
+                        previousDisplayState();
                         break;
                     }
                 }

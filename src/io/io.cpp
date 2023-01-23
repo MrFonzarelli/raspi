@@ -6,6 +6,7 @@
 #include "oled_display.hpp"
 #include "lights.hpp"
 #include "pins.hpp"
+#include "settings.hpp"
 #include "timers.hpp"
 #include <chrono>
 #include <memory>
@@ -25,7 +26,7 @@ namespace IO
     std::unique_ptr<std::thread> g_LightsThread;
     std::unique_ptr<std::thread> g_OLEDThread;
 
-    DisplayState g_DisplayState = DisplayState::Speed;
+    DisplayState g_DisplayState;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -62,9 +63,17 @@ namespace IO
         pinMode(PIN_DASHLIGHT_LED3, INPUT);
         pinMode(PIN_DASHLIGHT_LED4, INPUT);
 
-        Animations::welcome();
+        auto ioSettings = Settings::getIOSettings();
 
-        g_SingleDigitThread.reset(SingleDigit::startThread());
+        if (ioSettings.doWelcomeAnimation)
+            Animations::welcome();
+
+        g_DisplayState = ioSettings.defaultDisplayState;
+
+        if (ioSettings.singleDigitDisplaySettings.enabled)
+        {
+            g_SingleDigitThread.reset(SingleDigit::startThread());
+        }
         g_TripleDigitThread.reset(TripleDigit::startThread());
         g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread());
         g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
@@ -123,6 +132,10 @@ namespace IO
         case DisplayState::AverageFuelConsumption:
         case DisplayState::TurboPressure:
             return DisplayStateType::Decimal_OnePlace;
+        case DisplayState::RPMandSpeed:
+            return DisplayStateType::TwoIntegers;
+        case DisplayState::RPMandSpeedSep:
+            return DisplayStateType::TwoIntegersSeparated;
         default:
             return DisplayStateType::Integer;
         }

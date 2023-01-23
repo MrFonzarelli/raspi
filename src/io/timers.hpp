@@ -14,6 +14,8 @@ namespace IO::Timers
     void startTimerCustom();
     void stopTimerCustom();
     void resetTimerCustom();
+    void splitTimerCustom();
+    void unsplitTimerCustom();
     bool timerCustomIsRunning();
 
     double getTime(DisplayState displayState);
