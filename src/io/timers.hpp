@@ -3,6 +3,7 @@
 
 #include "io.hpp"
 #include <thread>
+#include <mutex>
 
 namespace IO::Timers
 {
