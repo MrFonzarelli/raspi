@@ -150,7 +150,7 @@ namespace IO::TripleDigit
         digitalWrite(PIN_TRIPLE_DIG_E, LOW);
         digitalWrite(PIN_TRIPLE_DIG_F, LOW);
         digitalWrite(PIN_TRIPLE_DIG_G, HIGH);
-        return 0;
+        return -1;
     }
 
     void digitSelect(int num)
@@ -282,7 +282,7 @@ namespace IO::TripleDigit
     void renderFrame(std::vector<int> digitsToDisplay, int decimalSpaces, int decimalPoints, bool hideDecimalPoints, bool isNegative)
     {
         std::vector<bool> decimalPointsToDisplay;
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < digitsToDisplay.size() - 1; i++)
         {
             if (digitsToDisplay[i] == 0)
             {
@@ -511,8 +511,8 @@ namespace IO::TripleDigit
         int dig4;
         int dig5;
         int dig6;
-        bool negativeCheck1;
-        bool negativeCheck2;
+        bool negativeCheck1 = false;
+        bool negativeCheck2 = false;
         Data::Tick tick = Data::get();
 
         DisplayState displayState = getDisplayState();

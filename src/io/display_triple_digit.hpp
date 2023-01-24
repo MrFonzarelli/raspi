@@ -2,10 +2,7 @@
 #define DISPLAY_TRIPLE_DIGIT_HPP
 
 #include "io.hpp"
-#include <mutex>
 #include <thread>
-
-#define WAIT 3
 
 namespace IO::TripleDigit
 {
