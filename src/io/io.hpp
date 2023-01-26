@@ -3,9 +3,6 @@
 
 namespace IO
 {
-
-    const int DISPLAY_STATE_COUNT = 19;
-
     enum class DisplayState
     {
         Speed,
@@ -45,6 +42,8 @@ namespace IO
     void terminate();
 
     DisplayState getDisplayState();
+    int getDisplayStateCount();
+    int getCurrentDisplayStateIndex();
 
     void nextDisplayState();
     void previousDisplayState();
