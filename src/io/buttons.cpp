@@ -23,7 +23,6 @@ namespace IO::Buttons
                 if (last_RightbuttonState == 0)
                 {
                     nextDisplayState();
-                    // OLED::scrollOLEDRight();
                 }
                 last_RightbuttonState = des_RightbuttonState;
             }
@@ -43,7 +42,6 @@ namespace IO::Buttons
                 if (last_LeftbuttonState == 0)
                 {
                     previousDisplayState();
-                    // OLED::scrollOLEDLeft();
                 }
                 last_LeftbuttonState = des_LeftbuttonState;
             }
@@ -82,7 +80,6 @@ namespace IO::Buttons
                     case DisplayState::HundredTo300:
                     case DisplayState::TwoHundredTo300:
                     {
-                        printf("--- NEW PULL ---\n");
                         Timers::reset();
                         break;
                     }
@@ -95,7 +92,7 @@ namespace IO::Buttons
                         }
                         else
                         {
-                            IO::OLED::staticMessageOLED("Reset", 3, 500);
+                            IO::OLED::staticMessageOLED("Start", 3, 500);
                             IO::Timers::resetTimerCustom();
                             IO::Timers::startTimerCustom();
                         }
