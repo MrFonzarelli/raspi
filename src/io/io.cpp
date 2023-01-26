@@ -77,10 +77,10 @@ namespace IO
             g_SingleDigitThread.reset(SingleDigit::startThread());
         }
         g_TripleDigitThread.reset(TripleDigit::startThread());
-        g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread());
-        g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
-        g_MultiButtonThread.reset(Buttons::startMultiButtonThread());
-        g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
+        g_ScreenScrollRightButtonThread.reset(Buttons::startButtonThread(PIN_SCROLL_RIGHT_BUTTON, nextDisplayState));
+        g_ScreenScrollLeftButtonThread.reset(Buttons::startButtonThread(PIN_SCROLL_LEFT_BUTTON, previousDisplayState));
+        g_MultiButtonThread.reset(Buttons::startButtonThread(PIN_MULTI_BUTTON, Buttons::buttonMultiAction));
+        g_ResetStatButtonThread.reset(Buttons::startButtonThread(PIN_RESET_STAT, Buttons::buttonResetStatAction));
         g_TimerThread.reset(Timers::startThread());
         g_LightsThread.reset(Lights::startThread());
         g_OLEDThread.reset(OLED::startThread());
