@@ -28,6 +28,7 @@ namespace IO
 
     int g_CurrentDisplayStateIdx;
     std::vector<DisplayState> g_ActiveDisplayStates;
+    std::array<CombinedDisplayType, 5> g_CombinedDisplays;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -71,6 +72,7 @@ namespace IO
 
         g_CurrentDisplayStateIdx = 0;
         g_ActiveDisplayStates = ioSettings.activeDisplayStates;
+        g_CombinedDisplays = ioSettings.combinedDisplays;
 
         if (ioSettings.singleDigitDisplaySettings.enabled)
         {
@@ -131,6 +133,27 @@ namespace IO
         g_DisplayStateMutex.unlock();
     }
 
+    const CombinedDisplayType &getCombinedDisplayState()
+    {
+        g_DisplayStateMutex.lock();
+        DisplayState activeState = g_ActiveDisplayStates[g_CurrentDisplayStateIdx];
+        g_DisplayStateMutex.unlock();
+        switch (activeState)
+        {
+        case DisplayState::Combined1:
+        default:
+            return g_CombinedDisplays[0];
+        case DisplayState::Combined2:
+            return g_CombinedDisplays[1];
+        case DisplayState::Combined3:
+            return g_CombinedDisplays[2];
+        case DisplayState::Combined4:
+            return g_CombinedDisplays[3];
+        case DisplayState::Combined5:
+            return g_CombinedDisplays[4];
+        }
+    }
+
     DisplayStateType displayTypeOf(DisplayState displayState)
     {
         switch (displayState)
@@ -149,11 +172,13 @@ namespace IO
         case DisplayState::CurrentFuelConsumption:
         case DisplayState::AverageFuelConsumption:
         case DisplayState::TurboPressure:
-            return DisplayStateType::Decimal_OnePlace;
-        case DisplayState::RPMandSpeed:
-            return DisplayStateType::TwoIntegers;
-        case DisplayState::RPMandSpeedSep:
-            return DisplayStateType::TwoIntegersSeparated;
+            return DisplayStateType::Decimal;
+        case DisplayState::Combined1:
+        case DisplayState::Combined2:
+        case DisplayState::Combined3:
+        case DisplayState::Combined4:
+        case DisplayState::Combined5:
+            return DisplayStateType::Combined;
         default:
             return DisplayStateType::Integer;
         }

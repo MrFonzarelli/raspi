@@ -52,10 +52,16 @@ namespace Settings
             return IO::DisplayState::CustomTimer;
         else if (str == "rpm")
             return IO::DisplayState::RPM;
-        else if (str == "rpmandspeed")
-            return IO::DisplayState::RPMandSpeed;
-        else if (str == "rpmandspeed-sep")
-            return IO::DisplayState::RPMandSpeedSep;
+        else if (str == "combined1")
+            return IO::DisplayState::Combined1;
+        else if (str == "combined2")
+            return IO::DisplayState::Combined2;
+        else if (str == "combined3")
+            return IO::DisplayState::Combined3;
+        else if (str == "combined4")
+            return IO::DisplayState::Combined4;
+        else if (str == "combined5")
+            return IO::DisplayState::Combined5;
 
         return (IO::DisplayState)-1;
     }
@@ -91,7 +97,8 @@ namespace Settings
 
         // IO
         g_IOSettings.doWelcomeAnimation = options.get<bool>("IO.DoWelcomeAnimation", true);
-        std::string activeDisplayStatesString = options.get<std::string>("IO.ActiveDisplayStates", "speed turbopressure rpm averagefuel rpmandspeed-sep 0-100 quartermile manualtimer");
+
+        std::string activeDisplayStatesString = options.get<std::string>("IO.ActiveDisplayStates", "speed turbopressure rpm averagefuel combined1 combined2 combined5 0-100 quartermile manualtimer");
         std::istringstream split(activeDisplayStatesString);
         std::string word;
         while (split >> word)
@@ -105,6 +112,78 @@ namespace Settings
             {
                 errors << invalidValueMessage("IO.ActiveDisplayStates", word);
             }
+        }
+
+        for (int i = 1; i <= 5; i++)
+        {
+            std::string defaultValue;
+            switch (i)
+            {
+            case 1:
+                defaultValue = "rpm speed";
+                break;
+            case 2:
+                defaultValue = "rpm turbopressure";
+                break;
+            case 3:
+                defaultValue = "speed turbopressure";
+                break;
+            case 4:
+                defaultValue = "currentfuel averagefuel";
+                break;
+            case 5:
+                defaultValue = "enginetemp oiltemp";
+                break;
+            }
+            std::string optionName = std::string("IO.CombinedDisplayStates" + std::to_string(i));
+            std::string combinedStateString = options.get<std::string>(optionName, defaultValue);
+            split = std::istringstream(combinedStateString);
+            for (int j = 0; j < 2; j++)
+            {
+                if (!(split >> word))
+                {
+                    errors << "Error: invalid setting for " << optionName << ": combined displays must have 2 display states defined";
+                }
+                IO::DisplayState state = stringToDisplayState(word);
+                if ((int)state < 0)
+                {
+                    errors << invalidValueMessage(optionName, word);
+                    continue;
+                }
+                switch (IO::displayTypeOf(state))
+                {
+                case IO::DisplayStateType::Time:
+                case IO::DisplayStateType::Combined:
+                    errors << invalidValueMessage(optionName, word);
+                    continue;
+                }
+                if (j == 0)
+                    g_IOSettings.combinedDisplays[i - 1].displayStateLeft = state;
+                else
+                    g_IOSettings.combinedDisplays[i - 1].displayStateRight = state;
+            }
+            switch (i)
+            {
+            case 1:
+                defaultValue = "RPMx1k Spd";
+                break;
+            case 2:
+                defaultValue = "RPMx1k Bst";
+                break;
+            case 3:
+                defaultValue = "Spd Bst";
+                break;
+            case 4:
+                defaultValue = "CurF AvgF";
+                break;
+            case 5:
+                defaultValue = "EngT  OilT";
+                break;
+            default:
+                defaultValue = std::string("Combined") + std::to_string(i);
+                break;
+            }
+            g_IOSettings.combinedDisplays[i - 1].label = options.get<std::string>(std::string("IO.CombinedDisplayLabel" + std::to_string(i)), defaultValue);
         }
 
         // SingleDigitDisplay

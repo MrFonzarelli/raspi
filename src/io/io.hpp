@@ -1,6 +1,8 @@
 #ifndef IO_HPP
 #define IO_HPP
 
+#include <string>
+
 namespace IO
 {
     enum class DisplayState
@@ -22,19 +24,26 @@ namespace IO
         QuarterMile,
         CustomTimer,
         RPM,
-        RPMandSpeed,   // RPM and Speed without an empty digit between them (RPM / 10)
-        RPMandSpeedSep // RPM and Speed with a "separator" consisting of an empty digit
-
+        Combined1,
+        Combined2,
+        Combined3,
+        Combined4,
+        Combined5
     };
 
     enum class DisplayStateType
     {
-        Integer,              // Integers without the DP
-        TwoIntegers,          // Two integers each on one of the two Triple Digit Displays
-        TwoIntegersSeparated, // Two integers separated by an empty digit
-        Decimal_OnePlace,     // Decimals with 1 decimal place of precision
-        Decimal_TwoPlaces,    // Decimals with 2 decimal places of precision
-        Time                  // Time numbers needing conversion to render with max precision
+        Integer,  // Integers without the DP
+        Combined, // Two integers each on one of the two Triple Digit Displays
+        Decimal,  // Decimals with 1 decimal place of precision
+        Time      // Time numbers needing conversion to render with max precision
+    };
+
+    struct CombinedDisplayType
+    {
+        std::string label;
+        DisplayState displayStateRight;
+        DisplayState displayStateLeft;
     };
 
     void initialize();
@@ -49,6 +58,8 @@ namespace IO
     void previousDisplayState();
 
     DisplayStateType displayTypeOf(DisplayState displayState);
+
+    const CombinedDisplayType &getCombinedDisplayState();
 
 }
 
