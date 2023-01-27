@@ -27,6 +27,8 @@ namespace IO
     std::unique_ptr<std::thread> g_OLEDThread;
 
     DisplayState g_DisplayState;
+    CombinedDisplayType g_CombinedDisplay1;
+    CombinedDisplayType g_CombinedDisplay2;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -69,6 +71,10 @@ namespace IO
             Animations::welcome();
 
         g_DisplayState = ioSettings.defaultDisplayState;
+        g_CombinedDisplay1.displayStateLeft = DisplayState::TurboPressure;
+        g_CombinedDisplay1.displayStateRight = DisplayState::Speed;
+        g_CombinedDisplay2.displayStateLeft = DisplayState::RPM;
+        g_CombinedDisplay2.displayStateRight = DisplayState::Speed;
 
         if (ioSettings.singleDigitDisplaySettings.enabled)
         {
@@ -113,6 +119,27 @@ namespace IO
         g_DisplayStateMutex.unlock();
     }
 
+    CombinedDisplayType getCombinedDisplayState()
+    {
+        g_DisplayStateMutex.lock();
+        CombinedDisplayType result;
+        switch (g_DisplayState)
+        {
+        case DisplayState::Combined1:
+        {
+            result = g_CombinedDisplay1;
+            break;
+        }
+        case DisplayState::Combined2:
+        {
+            result = g_CombinedDisplay2;
+            break;
+        }
+        }
+        g_DisplayStateMutex.unlock();
+        return result;
+    }
+
     DisplayStateType displayTypeOf(DisplayState displayState)
     {
         switch (displayState)
@@ -131,11 +158,10 @@ namespace IO
         case DisplayState::CurrentFuelConsumption:
         case DisplayState::AverageFuelConsumption:
         case DisplayState::TurboPressure:
-            return DisplayStateType::Decimal_OnePlace;
-        case DisplayState::RPMandSpeed:
-            return DisplayStateType::TwoIntegers;
-        case DisplayState::RPMandSpeedSep:
-            return DisplayStateType::TwoIntegersSeparated;
+            return DisplayStateType::Decimal;
+        case DisplayState::Combined1:
+        case DisplayState::Combined2:
+            return DisplayStateType::Combined;
         default:
             return DisplayStateType::Integer;
         }

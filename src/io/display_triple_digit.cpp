@@ -384,6 +384,14 @@ namespace IO::TripleDigit
             }
         }
 
+        if (decimalPoint2)
+        {
+            if (digitsToDisplay2.size() < 2)
+            {
+                digitsToDisplay2.insert(digitsToDisplay2.begin(), 1, 0);
+            }
+        }
+
         int offset = (digitsToDisplay2.size() > 2) ? 0 : 1;
 
         if (isNegative)
@@ -485,6 +493,21 @@ namespace IO::TripleDigit
         return 0;
     }
 
+    bool isDecimalState(DisplayState displayState)
+    {
+        switch (displayState)
+        {
+        case DisplayState::TurboPressure:
+        case DisplayState::TripOdometer:
+        case DisplayState::Odometer:
+        case DisplayState::CurrentFuelConsumption:
+        case DisplayState::AverageFuelConsumption:
+        case DisplayState::RPM:
+            return true;
+        }
+        return false;
+    }
+
     void tripleDigitOutput()
     {
         int dig1;
@@ -498,6 +521,8 @@ namespace IO::TripleDigit
         std::vector<int> vec1;
         std::vector<int> vec2;
         Data::Tick tick = Data::get();
+
+        CombinedDisplayType displayStateCombined;
 
         DisplayState displayState = getDisplayState();
 
@@ -533,27 +558,19 @@ namespace IO::TripleDigit
             vec1 = {dig1, dig2, dig3, dig4, dig5, dig6};
             break;
         }
-        case DisplayStateType::TwoIntegersSeparated:
+        case DisplayStateType::Combined:
         {
-            int numberToDisplay = getValueToDisplay(tick, DisplayState::Speed);
-            int numberToDisplay2 = lround(getValueToDisplay(tick, DisplayState::RPM) / 100);
-            negativeCheck1 = numberToDisplay < 0;
-            negativeCheck2 = numberToDisplay2 < 0;
-            dig1 = 0;
-            dig2 = abs(numberToDisplay2) / 10 % 10;
-            dig3 = abs(numberToDisplay2) % 10;
-            dig4 = abs(numberToDisplay) / 100 % 10;
-            dig5 = abs(numberToDisplay) / 10 % 10;
-            dig6 = abs(numberToDisplay) % 10;
-            vec1 = {dig4, dig5, dig6};
-            vec2 = {dig1, dig2, dig3};
-            break;
-        }
-        case DisplayStateType::TwoIntegers:
-        {
-
-            int numberToDisplay = getValueToDisplay(tick, DisplayState::Speed);
-            int numberToDisplay2 = lround(getValueToDisplay(tick, DisplayState::RPM) / 10);
+            displayStateCombined = getCombinedDisplayState();
+            int numberToDisplay = getValueToDisplay(tick, displayStateCombined.displayStateRight);
+            int numberToDisplay2 = getValueToDisplay(tick, displayStateCombined.displayStateLeft);
+            switch (displayStateCombined.displayStateLeft)
+            {
+            case DisplayState::RPM:
+            {
+                numberToDisplay2 /= 100;
+                break;
+            }
+            }
             negativeCheck1 = numberToDisplay < 0;
             negativeCheck2 = numberToDisplay2 < 0;
             dig1 = abs(numberToDisplay2) / 100 % 10;
@@ -583,14 +600,9 @@ namespace IO::TripleDigit
 
         switch (displayTypeOf(displayState)) // Render frame on the display
         {
-        case DisplayStateType::Decimal_OnePlace:
+        case DisplayStateType::Decimal:
         {
             renderFrame(vec1, 1, 1, false, negativeCheck1);
-            break;
-        }
-        case DisplayStateType::Decimal_TwoPlaces:
-        {
-            renderFrame(vec1, 2, 1, false, negativeCheck1);
             break;
         }
         case DisplayStateType::Time:
@@ -598,14 +610,9 @@ namespace IO::TripleDigit
             renderFrame(vec1, 2, 2, true, false);
             break;
         }
-        case DisplayStateType::TwoIntegers:
+        case DisplayStateType::Combined:
         {
-            renderFrame(vec1, vec2, false, false, negativeCheck1, negativeCheck2);
-            break;
-        }
-        case DisplayStateType::TwoIntegersSeparated:
-        {
-            renderFrame(vec1, vec2, false, true, negativeCheck1, negativeCheck2);
+            renderFrame(vec1, vec2, isDecimalState(displayStateCombined.displayStateRight), isDecimalState(displayStateCombined.displayStateLeft), negativeCheck1, negativeCheck2);
             break;
         }
         default:

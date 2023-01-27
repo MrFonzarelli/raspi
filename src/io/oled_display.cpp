@@ -179,16 +179,16 @@ namespace IO::OLED
             ssd1306_drawString("RPM");
             break;
         }
-        case DisplayState::RPMandSpeed:
+        case DisplayState::Combined1:
         {
             ssd1306_setTextSize(2);
-            ssd1306_drawString("RPMx10 Spd");
+            ssd1306_drawString("WIP");
             break;
         }
-        case DisplayState::RPMandSpeedSep:
+        case DisplayState::Combined2:
         {
             ssd1306_setTextSize(2);
-            ssd1306_drawString("RPMx1k Spd");
+            ssd1306_drawString("WIP");
             break;
         }
         default:
