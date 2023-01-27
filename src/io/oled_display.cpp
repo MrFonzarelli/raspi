@@ -18,6 +18,11 @@ namespace IO::OLED
     bool g_IsStopped = false;
     bool g_IsInterrupted = false;
 
+    int calculateMaxTextSize(const std::string &text)
+    {
+        return 125 / (text.size() * 5);
+    }
+
     bool isStopped()
     {
         std::lock_guard<std::mutex> lock(g_IsStoppedMutex);
@@ -182,15 +187,14 @@ namespace IO::OLED
             break;
         }
         case DisplayState::Combined1:
-        {
-            ssd1306_setTextSize(2);
-            ssd1306_drawString("WIP");
-            break;
-        }
         case DisplayState::Combined2:
+        case DisplayState::Combined3:
+        case DisplayState::Combined4:
+        case DisplayState::Combined5:
         {
-            ssd1306_setTextSize(2);
-            ssd1306_drawString("WIP");
+            const auto &state = getCombinedDisplayState();
+            ssd1306_setTextSize(calculateMaxTextSize(state.label));
+            ssd1306_drawString(state.label.c_str());
             break;
         }
         default:

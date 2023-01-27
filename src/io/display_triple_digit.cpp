@@ -392,8 +392,6 @@ namespace IO::TripleDigit
             }
         }
 
-        int offset = (digitsToDisplay2.size() > 2) ? 0 : 1;
-
         if (isNegative)
         {
             if (digitsToDisplay.size() == 3)
@@ -409,7 +407,7 @@ namespace IO::TripleDigit
 
         if (isNegative2)
         {
-            if (digitsToDisplay2.size() == (3 - offset))
+            if (digitsToDisplay2.size() == 3)
             {
                 digitsToDisplay2.erase(digitsToDisplay2.begin());
                 digitsToDisplay2.insert(digitsToDisplay2.begin(), 1, -1);
@@ -439,11 +437,12 @@ namespace IO::TripleDigit
         }
 
         count = 1;
+        int offset = (digitsToDisplay2.size() >= 3) ? 1 : 0;
         if (decimalPoint2)
         {
             for (int i = digitsToDisplay2.size(); i > 0; i--)
             {
-                setDigit((4 - offset) - count, digitsToDisplay2[i - 1], count % 2 == 0);
+                setDigit((3 + offset) - count, digitsToDisplay2[i - 1], count == 2);
                 count++;
             }
         }
@@ -451,7 +450,7 @@ namespace IO::TripleDigit
         {
             for (int i = digitsToDisplay2.size(); i > 0; i--)
             {
-                setDigit((4 - offset) - count, digitsToDisplay2[i - 1], false);
+                setDigit((3 + offset) - count, digitsToDisplay2[i - 1], false);
                 count++;
             }
         }

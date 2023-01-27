@@ -1,6 +1,8 @@
 #ifndef IO_HPP
 #define IO_HPP
 
+#include <string>
+
 namespace IO
 {
     enum class DisplayState
@@ -22,9 +24,11 @@ namespace IO
         QuarterMile,
         CustomTimer,
         RPM,
-        Combined1, // RPM and Speed without an empty digit between them (RPM / 10)
-        Combined2  // RPM and Speed with a "separator" consisting of an empty digit
-
+        Combined1,
+        Combined2,
+        Combined3,
+        Combined4,
+        Combined5
     };
 
     enum class DisplayStateType
@@ -37,6 +41,7 @@ namespace IO
 
     struct CombinedDisplayType
     {
+        std::string label;
         DisplayState displayStateRight;
         DisplayState displayStateLeft;
     };
@@ -54,7 +59,7 @@ namespace IO
 
     DisplayStateType displayTypeOf(DisplayState displayState);
 
-    CombinedDisplayType getCombinedDisplayState();
+    const CombinedDisplayType &getCombinedDisplayState();
 
 }
 

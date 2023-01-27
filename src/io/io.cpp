@@ -28,8 +28,7 @@ namespace IO
 
     int g_CurrentDisplayStateIdx;
     std::vector<DisplayState> g_ActiveDisplayStates;
-    CombinedDisplayType g_CombinedDisplay1;
-    CombinedDisplayType g_CombinedDisplay2;
+    std::array<CombinedDisplayType, 5> g_CombinedDisplays;
     std::mutex g_DisplayStateMutex;
 
     void initialize()
@@ -73,10 +72,7 @@ namespace IO
 
         g_CurrentDisplayStateIdx = 0;
         g_ActiveDisplayStates = ioSettings.activeDisplayStates;
-        g_CombinedDisplay1.displayStateLeft = DisplayState::TurboPressure;
-        g_CombinedDisplay1.displayStateRight = DisplayState::Speed;
-        g_CombinedDisplay2.displayStateLeft = DisplayState::RPM;
-        g_CombinedDisplay2.displayStateRight = DisplayState::Speed;
+        g_CombinedDisplays = ioSettings.combinedDisplays;
 
         if (ioSettings.singleDigitDisplaySettings.enabled)
         {
@@ -137,25 +133,25 @@ namespace IO
         g_DisplayStateMutex.unlock();
     }
 
-    CombinedDisplayType getCombinedDisplayState()
+    const CombinedDisplayType &getCombinedDisplayState()
     {
         g_DisplayStateMutex.lock();
-        CombinedDisplayType result;
-        switch (g_DisplayState)
+        DisplayState activeState = g_ActiveDisplayStates[g_CurrentDisplayStateIdx];
+        g_DisplayStateMutex.unlock();
+        switch (activeState)
         {
         case DisplayState::Combined1:
-        {
-            result = g_CombinedDisplay1;
-            break;
-        }
+        default:
+            return g_CombinedDisplays[0];
         case DisplayState::Combined2:
-        {
-            result = g_CombinedDisplay2;
-            break;
+            return g_CombinedDisplays[1];
+        case DisplayState::Combined3:
+            return g_CombinedDisplays[2];
+        case DisplayState::Combined4:
+            return g_CombinedDisplays[3];
+        case DisplayState::Combined5:
+            return g_CombinedDisplays[4];
         }
-        }
-        g_DisplayStateMutex.unlock();
-        return result;
     }
 
     DisplayStateType displayTypeOf(DisplayState displayState)
@@ -179,6 +175,9 @@ namespace IO
             return DisplayStateType::Decimal;
         case DisplayState::Combined1:
         case DisplayState::Combined2:
+        case DisplayState::Combined3:
+        case DisplayState::Combined4:
+        case DisplayState::Combined5:
             return DisplayStateType::Combined;
         default:
             return DisplayStateType::Integer;

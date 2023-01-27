@@ -2,6 +2,7 @@
 #define SETTINGS_HPP
 
 #include "io/io.hpp"
+#include <array>
 #include <string>
 #include <vector>
 
@@ -62,6 +63,7 @@ namespace Settings
         ButtonSettings buttonSettings;
 
         std::vector<IO::DisplayState> activeDisplayStates;
+        std::array<IO::CombinedDisplayType, 5> combinedDisplays;
         bool doWelcomeAnimation;
     };
 
