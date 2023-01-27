@@ -16,6 +16,50 @@ namespace Settings
     GeneralSettings g_GeneralSettings;
     IOSettings g_IOSettings;
 
+    IO::DisplayState stringToDisplayState(const std::string &str)
+    {
+        if (str == "speed")
+            return IO::DisplayState::Speed;
+        else if (str == "turbopressure")
+            return IO::DisplayState::TurboPressure;
+        else if (str == "currentfuel")
+            return IO::DisplayState::CurrentFuelConsumption;
+        else if (str == "averagefuel")
+            return IO::DisplayState::AverageFuelConsumption;
+        else if (str == "tripodometer")
+            return IO::DisplayState::TripOdometer;
+        else if (str == "odometer")
+            return IO::DisplayState::Odometer;
+        else if (str == "enginetemp")
+            return IO::DisplayState::EngineTemp;
+        else if (str == "oiltemp")
+            return IO::DisplayState::OilTemp;
+        else if (str == "0-100")
+            return IO::DisplayState::ZeroTo100;
+        else if (str == "0-200")
+            return IO::DisplayState::ZeroTo200;
+        else if (str == "0-300")
+            return IO::DisplayState::ZeroTo300;
+        else if (str == "100-200")
+            return IO::DisplayState::HundredTo200;
+        else if (str == "100-300")
+            return IO::DisplayState::HundredTo300;
+        else if (str == "200-300")
+            return IO::DisplayState::TwoHundredTo300;
+        else if (str == "quartermile")
+            return IO::DisplayState::QuarterMile;
+        else if (str == "manualtimer")
+            return IO::DisplayState::CustomTimer;
+        else if (str == "rpm")
+            return IO::DisplayState::RPM;
+        else if (str == "rpmandspeed")
+            return IO::DisplayState::RPMandSpeed;
+        else if (str == "rpmandspeed-sep")
+            return IO::DisplayState::RPMandSpeedSep;
+
+        return (IO::DisplayState)-1;
+    }
+
     std::string invalidValueMessage(const std::string &settingName, const std::string &value)
     {
         return std::string("Error: invalid settings value '") + settingName + "' of '" + value + "'\n";
@@ -47,44 +91,20 @@ namespace Settings
 
         // IO
         g_IOSettings.doWelcomeAnimation = options.get<bool>("IO.DoWelcomeAnimation", true);
-        auto defaultDisplayStateString = options.get<std::string>("IO.DefaultDisplayState", "speed");
-        if (defaultDisplayStateString == "speed")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::Speed;
-        else if (defaultDisplayStateString == "turbopressure")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::TurboPressure;
-        else if (defaultDisplayStateString == "currentfuel")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::CurrentFuelConsumption;
-        else if (defaultDisplayStateString == "averagefuel")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::AverageFuelConsumption;
-        else if (defaultDisplayStateString == "tripodometer")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::TripOdometer;
-        else if (defaultDisplayStateString == "odometer")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::Odometer;
-        else if (defaultDisplayStateString == "enginetemp")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::EngineTemp;
-        else if (defaultDisplayStateString == "oiltemp")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::OilTemp;
-        else if (defaultDisplayStateString == "0-100")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::ZeroTo100;
-        else if (defaultDisplayStateString == "0-200")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::ZeroTo200;
-        else if (defaultDisplayStateString == "0-300")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::ZeroTo300;
-        else if (defaultDisplayStateString == "100-200")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::HundredTo200;
-        else if (defaultDisplayStateString == "100-300")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::HundredTo300;
-        else if (defaultDisplayStateString == "200-300")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::TwoHundredTo300;
-        else if (defaultDisplayStateString == "quartermile")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::QuarterMile;
-        else if (defaultDisplayStateString == "manualtimer")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::CustomTimer;
-        else if (defaultDisplayStateString == "rpm")
-            g_IOSettings.defaultDisplayState = IO::DisplayState::RPM;
-        else
+        std::string activeDisplayStatesString = options.get<std::string>("IO.ActiveDisplayStates", "speed turbopressure rpm averagefuel rpmandspeed-sep 0-100 quartermile manualtimer");
+        std::istringstream split(activeDisplayStatesString);
+        std::string word;
+        while (split >> word)
         {
-            errors << invalidValueMessage("IO.DefaultDisplayState", defaultDisplayStateString);
+            IO::DisplayState state = stringToDisplayState(word);
+            if ((int)state >= 0)
+            {
+                g_IOSettings.activeDisplayStates.push_back(state);
+            }
+            else
+            {
+                errors << invalidValueMessage("IO.ActiveDisplayStates", word);
+            }
         }
 
         // SingleDigitDisplay

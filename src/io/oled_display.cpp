@@ -46,14 +46,16 @@ namespace IO::OLED
 
     void drawProgressBar(DisplayState displayState)
     {
-        double offset_x = WIDTH / IO::DISPLAY_STATE_COUNT;
-        int offset_middle = round((WIDTH - round(offset_x * IO::DISPLAY_STATE_COUNT)) / 2);
+        int displayStateCount = IO::getDisplayStateCount();
+        int currentDisplayState = IO::getCurrentDisplayStateIndex();
+        double offset_x = WIDTH / displayStateCount;
+        int offset_middle = round((WIDTH - round(offset_x * displayStateCount)) / 2);
         ssd1306_drawFastVLine(offset_middle, 28, 4, WHITE);
-        ssd1306_drawFastVLine(round(offset_x * IO::DISPLAY_STATE_COUNT) + offset_middle - 1, 28, 4, WHITE);
-        ssd1306_drawFastHLine(offset_middle, 28, round(offset_x * IO::DISPLAY_STATE_COUNT), WHITE);
-        ssd1306_drawFastHLine(round(offset_x * (int)displayState) + offset_middle, 29, round(offset_x), WHITE);
-        ssd1306_drawFastHLine(round(offset_x * (int)displayState) + offset_middle, 30, round(offset_x), WHITE);
-        ssd1306_drawFastHLine(offset_middle, 31, round(offset_x * IO::DISPLAY_STATE_COUNT), WHITE);
+        ssd1306_drawFastVLine(round(offset_x * displayStateCount) + offset_middle - 1, 28, 4, WHITE);
+        ssd1306_drawFastHLine(offset_middle, 28, round(offset_x * displayStateCount), WHITE);
+        ssd1306_drawFastHLine(round(offset_x * currentDisplayState) + offset_middle, 29, round(offset_x), WHITE);
+        ssd1306_drawFastHLine(round(offset_x * currentDisplayState) + offset_middle, 30, round(offset_x), WHITE);
+        ssd1306_drawFastHLine(offset_middle, 31, round(offset_x * displayStateCount), WHITE);
     }
 
     void staticMessageOLED(const std::string &message, int textSize, int displayTimeMs)

@@ -26,7 +26,8 @@ namespace IO
     std::unique_ptr<std::thread> g_LightsThread;
     std::unique_ptr<std::thread> g_OLEDThread;
 
-    DisplayState g_DisplayState;
+    int g_CurrentDisplayStateIdx;
+    std::vector<DisplayState> g_ActiveDisplayStates;
     CombinedDisplayType g_CombinedDisplay1;
     CombinedDisplayType g_CombinedDisplay2;
     std::mutex g_DisplayStateMutex;
@@ -70,7 +71,8 @@ namespace IO
         if (ioSettings.doWelcomeAnimation)
             Animations::welcome();
 
-        g_DisplayState = ioSettings.defaultDisplayState;
+        g_CurrentDisplayStateIdx = 0;
+        g_ActiveDisplayStates = ioSettings.activeDisplayStates;
         g_CombinedDisplay1.displayStateLeft = DisplayState::TurboPressure;
         g_CombinedDisplay1.displayStateRight = DisplayState::Speed;
         g_CombinedDisplay2.displayStateLeft = DisplayState::RPM;
@@ -81,10 +83,10 @@ namespace IO
             g_SingleDigitThread.reset(SingleDigit::startThread());
         }
         g_TripleDigitThread.reset(TripleDigit::startThread());
-        g_ScreenScrollRightButtonThread.reset(Buttons::startScreenScrollRightButtonThread());
-        g_ScreenScrollLeftButtonThread.reset(Buttons::startScreenScrollLeftButtonThread());
-        g_MultiButtonThread.reset(Buttons::startMultiButtonThread());
-        g_ResetStatButtonThread.reset(Buttons::startResetStatButtonThread());
+        g_ScreenScrollRightButtonThread.reset(Buttons::startButtonThread(PIN_SCROLL_RIGHT_BUTTON, nextDisplayState));
+        g_ScreenScrollLeftButtonThread.reset(Buttons::startButtonThread(PIN_SCROLL_LEFT_BUTTON, previousDisplayState));
+        g_MultiButtonThread.reset(Buttons::startButtonThread(PIN_MULTI_BUTTON, Buttons::buttonMultiAction));
+        g_ResetStatButtonThread.reset(Buttons::startButtonThread(PIN_RESET_STAT, Buttons::buttonResetStatAction));
         g_TimerThread.reset(Timers::startThread());
         g_LightsThread.reset(Lights::startThread());
         g_OLEDThread.reset(OLED::startThread());
@@ -100,7 +102,23 @@ namespace IO
     DisplayState getDisplayState()
     {
         g_DisplayStateMutex.lock();
-        DisplayState result = g_DisplayState;
+        DisplayState result = g_ActiveDisplayStates[g_CurrentDisplayStateIdx];
+        g_DisplayStateMutex.unlock();
+        return result;
+    }
+
+    int getDisplayStateCount()
+    {
+        g_DisplayStateMutex.lock();
+        int result = g_ActiveDisplayStates.size();
+        g_DisplayStateMutex.unlock();
+        return result;
+    }
+
+    int getCurrentDisplayStateIndex()
+    {
+        g_DisplayStateMutex.lock();
+        int result = g_CurrentDisplayStateIdx;
         g_DisplayStateMutex.unlock();
         return result;
     }
@@ -108,14 +126,14 @@ namespace IO
     void nextDisplayState()
     {
         g_DisplayStateMutex.lock();
-        g_DisplayState = (DisplayState)(((int)g_DisplayState + 1) % IO::DISPLAY_STATE_COUNT);
+        g_CurrentDisplayStateIdx = ((int)g_CurrentDisplayStateIdx + 1) % g_ActiveDisplayStates.size();
         g_DisplayStateMutex.unlock();
     }
 
     void previousDisplayState()
     {
         g_DisplayStateMutex.lock();
-        g_DisplayState = (DisplayState)(((int)g_DisplayState + IO::DISPLAY_STATE_COUNT - 1) % IO::DISPLAY_STATE_COUNT);
+        g_CurrentDisplayStateIdx = ((int)g_CurrentDisplayStateIdx + g_ActiveDisplayStates.size() - 1) % g_ActiveDisplayStates.size();
         g_DisplayStateMutex.unlock();
     }
 

@@ -3,6 +3,7 @@
 
 #include "io/io.hpp"
 #include <string>
+#include <vector>
 
 namespace Settings
 {
@@ -60,7 +61,7 @@ namespace Settings
         TripleDigitDisplaySettings tripleDigitDisplaySettings;
         ButtonSettings buttonSettings;
 
-        IO::DisplayState defaultDisplayState;
+        std::vector<IO::DisplayState> activeDisplayStates;
         bool doWelcomeAnimation;
     };
 
