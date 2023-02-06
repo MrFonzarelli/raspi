@@ -31,7 +31,7 @@ All text above, and the splash screen below must be included in any redistributi
 
 #include <wiringPiI2C.h>
 
-#include "oled_fonts.hpp"
+#include "io/oled_fonts.hpp"
 
 #define true 1
 #define false 0

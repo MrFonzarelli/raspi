@@ -8,7 +8,7 @@ CXX = g++
 INCDIRS = $(shell find $(SRCDIR) -type d)
 INCFLAGS = $(addprefix -I,$(INCDIRS))
 LDFLAGS = -lwiringPi -lpthread 
-CXXFLAGS = -O2 -pipe -pthread -std=c++14 $(INCFLAGS)
+CXXFLAGS = -O2 -pipe -pthread -std=c++17 $(INCFLAGS)
 DEPFLAGS = -MMD -MP
 SRCS = $(shell find $(SRCDIR) -name *.cpp)
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))

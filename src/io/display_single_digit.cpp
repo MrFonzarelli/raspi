@@ -233,7 +233,7 @@ namespace IO::SingleDigit
         while (!isStopped())
         {
             Data::Tick tick = Data::get();
-            singleDigitOutput(tick.outGauge.gear);
+            singleDigitOutput(std::get<OutGauge>(tick.vehicleTelemetry).gear);
             std::this_thread::sleep_for(std::chrono::milliseconds(Data::ACCESS_DELAY_MS));
         }
     }

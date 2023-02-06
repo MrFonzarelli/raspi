@@ -133,7 +133,7 @@ namespace IO::Lights
                 tick = Data::get();
             }
 
-            auto currentDashLights = tick.outGauge.getDashLights(); // test
+            auto currentDashLights = std::get<OutGauge>(tick.vehicleTelemetry).getDashLights(); // test
 
             displayLights(currentDashLights);
 

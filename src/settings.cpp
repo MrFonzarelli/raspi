@@ -15,6 +15,8 @@ namespace Settings
 {
     GeneralSettings g_GeneralSettings;
     IOSettings g_IOSettings;
+    AssettoCorsaSettings g_AssettoCorsaSettings;
+    BeamNGSettings g_BeamNGSettings;
 
     IO::DisplayState stringToDisplayState(const std::string &str)
     {
@@ -77,18 +79,17 @@ namespace Settings
         g_GeneralSettings.printConnectionIP = options.get<bool>("General.PrintConnectionIP", false);
         g_GeneralSettings.imperialUnits = options.get<bool>("General.UseImperialUnits", false);
         g_GeneralSettings.odometerFileName = options.get<std::string>("General.OdometerFileName", "delete-to-reset-odometer");
-        g_GeneralSettings.networkListenPort = options.get<int>("General.NetworkListenPort", 4444);
 
         std::ostringstream errors;
 
         auto gameTypeString = options.get<std::string>("General.GameType", "beamng");
         if (gameTypeString == "beamng")
         {
-            g_GeneralSettings.gameType = Settings::GameType::BEAMNG;
+            g_GeneralSettings.gameType = Settings::GameType::BeamNG;
         }
         else if (gameTypeString == "assetto")
         {
-            g_GeneralSettings.gameType = Settings::GameType::ASSETTO;
+            g_GeneralSettings.gameType = Settings::GameType::AssettoCorsa;
         }
         else
         {
@@ -189,13 +190,20 @@ namespace Settings
         // SingleDigitDisplay
         g_IOSettings.singleDigitDisplaySettings.enabled = options.get<bool>("SingleDigitDisplay.Enabled", true);
 
+        // Assetto Corsa settings
+        g_AssettoCorsaSettings.hostIpString = options.get<std::string>("AssettoCorsa.HostIP", "192.168.0.2");
+        g_AssettoCorsaSettings.hostPort = options.get<int>("AssettoCorsa.HostPort", 9996);
+
+        // BeamNG settings
+        g_BeamNGSettings.listenPort = options.get<int>("BeamNG.ListenPort", 4444);
+
+        // Error handling
         auto errorMessage = errors.str();
         if (!errorMessage.empty())
         {
             std::cout << errorMessage;
             return false;
         }
-
         return true;
     }
 
@@ -258,5 +266,15 @@ namespace Settings
     const ButtonSettings &getButtonSettings()
     {
         return g_IOSettings.buttonSettings;
+    }
+
+    const AssettoCorsaSettings &getAssettoCorsaSettings()
+    {
+        return g_AssettoCorsaSettings;
+    }
+
+    const BeamNGSettings &getBeamNGSettings()
+    {
+        return g_BeamNGSettings;
     }
 }

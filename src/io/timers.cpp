@@ -42,7 +42,7 @@ namespace IO::Timers
             Data::Tick tick = Data::get();
             auto currentTime = std::chrono::steady_clock::now();
             g_Timer1Mutex.lock();
-            if (g_Tmr1IsReset && tick.outGauge.airspeed > 0.5)
+            if (g_Tmr1IsReset && std::get<OutGauge>(tick.vehicleTelemetry).airspeed > 0.5)
             {
                 if (!g_Tmr1IsRunning)
                 {
@@ -96,22 +96,22 @@ namespace IO::Timers
                     g_TimerQuarterMile += timeDelta.count();
                 }
 
-                if (tick.outGauge.airspeed * 3.6 > 100 && !g_Timer0to100Finished)
+                if (std::get<OutGauge>(tick.vehicleTelemetry).airspeed * 3.6 > 100 && !g_Timer0to100Finished)
                 {
                     g_Timer0to100Finished = true;
                 }
 
-                if (tick.outGauge.airspeed * 3.6 > 200 && !g_Timer0to200Finished)
+                if (std::get<OutGauge>(tick.vehicleTelemetry).airspeed * 3.6 > 200 && !g_Timer0to200Finished)
                 {
                     g_Timer0to200Finished = true;
                 }
 
-                if (tick.outGauge.airspeed * 3.6 > 300 && !g_Timer0to300Finished)
+                if (std::get<OutGauge>(tick.vehicleTelemetry).airspeed * 3.6 > 300 && !g_Timer0to300Finished)
                 {
                     g_Timer0to300Finished = true;
                 }
 
-                g_Distance += timeDelta.count() * tick.outGauge.airspeed;
+                g_Distance += timeDelta.count() * std::get<OutGauge>(tick.vehicleTelemetry).airspeed;
                 if (g_Distance > 402.336 && !g_TimerQuarterMileFinished)
                 {
                     g_TimerQuarterMileFinished = true;

@@ -3,6 +3,7 @@
 
 #include "outgauge.hpp"
 #include "io/io.hpp"
+#include <variant>
 
 namespace Data
 {
@@ -18,7 +19,7 @@ namespace Data
     struct Tick
     {
         // Set by caller of set()
-        OutGauge outGauge;
+        std::variant<OutGauge, RTCarInfo> vehicleTelemetry;
         long long tickCounter;
         double tickTime;
 

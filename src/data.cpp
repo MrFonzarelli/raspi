@@ -37,13 +37,13 @@ namespace Data
     {
         if (g_GayUnits)
         {
-            tick.outGauge.airspeed *= 0.621371;
-            tick.outGauge.turbo *= 14.5038;
-            tick.outGauge.engTemp = tick.outGauge.engTemp * 1.8 + 32;
+            std::get<OutGauge>(tick.vehicleTelemetry).airspeed *= 0.621371;
+            std::get<OutGauge>(tick.vehicleTelemetry).turbo *= 14.5038;
+            (std::get<OutGauge>(tick.vehicleTelemetry).engTemp *= 1.8) += 32;
             tick.fuelCons = 235.21 / tick.fuelCons;
             tick.fuelConsAvg = 235.21 / tick.fuelConsAvg;
-            tick.outGauge.speed *= 0.621371;
-            tick.outGauge.oilTemp *= tick.outGauge.oilTemp * 1.8 + 32;
+            std::get<OutGauge>(tick.vehicleTelemetry).speed *= 0.621371;
+            (std::get<OutGauge>(tick.vehicleTelemetry).oilTemp *= 1.8) += 32;
             tick.odometer.total *= 0.621371;
             tick.odometer.trip *= 0.621371;
         }
@@ -56,18 +56,11 @@ namespace Data
         Data::Tick prevTick = g_CurrentTick;
         g_CurrentTick = tick;
 
-        // Additional calculations and statistics
-        // g_CurrentTick.outGauge.speed *= 1.609344;
-        // g_CurrentTick.outGauge.airspeed *= 1.609344;
-        // g_CurrentTick.outGauge.turbo *= 0.069;
-        // g_CurrentTick.outGauge.engTemp = (g_CurrentTick.outGauge.engTemp - 32) * (5 / 9);
-        // g_CurrentTick.outGauge.oilTemp = (g_CurrentTick.outGauge.oilTemp - 32) * (5 / 9);
+        double speedToCount = std::get<OutGauge>(g_CurrentTick.vehicleTelemetry).speed > 0.5 ? std::get<OutGauge>(g_CurrentTick.vehicleTelemetry).speed : 0;
 
-        double speedToCount = g_CurrentTick.outGauge.speed > 0.5 ? g_CurrentTick.outGauge.speed : 0;
-
-        double fuelBurned = prevTick.outGauge.fuel_remaining < g_CurrentTick.outGauge.fuel_remaining
+        double fuelBurned = std::get<OutGauge>(prevTick.vehicleTelemetry).fuel_remaining < std::get<OutGauge>(g_CurrentTick.vehicleTelemetry).fuel_remaining
                                 ? 0
-                                : prevTick.outGauge.fuel_remaining - g_CurrentTick.outGauge.fuel_remaining;
+                                : std::get<OutGauge>(prevTick.vehicleTelemetry).fuel_remaining - std::get<OutGauge>(g_CurrentTick.vehicleTelemetry).fuel_remaining;
 
         if (fuelBurned > 1e-6)
         {
@@ -89,6 +82,21 @@ namespace Data
                                             : prevTick.fuelConsAvg;
         }
         g_CurrentTick.fuelCons = fuelConsumption;
+        g_CurrentTick.odometer.total = g_Odometer;
+
+        g_DataMutex.unlock();
+    }
+
+    void setAssetto(const Tick &tick)
+    {
+        g_DataMutex.lock();
+
+        Data::Tick prevTick = g_CurrentTick;
+        g_CurrentTick = tick;
+
+        double speedToCount = std::get<RTCarInfo>(g_CurrentTick.vehicleTelemetry).speed_Ms > 0.5 ? std::get<RTCarInfo>(g_CurrentTick.vehicleTelemetry).speed_Ms : 0;
+        double distDelta = g_CurrentTick.tickTime * speedToCount / 1000;
+        g_CurrentTick.odometer.trip = prevTick.odometer.trip + distDelta;
         g_CurrentTick.odometer.total = g_Odometer;
 
         g_DataMutex.unlock();

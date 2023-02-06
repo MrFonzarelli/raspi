@@ -10,8 +10,8 @@ namespace Settings
 {
     enum class GameType
     {
-        BEAMNG,
-        ASSETTO
+        BeamNG,
+        AssettoCorsa
     };
 
     struct GeneralSettings
@@ -19,7 +19,6 @@ namespace Settings
         bool printConnectionIP;
         bool imperialUnits;
         std::string odometerFileName;
-        int networkListenPort;
         GameType gameType;
         // TODO add more
     };
@@ -67,21 +66,28 @@ namespace Settings
         bool doWelcomeAnimation;
     };
 
+    struct AssettoCorsaSettings
+    {
+        std::string hostIpString;
+        int hostPort;
+    };
+
+    struct BeamNGSettings
+    {
+        int listenPort;
+    };
+
     bool loadSettings();
 
     const GeneralSettings &getGeneralSettings();
-
     const IOSettings &getIOSettings();
-
     const LightsSettings &getLightsSettings();
-
     const OLEDSettings &getOLEDSettings();
-
     const SingleDigitDisplaySettings &getSingleDigitDisplaySettings();
-
     const TripleDigitDisplaySettings &getTripleDigitDisplaySettings();
-
     const ButtonSettings &getButtonSettings();
+    const AssettoCorsaSettings &getAssettoCorsaSettings();
+    const BeamNGSettings &getBeamNGSettings();
 }
 
 #endif

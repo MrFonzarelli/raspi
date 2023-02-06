@@ -68,12 +68,11 @@ int main(int argc, char **argv)
     IO::initialize();
 
     auto settings = Settings::getGeneralSettings();
-    std::cout << "Listening on port " << settings.networkListenPort << "..." << std::endl;
-    Network connection(settings.networkListenPort);
+    Network connection;
 
     bool connIPPrinted = false;
 
-    while (true)
+    while (settings.gameType == Settings::GameType::BeamNG)
     {
         Data::Tick tick = connection.getTickData();
         if (connection.Ok())

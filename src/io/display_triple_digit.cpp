@@ -461,23 +461,23 @@ namespace IO::TripleDigit
         switch (displayState)
         {
         case DisplayState::Speed:
-            return lround(tick.outGauge.speed * 3.6);
+            return lround(std::get<OutGauge>(tick.vehicleTelemetry).speed * 3.6);
         case DisplayState::TurboPressure:
-            return lround(tick.outGauge.turbo * 10);
+            return lround(std::get<OutGauge>(tick.vehicleTelemetry).turbo * 10);
         case DisplayState::TripOdometer:
             return lround(tick.odometer.trip * 10);
         case DisplayState::Odometer:
             return lround((tick.odometer.total + tick.odometer.trip) * 10);
         case DisplayState::EngineTemp:
-            return lround(tick.outGauge.engTemp);
+            return lround(std::get<OutGauge>(tick.vehicleTelemetry).engTemp);
         case DisplayState::OilTemp:
-            return lround(tick.outGauge.oilTemp);
+            return lround(std::get<OutGauge>(tick.vehicleTelemetry).oilTemp);
         case DisplayState::CurrentFuelConsumption:
             return lround(tick.fuelCons * 10);
         case DisplayState::AverageFuelConsumption:
             return lround(tick.fuelConsAvg * 10);
         case DisplayState::RPM:
-            return lround(tick.outGauge.rpm);
+            return lround(std::get<OutGauge>(tick.vehicleTelemetry).rpm);
         case DisplayState::ZeroTo100:
         case DisplayState::ZeroTo200:
         case DisplayState::ZeroTo300:
